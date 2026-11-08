@@ -40,6 +40,13 @@ and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_models.py` checks contract round trips, invalid/ambiguous input,
   source integrity, secret rejection, the one-follow-up bound, and the complete fixture
   story. These are fixture claims only, not live provider results.
+- `commonground/research/feasibility.py` deterministically computes the four documented
+  statuses from normalized evidence, preserves every blocker, treats equality at a
+  commute limit as passing, and refuses to hide an absent field that lacks an explicit
+  MissingEvidence record.
+- `tests/research/test_feasibility.py` proves the fixed round-2 evidence produces the
+  expected result and covers commute, cafe, conflict, unknown, boundary, and inactive-
+  filter cases.
 
 ## Deep Research design
 

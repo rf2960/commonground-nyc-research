@@ -10,7 +10,7 @@ or deployment link.
 | --- | --- | --- |
 | Use data the model does not already know deeply | Planned | Routes, Places, and MTA station records; add captured source provenance |
 | Access data through tools/API/files/search | Project 1 baseline + planned extension | Existing provider modules; add research adapters and MTA loader |
-| Combine evidence into a supported claim | Contract checkpoint complete; runtime planned | Two-round fixture and expected feasibility validate; implement evaluator/Lead execution |
+| Combine evidence into a supported claim | Deterministic layer complete; agent runtime planned | `feasibility-v1` computes fixture outcome and blockers; implement Lead/Writer execution |
 | State when data cannot answer | Contract checkpoint complete; Writer planned | `EVIDENCE_INSUFFICIENT` and MissingEvidence are validated; add Writer behavior test |
 | Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
 | Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
@@ -62,9 +62,9 @@ or deployment link.
 
 ## Final pre-submission blockers
 
-- Shared Project 2 contract models and fixed evidence fixtures are implemented; the
-  multi-agent runner, Lead, Writer, provider adapters, and deterministic evaluator are
-  not implemented yet.
+- Shared Project 2 contracts, fixed evidence fixtures, and deterministic feasibility
+  evaluation are implemented; the multi-agent runner, Lead, Writer, and provider
+  adapters are not implemented yet.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
   outputs do not exist yet.

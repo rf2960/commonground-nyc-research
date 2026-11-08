@@ -160,7 +160,9 @@ include the place ID and Google Maps URL when available.
 
 ```json
 {
+  "missing_id": "missing:cafe:r1:001",
   "candidate_id": "cafe:gplaces:place-123",
+  "subject_id": null,
   "field": "open_at_meeting_time",
   "reason_code": "PROVIDER_FIELD_MISSING",
   "detail": "Regular opening periods were absent.",
@@ -171,6 +173,10 @@ include the place ID and Google Maps URL when available.
 
 Common reason codes are `PROVIDER_FIELD_MISSING`, `ROUTE_UNAVAILABLE`,
 `PROVIDER_ERROR`, `DEPENDENCY_NOT_READY`, `STALE_EVIDENCE`, and `VALIDATION_ERROR`.
+Missing IDs use `missing:<agent>:r<round>:<sequence>`. `subject_id` identifies the
+affected traveler when a field such as an exact route is missing for only one person.
+Feasibility reasons cite `input_missing_ids`; Writer can therefore resolve each unknown
+to its provider reason and next action instead of citing an absence indirectly.
 
 ## Follow-up decision
 
@@ -202,7 +208,8 @@ round and task bounds.
       "traveler_id": "traveler:alice",
       "actual_minutes": 38.4,
       "limit_minutes": 35,
-      "input_fact_ids": ["fact:transit:r2:004"]
+      "input_fact_ids": ["fact:transit:r2:004"],
+      "input_missing_ids": []
     }
   ],
   "rule_version": "feasibility-v1"
@@ -211,6 +218,12 @@ round and task bounds.
 
 Allowed statuses are `FEASIBLE`, `COMMUTE_LIMIT_EXCEEDED`,
 `CAFE_CONSTRAINT_FAILED`, and `EVIDENCE_INSUFFICIENT`.
+
+`commonground/research/feasibility.py` implements `feasibility-v1`. Evidence
+insufficiency takes status precedence, followed by commute-limit failure and cafe-
+constraint failure, while the result retains every supported reason. A required field
+that has neither a Fact nor a MissingEvidence record is a contract error, not a silent
+unknown.
 
 ## `/chat` compatibility and trace
 

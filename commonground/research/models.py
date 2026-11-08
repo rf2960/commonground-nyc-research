@@ -23,6 +23,7 @@ CandidateId = Annotated[
     Field(pattern=r"^(?:area:(?:initial|mta):[A-Za-z0-9._-]+|cafe:gplaces:[A-Za-z0-9._-]+)$"),
 ]
 FactId = Annotated[str, Field(pattern=r"^fact:[a-z0-9_-]+:r[12]:[0-9]{3,}$")]
+MissingId = Annotated[str, Field(pattern=r"^missing:[a-z0-9_-]+:r[12]:[0-9]{3,}$")]
 SourceId = Annotated[str, Field(pattern=r"^source:[a-z0-9_-]+:[A-Za-z0-9._-]+$")]
 ResearcherAgent = Literal[
     "transit_researcher",
@@ -252,7 +253,9 @@ class Source(ContractModel):
 
 
 class MissingEvidence(ContractModel):
+    missing_id: MissingId
     candidate_id: CandidateId
+    subject_id: str | None = None
     field: NonEmptyStr
     reason_code: MissingReasonCode
     detail: NonEmptyStr
@@ -330,12 +333,24 @@ class FeasibilityReason(ContractModel):
     traveler_id: TravelerId | None = None
     actual_minutes: Annotated[float, Field(ge=0)] | None = None
     limit_minutes: Annotated[float, Field(gt=0)] | None = None
-    input_fact_ids: Annotated[tuple[FactId, ...], Field(min_length=1)]
+    input_fact_ids: tuple[FactId, ...] = ()
+    input_missing_ids: tuple[MissingId, ...] = ()
 
     @field_validator("input_fact_ids")
     @classmethod
     def input_facts_are_unique(cls, values: tuple[str, ...]) -> tuple[str, ...]:
         return _require_unique(values, "input fact IDs")
+
+    @field_validator("input_missing_ids")
+    @classmethod
+    def input_missing_are_unique(cls, values: tuple[str, ...]) -> tuple[str, ...]:
+        return _require_unique(values, "input missing-evidence IDs")
+
+    @model_validator(mode="after")
+    def reason_has_evidence(self) -> FeasibilityReason:
+        if not self.input_fact_ids and not self.input_missing_ids:
+            raise ValueError("a feasibility reason must cite a fact or missing-evidence ID")
+        return self
 
 
 class FeasibilityResult(ContractModel):

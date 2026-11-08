@@ -16,6 +16,7 @@ from .models import (
     Source,
     Traveler,
 )
+from .feasibility import RULE_VERSION, evaluate_all_cafes, evaluate_cafe_feasibility
 
 __all__ = [
     "CONTRACT_VERSION",
@@ -30,6 +31,9 @@ __all__ = [
     "ResearchBrief",
     "ResearchResult",
     "ResearchTask",
+    "RULE_VERSION",
     "Source",
     "Traveler",
+    "evaluate_all_cafes",
+    "evaluate_cafe_feasibility",
 ]

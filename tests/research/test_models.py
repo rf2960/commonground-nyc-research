@@ -9,6 +9,7 @@ from commonground.research import (
     Fact,
     FeasibilityResult,
     FollowUpDecision,
+    MissingEvidence,
     ResearchBrief,
     ResearchResult,
     ResearchTask,
@@ -128,6 +129,32 @@ def test_fact_requires_a_real_value_and_at_least_one_source():
     missing_value["value"] = None
     with pytest.raises(ValidationError, match="MissingEvidence"):
         Fact.model_validate(missing_value)
+
+
+def test_missing_evidence_has_a_stable_id_and_can_name_a_traveler():
+    missing = MissingEvidence.model_validate(
+        {
+            "missing_id": "missing:transit:r2:001",
+            "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+            "subject_id": "traveler:alice",
+            "field": "transit_duration_minutes",
+            "reason_code": "ROUTE_UNAVAILABLE",
+            "detail": "No route was returned for this traveler and exact cafe.",
+            "retryable": False,
+            "next_action": "Report the route as unknown.",
+        }
+    )
+
+    assert missing.missing_id == "missing:transit:r2:001"
+    assert missing.subject_id == "traveler:alice"
+
+    with pytest.raises(ValidationError):
+        MissingEvidence.model_validate(
+            {
+                **missing.model_dump(mode="json"),
+                "missing_id": "not-stable",
+            }
+        )
 
 
 def test_result_rejects_uncited_fact_and_unsupported_status():

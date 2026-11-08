@@ -66,13 +66,14 @@ editing one another's primary files.
 - [x] Strict shared contract models and stable-ID validation.
 - [x] Synthetic round-1 failure, FollowUpDecision, round-2 evidence, and expected outcome.
 - [x] Contract and fixture-story tests, including citation and secret-safety checks.
-- [ ] Deterministic feasibility evaluator that computes the expected outcome.
+- [x] Deterministic feasibility evaluator that computes the expected outcome and every
+  supported blocker without model arithmetic.
 - [ ] Fresh-context concurrent Researcher runner.
 - [ ] Lead execution and Writer handoff over the fixture bundle.
 - [ ] `/chat` trace integration with `agent` and `round`.
 
-The current tests prove the data story and boundaries; they do not yet prove agent
-parallelism or an executed Lead/Writer loop.
+The current tests prove the data story, boundaries, and deterministic feasibility
+decision; they do not yet prove agent parallelism or an executed Lead/Writer loop.
 
 ### Phase 2 — real data adapters
 
