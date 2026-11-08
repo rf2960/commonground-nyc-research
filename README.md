@@ -1,141 +1,141 @@
-# CommonGround NYC
+# CommonGround NYC Research
 
-CommonGround is a group decision agent that uses transit time to expose the trade-off
-between **fairness**, **speed**, and **cafe quality**. It is not just a midpoint or cafe
-finder: the same group can receive three different recommendations depending on the
-objective it values.
+CommonGround NYC Research is the Project 2 Deep Research continuation of
+[CommonGround NYC](https://github.com/rf2960/commonground-nyc). It investigates a
+specific failure mode from Project 1:
 
-**[Try the deployed agent](https://commonground-nyc-1053619589756.us-east1.run.app)**
+> When the initial meeting areas contain no cafe that is within every traveler's
+> commute limit and expected to be open at the meeting time, can a targeted expansion
+> find a feasible option? If it cannot, is the blocker commute time, cafe constraints,
+> or missing evidence?
 
-The product question is deliberately human rather than geometric: *who carries the
-cost of getting everyone together?* CommonGround shows the fairest area, the fastest
-area, and the strongest cafe option side by side, including how much travel time a
-cafe-quality choice adds or saves.
+This repository preserves the complete Project 1 history and starts from
+`2fc33bd29a5e5bde237c31333245bde2f1f89555` on `main`. Project 1 remains unchanged.
 
-## Team
+## Project 2 status
 
-| Team member | Columbia UNI | Contribution focus |
-| --- | --- | --- |
-| Ruochen Feng | `rf2960` | Fairness objective, system integration, product UX, testing, and deployment |
-| Wenyu Duan (Yulia) | `wd2422` | Google Places cafe search, cafe-quality scoring, and UI development |
-| Andrew Chen | `yc4745` | NYC-metro location resolution, transit routing, and fastest-option scoring |
+The repository-preparation milestone is complete: the research question, staged plan,
+team ownership, agent boundaries, evidence contract, and evaluation plan are agreed in
+the documents below. The inherited Project 1 application still runs, but the
+multi-agent business implementation and Project 2 Cloud Run deployment intentionally
+begin in the next milestone.
 
-## How to use it
+| Document | Purpose |
+| --- | --- |
+| [Project plan](docs/PROJECT_PLAN.md) | Scope, phases, risks, and definition of done |
+| [Architecture](docs/ARCHITECTURE.md) | Five-agent flow, follow-up policy, and Project 1 reuse |
+| [Evidence contracts](docs/EVIDENCE_CONTRACTS.md) | Shared IDs, requests, facts, sources, gaps, and `/chat` trace shape |
+| [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
+| [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 
-1. Enter 2–6 origins plus a specific future date and meeting time.
-2. Add a budget or minimum rating, then choose **Fairest**, **Fastest**, **Best cafe**,
-   or compare all three.
-3. Inspect the per-person commute impact, cafe evidence, caveats, and the complete
-   tool-call trace. Use a follow-up message to move one traveler or change a constraint;
-   **New meetup** starts a separate session.
+## Deep Research design
 
-## What is implemented
+The first turn uses five agent instances across three role shapes:
 
-This repository is built from the course's `gemini-web-tool-calling` starter and
-includes the complete tool chain:
+1. **Lead** clarifies origins, arrival time, and per-person commute limits; reuses the
+   Project 1 resolver and candidate generator; and fans out three independent research
+   contexts in the same turn.
+2. **Transit Researcher** queries Google Routes for per-traveler arrival ETAs.
+3. **Cafe Researcher** queries Google Places for cafes and meeting-time regular hours.
+4. **Expansion Researcher** uses the MTA Subway Stations dataset to identify plausible
+   stations omitted by the initial shortlist.
+5. **Writer** turns only structured, cited evidence into a comparison, recommendation,
+   blocker diagnosis, and explicit unknowns.
 
-- the Gemini tool-calling loop and session memory;
-- the required `/chat` response shape with visible tool calls;
-- Ruochen's tested `score_fairest_option` tool;
-- Andrew's tested NYC-metro location resolver, candidate generator, Google
-  door-to-door transit matrix with driving fallback, and `score_fastest_option`
-  tool;
-- Yulia's tested Google Places cafe search and `score_best_cafe_option` tool,
-  including meeting-time regular-hours estimates;
-- an integrated agent prompt that moves from origins to transit comparisons and
-  then to cafe recommendations without inventing provider data;
-- a decision UI that makes the three objectives and per-person commute burden visible;
-- a Cloud Run-ready Dockerfile with continuous deployment from GitHub.
+Lead may initiate exactly one targeted follow-up round in the MVP. Typical follow-ups
+are cafe search around a few expansion stations or transit checks to specific cafe
+addresses after Places results exist. Hard commute limits are evaluated in code, not
+by model arithmetic.
 
-## Seven-tool workflow
+## Data sources
 
-| Stage | Tool | Team contribution |
-| --- | --- | --- |
-| Understand origins | `resolve_group_locations` | Andrew |
-| Shortlist hubs | `generate_candidate_areas` | Andrew |
-| Measure real travel | `get_transit_matrix` | Andrew; Google Routes external data |
-| Protect the hardest trip | `score_fairest_option` | Ruochen's original objective tool |
-| Minimize group travel | `score_fastest_option` | Andrew's original objective tool |
-| Find real cafes | `search_cafes_in_areas` | Yulia; Google Places external data |
-| Rank cafe evidence | `score_best_cafe_option` | Yulia's original objective tool |
+- Google Routes API: door-to-door transit duration to an area center or exact cafe.
+- Google Places API (New): cafe identity, address, rating, price, and regular opening
+  hours.
+- [MTA Subway Stations](https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data):
+  station coordinates and identifiers used to propose expansion candidates.
 
-The final recommendation is not delegated to unverified model arithmetic. The backend
-builds an authoritative alignment across the three scoring outputs, while the model
-explains the trade-off and preserves provider warnings.
+Each supported claim must point to a normalized source record. Missing provider data
+remains a gap and never silently becomes a negative fact.
+
+## What is reused and what is new
+
+| Project 1 baseline | Project 2 work |
+| --- | --- |
+| FastAPI app, `/chat`, sessions, and tool trace | Lead/Researcher/Writer orchestration with fresh researcher contexts |
+| `resolve_group_locations` | Clarification and per-person commute-limit intake |
+| `generate_candidate_areas` | MTA-backed expansion beyond the initial shortlist |
+| `get_transit_matrix` | Research tasks for initial centers and exact cafe destinations |
+| `search_cafes_in_areas` and opening-hours parser | Cited cafe findings and targeted second-round searches |
+| Fairness, fastest, and cafe scoring utilities | Deterministic feasibility/blocker classification |
+| Existing decision UI and result cards | Research rounds, evidence, citations, gaps, and comparison display |
+| Dockerfile, `pyproject.toml`, `uv.lock`, tests | Fixed-fixture multi-agent slice, real-provider integration, evals, Cloud Run |
+
+Existing provider functions remain small and testable. Project 2 adds orchestration and
+normalization around them rather than duplicating their API logic.
+
+## First implementation milestone
+
+Using deterministic fixtures, run this complete trace:
+
+1. Initial areas contain no feasible cafe.
+2. Researchers return cited facts plus explicit gaps.
+3. Lead records a machine-readable reason for selecting a limited follow-up.
+4. The second round returns new evidence for expansion areas or exact cafe addresses.
+5. Writer identifies a feasible option or one of the documented blocker categories.
+6. `/chat` still returns `response`, `session_id`, and `tool_calls`; every sub-agent
+   call also contains `agent` and `round`.
+
+Only after this slice passes do we connect real MTA, Routes, and Places data.
 
 ## Setup
 
-Prerequisites: `uv`, a billed GCP project, the Agent Platform/Vertex AI API, and
-Application Default Credentials.
+The inherited Project 1 app can still be run while Project 2 is implemented:
 
 ```bash
-gcloud auth application-default login
-gcloud config set project YOUR_PROJECT_ID
 uv sync
 uv run pytest
 uv run app.py
 ```
 
-Open <http://localhost:8000>. Copy `.env.example` to `.env` only for local values;
-never commit `.env` or credentials.
+Never commit API keys, service-account JSON, `.env`, or generated credentials.
 
-## Sample grading queries
+## Planned grading examples
 
-1. “Four of us are coming from Columbia University, Astoria, Bedford Ave, and Jay
-   St-MetroTech. We want coffee on October 10, 2026 at 2:00 PM Eastern Time,
-   moderate budget, rating at least 4.3. Compare the fairest and fastest areas,
-   then recommend qualifying cafes.”
-2. “Actually Bob is coming from Queensboro Plaza instead. Keep everyone else the
-   same, preserve the date, time, and budget, and rerun the comparison.”
-3. “Using the same group and time, compare the fairest meeting area with the
-   fastest one. Explain the commute trade-off, then recommend the best qualifying
-   cafe in the fairest area.”
+Each teammate owns one example end to end. The complete expected claims, evidence
+sources, agent-output capture, and no-tools/no-system-prompt baseline format are in
+[docs/EVALUATION_PLAN.md](docs/EVALUATION_PLAN.md).
 
-## Team workflow
+1. **Ruochen — expansion succeeds:** initial areas fail, an MTA-backed expansion area
+   yields a cafe satisfying all hard constraints.
+2. **Andrew — exact-address transit fails:** an apparently viable area-center result
+   fails one traveler's limit when Routes is rerun to the selected cafe address.
+3. **Yulia — evidence remains insufficient:** Places returns a cafe but its meeting-time
+   hours are missing, so the agent reports uncertainty instead of claiming it is open.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and
-[docs/TOOL_CONTRACTS.md](docs/TOOL_CONTRACTS.md) before coding. Each teammate should
-work on a focused branch and merge through pull requests so Codex sessions do not
-overwrite one another's work.
+The final README will include the recorded agent answer and same-model baseline for
+each example after the fixed-fixture slice exists.
 
-## Required final checks
+The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
+Routes, Places-hours, expected-answer, and baseline comparison refers to the same
+unambiguous arrival time.
 
-- At least three well-described tools and one original tool per team member.
-- At least one tool calls real external data.
-- Sessions remain separate and follow-up turns remember prior details.
-- Tool name, arguments, and result are visible in the UI.
-- `submission.json` contains every Columbia UNI/email and the deployed Cloud Run URL.
-- The public Cloud Run URL works without grader setup and remains live until grades.
+## Course requirements tracked here
 
-## Operational notes
+- At least Lead, Researcher, and Writer role shapes.
+- Several Researchers launched in parallel in fresh contexts.
+- Lead can request one additional targeted research round.
+- Vague origins, arrival time, or limits trigger clarification.
+- Output claims are accurately cited and unknowns are explicit.
+- At least 50 sourced eval cases, at least two scoring methods, and a documented
+  hill-climbing log before submission.
+- Root `app.py`, `pyproject.toml`, `uv.lock`, `README.md`, and `submission.json` remain.
+- Final app is deployed to Cloud Run and kept live through grading.
 
-The public MVP keeps conversations isolated by `session_id`, expires inactive
-process-local sessions after two hours, and bounds the number retained by each Cloud
-Run instance. This is enough for the course interaction model but is not durable storage:
-a production version should use a TTL-backed store such as Firestore if conversations
-must survive instance restarts. Restrict the Google Maps key to Places API (New) and
-Routes API, keep Cloud Run scaling and API quotas bounded, and configure billing alerts.
+## Team
 
-
-## Google Maps data setup
-
-Set `GOOGLE_MAPS_API_KEY` in the server environment using a key restricted to
-Places API (New) and Routes API. The project must have both APIs enabled and
-working billing.
-Never put the key in frontend JavaScript, tool arguments, git, or screenshots.
-Location resolution uses Places Text Search (New) and accepts both exact places
-and broad NYC-metro areas. Commute comparison uses a Routes API transit matrix;
-Google transit durations can include walking links, buses, subways, trains, and
-transfers. A traffic-aware driving estimate is used only when a transit pair is
-unavailable and does not include rideshare pickup, parking, or drop-off time.
-Cafe search uses Nearby Search (New). Cafe search requests rating, review count, price and
-regular opening hours; requested fields affect billing.
-
-Meeting-time opening is estimated from structured regular weekly hours in
-`America/New_York`, including overnight hours and week wrap. Missing/incomplete
-hours remain unknown. Holidays and last-minute changes are not verified, so
-regular-hours recommendations remain provisional; check with the venue.
-Explicit ISO offsets are converted to NYC; offset-free times mean NYC local time
-and ambiguous/nonexistent DST times need an explicit offset. `tzdata` provides
-NYC timezone rules on Windows as well as Linux. Preserve provider
-links/attributions and opening estimate notes in result cards.
+| Team member | Columbia UNI | Project 2 focus |
+| --- | --- | --- |
+| Ruochen Feng | `rf2960` | Lead, Writer, parallel runner, MTA expansion, integration |
+| Andrew Chen | `yc4745` | Transit Researcher, commute limits, exact-address verification |
+| Wenyu Duan (Yulia) | `wd2422` | Cafe Researcher, opening evidence, research result UI |
