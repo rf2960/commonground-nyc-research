@@ -13,6 +13,11 @@ Multi-agent orchestration is the core Project 2 scope, within the boundaries bel
 - Read `docs/EVIDENCE_CONTRACTS.md` before changing agent messages, tool arguments,
   result shapes, candidate IDs, source records, or gap records.
 - Read `docs/ARCHITECTURE.md` before changing orchestration or follow-up policy.
+- Read `docs/AI_HANDOFF.md` and the matching owner section in `docs/TEAM_PLAN.md`
+  before starting a teammate-owned task. Stay inside that first-PR boundary unless the
+  task explicitly expands it.
+- Use `docs/ASSIGNMENT_COMPLIANCE.md` when changing README, eval, deployment, or
+  submission artifacts; do not mark a future requirement complete without evidence.
 - The first MVP has five instances across three role shapes: one Lead, three parallel
   Researchers in fresh contexts, and one Writer. It allows one initial research round
   plus at most one targeted follow-up round.
@@ -29,6 +34,9 @@ Multi-agent orchestration is the core Project 2 scope, within the boundaries bel
   case. The first implementation test must cover initial failure, justified follow-up,
   and new second-round evidence with fixed data.
 - Run `uv run pytest` before opening a pull request.
+- In every handoff, report changed files, tests run, contract assumptions, unresolved
+  questions, and any evidence gaps. Never claim a live-provider or model result from a
+  fixture-only test.
 - Do not add reservations, payments, user accounts, or an unbounded autonomous loop.
   Retrieval is limited to the three documented Project 2 sources unless the plan and
   evidence contract are updated first.

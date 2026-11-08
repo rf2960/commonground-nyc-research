@@ -26,7 +26,9 @@ begin in the next milestone.
 | [Architecture](docs/ARCHITECTURE.md) | Five-agent flow, follow-up policy, and Project 1 reuse |
 | [Evidence contracts](docs/EVIDENCE_CONTRACTS.md) | Shared IDs, requests, facts, sources, gaps, and `/chat` trace shape |
 | [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
+| [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
+| [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
 
 ## Deep Research design
 
@@ -106,12 +108,11 @@ Each teammate owns one example end to end. The complete expected claims, evidenc
 sources, agent-output capture, and no-tools/no-system-prompt baseline format are in
 [docs/EVALUATION_PLAN.md](docs/EVALUATION_PLAN.md).
 
-1. **Ruochen — expansion succeeds:** initial areas fail, an MTA-backed expansion area
-   yields a cafe satisfying all hard constraints.
-2. **Andrew — exact-address transit fails:** an apparently viable area-center result
-   fails one traveler's limit when Routes is rerun to the selected cafe address.
-3. **Yulia — evidence remains insufficient:** Places returns a cafe but its meeting-time
-   hours are missing, so the agent reports uncertainty instead of claiming it is open.
+| Owner | Grader query | Expected supported answer | Required sources |
+| --- | --- | --- | --- |
+| Ruochen | “Our initial CommonGround areas have no feasible cafe for October 10, 2026 at 2:00 PM Eastern Time. Expand to a few additional MTA stations without changing our commute, rating, price, or opening constraints. Did expansion find a feasible option, and what new evidence changed the answer?” | Name why initial candidates failed, justify the bounded expansion, and recommend an expansion cafe only if exact-address routes and cafe evidence pass all hard constraints. | MTA station record, Google Places cafe record, Google Routes exact-destination result |
+| Andrew | “The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?” | Request the dependency-aware exact-address route check; report actual versus limit for any failing traveler and do not treat a center ETA as cafe ETA. | Google Routes center and exact-cafe requests, Google Places address, clarified traveler limits |
+| Wenyu/Yulia | “This cafe has a good rating and acceptable commutes, but can you prove it will be open at our meeting time?” | If regular hours are missing, return `EVIDENCE_INSUFFICIENT`, identify the missing field, and recommend venue verification rather than claiming open/closed. | Google Places record/request, MissingEvidence record, exact-cafe Routes result |
 
 The final README will include the recorded agent answer and same-model baseline for
 each example after the fixed-fixture slice exists.
@@ -134,8 +135,8 @@ unambiguous arrival time.
 
 ## Team
 
-| Team member | Columbia UNI | Project 2 focus |
-| --- | --- | --- |
-| Ruochen Feng | `rf2960` | Lead, Writer, parallel runner, MTA expansion, integration |
-| Andrew Chen | `yc4745` | Transit Researcher, commute limits, exact-address verification |
-| Wenyu Duan (Yulia) | `wd2422` | Cafe Researcher, opening evidence, research result UI |
+| Team member | Columbia UNI | GitHub | Project 2 focus |
+| --- | --- | --- | --- |
+| Ruochen Feng | `rf2960` | `rf2960` | Lead, Writer, parallel runner, MTA expansion, integration |
+| Andrew Chen | `yc4745` | `achen711` | Transit Researcher, commute limits, exact-address verification |
+| Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | Cafe Researcher, opening evidence, research result UI |

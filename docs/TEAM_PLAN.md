@@ -7,6 +7,12 @@ primary module set and its tests. Changes to shared models, `/chat`, or trace or
 are reviewed by the owners whose modules consume them. This lets work begin in parallel
 without copying provider code or editing the same core files.
 
+| Owner | Columbia UNI | GitHub | Suggested first branch |
+| --- | --- | --- | --- |
+| Ruochen Feng | `rf2960` | `rf2960` | `ruochen/orchestration-schemas` |
+| Andrew Chen | `yc4745` | `achen711` | `andrew/transit-researcher` |
+| Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | `yulia/cafe-researcher` |
+
 ## Ruochen — orchestration, expansion, Writer, integration
 
 ### Primary modules
