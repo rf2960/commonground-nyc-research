@@ -1,0 +1,180 @@
+[
+  {
+    "task_id": "task:session-123:r2:cafe:1",
+    "agent": "cafe_researcher",
+    "round": 2,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:cafe:r2:001",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "parent_candidate_id",
+        "value": "area:mta:fixture-queensboro-plaza",
+        "unit": null,
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:002",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "name",
+        "value": "Fixture Commons Cafe",
+        "unit": null,
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:003",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "address",
+        "value": "Fixture address near Queensboro Plaza",
+        "unit": null,
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"fixture": true},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:004",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "coordinates",
+        "value": {"lat": 40.751, "lng": -73.9398},
+        "unit": "WGS84",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"fixture": true},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:005",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "rating",
+        "value": 4.5,
+        "unit": "stars",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:006",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "price_level",
+        "value": 2,
+        "unit": "google_price_level",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:007",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r2:008",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "cafe:gplaces:fixture-expansion-cafe",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"meeting_time": "2026-10-10T14:00:00-04:00", "basis": "regular_schedule"},
+        "source_ids": ["source:google-places:fixture-r2"],
+        "provisional": true
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-places:fixture-r2",
+        "provider": "google_places",
+        "title": "Fixture Places API expansion-area response",
+        "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+        "accessed_at": "2026-10-01T16:10:00Z",
+        "request_summary": {"fixture": true, "parent_candidate_id": "area:mta:fixture-queensboro-plaza", "meeting_time": "2026-10-10T14:00:00-04:00"},
+        "provider_record_ids": ["fixture-expansion-cafe"],
+        "attribution": "Synthetic fixture shaped like Google Places output"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["area:mta:fixture-queensboro-plaza"],
+    "summary": "The expansion search returns one cafe that passes known cafe constraints with provisional regular-hours evidence."
+  },
+  {
+    "task_id": "task:session-123:r2:transit:1",
+    "agent": "transit_researcher",
+    "round": 2,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:transit:r2:001",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 30,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:11:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:002",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 28,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:11:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:fixture-r2"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:003",
+        "candidate_id": "cafe:gplaces:fixture-expansion-cafe",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 35,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:11:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:fixture-r2"],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:fixture-r2",
+        "provider": "google_routes",
+        "title": "Fixture Routes API exact-cafe matrix",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-10-01T16:11:00Z",
+        "request_summary": {"fixture": true, "origin_count": 3, "destination_count": 1, "destination_kind": "exact_cafe", "arrival_time": "2026-10-10T14:00:00-04:00"},
+        "provider_record_ids": [],
+        "attribution": "Synthetic fixture shaped like Google Routes output"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["cafe:gplaces:fixture-expansion-cafe"],
+    "summary": "Exact-cafe durations are present and within every fixture traveler's hard limit."
+  }
+]

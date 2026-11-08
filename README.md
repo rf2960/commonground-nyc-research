@@ -14,11 +14,11 @@ This repository preserves the complete Project 1 history and starts from
 
 ## Project 2 status
 
-The repository-preparation milestone is complete: the research question, staged plan,
-team ownership, agent boundaries, evidence contract, and evaluation plan are agreed in
-the documents below. The inherited Project 1 application still runs, but the
-multi-agent business implementation and Project 2 Cloud Run deployment intentionally
-begin in the next milestone.
+The repository-preparation milestone is complete. The first implementation checkpoint
+is also complete: strict shared contract models and a deterministic two-round fixture
+now prove the intended evidence flow without network calls. The inherited Project 1 app
+still runs; the parallel runner, provider adapters, Writer, Project 2 UI, eval suite,
+and Cloud Run deployment remain later checkpoints.
 
 | Document | Purpose |
 | --- | --- |
@@ -29,6 +29,17 @@ begin in the next milestone.
 | [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
+
+### Implemented in the current checkpoint
+
+- `commonground/research/models.py` validates stable IDs, explicit time zones,
+  per-traveler limits, agent/round identity, cited facts, explicit gaps, bounded
+  follow-up, feasibility states, and credential-free source metadata.
+- `tests/research/fixtures/` contains clearly labeled synthetic evidence for initial
+  failure, a justified MTA-backed follow-up, and decisive round-2 cafe/exact-route data.
+- `tests/research/test_models.py` checks contract round trips, invalid/ambiguous input,
+  source integrity, secret rejection, the one-follow-up bound, and the complete fixture
+  story. These are fixture claims only, not live provider results.
 
 ## Deep Research design
 

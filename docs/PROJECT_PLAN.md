@@ -61,6 +61,19 @@ editing one another's primary files.
 **Gate:** an integration test proves initial failure → justified follow-up → new evidence
 → supported final diagnosis, without network calls.
 
+**Current checkpoint (2026-11-08):**
+
+- [x] Strict shared contract models and stable-ID validation.
+- [x] Synthetic round-1 failure, FollowUpDecision, round-2 evidence, and expected outcome.
+- [x] Contract and fixture-story tests, including citation and secret-safety checks.
+- [ ] Deterministic feasibility evaluator that computes the expected outcome.
+- [ ] Fresh-context concurrent Researcher runner.
+- [ ] Lead execution and Writer handoff over the fixture bundle.
+- [ ] `/chat` trace integration with `agent` and `round`.
+
+The current tests prove the data story and boundaries; they do not yet prove agent
+parallelism or an executed Lead/Writer loop.
+
 ### Phase 2 — real data adapters
 
 - Load and normalize MTA station data with provenance and a reproducible refresh path.

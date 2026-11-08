@@ -4,6 +4,16 @@ These shapes are the shared boundary between Lead, the three Researchers, determ
 evaluation, Writer, `/chat`, and the UI. Examples use JSON-compatible values even if the
 implementation uses Pydantic models or dataclasses.
 
+Contract version `research-contract-v1` is implemented in
+`commonground/research/models.py`. Canonical synthetic examples live in
+`tests/research/fixtures/`; they are test evidence and must never be presented as live
+MTA, Google Routes, or Google Places results.
+
+The implementation additionally enforces three cross-record safety rules implied by
+this document: `research_id` and `task_id` must refer to the same session, every Fact's
+source must be present in its ResearchResult, and Source URLs/request summaries must not
+contain credential fields.
+
 ## Stable identifiers
 
 - Traveler: `traveler:<lead-assigned-slug>`; stable for the session.

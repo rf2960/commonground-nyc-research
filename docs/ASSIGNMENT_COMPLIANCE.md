@@ -10,8 +10,8 @@ or deployment link.
 | --- | --- | --- |
 | Use data the model does not already know deeply | Planned | Routes, Places, and MTA station records; add captured source provenance |
 | Access data through tools/API/files/search | Project 1 baseline + planned extension | Existing provider modules; add research adapters and MTA loader |
-| Combine evidence into a supported claim | Planned | Evidence contract and deterministic feasibility result; add vertical-slice test |
-| State when data cannot answer | Planned | `EVIDENCE_INSUFFICIENT` and MissingEvidence; add Writer test |
+| Combine evidence into a supported claim | Contract checkpoint complete; runtime planned | Two-round fixture and expected feasibility validate; implement evaluator/Lead execution |
+| State when data cannot answer | Contract checkpoint complete; Writer planned | `EVIDENCE_INSUFFICIENT` and MissingEvidence are validated; add Writer behavior test |
 | Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
 | Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
 | Deploy to Google Cloud Run | Project 1 baseline only | Create Project 2 deployment and replace `submission.json` URL |
@@ -23,9 +23,9 @@ or deployment link.
 | At least three agent shapes with different jobs | Designed | Lead, Researcher, Writer in `ARCHITECTURE.md` |
 | Lead fans out several Researchers in one turn | Designed | Three initial Researchers; add concurrency test |
 | Researchers run in parallel in fresh contexts | Designed | Runner contract; add context-isolation test |
-| Lead loops back for more on a gap | Designed | One bounded FollowUpDecision; add two-round fixture test |
-| Vague questions require clarification | Designed | ResearchBrief validation; add clarification tests |
-| Output is accurately cited | Designed | Fact/source IDs and Writer rules; add citation validator tests |
+| Lead loops back for more on a gap | Fixture contract tested; runtime planned | One bounded FollowUpDecision and two-round fixture; implement Lead execution |
+| Vague questions require clarification | Input contract tested; conversation planned | Brief rejects missing timezone/invalid limits/duplicate IDs; implement Lead clarification |
+| Output is accurately cited | Structural validation complete; Writer planned | Facts cannot reference absent sources; implement Writer citation validator |
 
 ## Evaluation requirements
 
@@ -62,7 +62,9 @@ or deployment link.
 
 ## Final pre-submission blockers
 
-- Project 2 multi-agent code is not implemented yet.
+- Shared Project 2 contract models and fixed evidence fixtures are implemented; the
+  multi-agent runner, Lead, Writer, provider adapters, and deterministic evaluator are
+  not implemented yet.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
   outputs do not exist yet.
