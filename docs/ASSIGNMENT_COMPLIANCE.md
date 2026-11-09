@@ -8,8 +8,8 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| Use data the model does not already know deeply | Planned | Routes, Places, and MTA station records; add captured source provenance |
-| Access data through tools/API/files/search | Project 1 baseline + planned extension | Existing provider modules; add research adapters and MTA loader |
+| Use data the model does not already know deeply | MTA adapter complete; Routes/Places pending | MTA records carry station-level provenance; add recorded teammate-provider evidence |
+| Access data through tools/API/files/search | MTA + Project 1 baseline | Bounded Socrata loader plus existing provider modules; add Routes/Places research adapters |
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
 | Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
@@ -43,7 +43,7 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
-| Explain data origin and how it is loaded | Designed | README sources; add exact endpoints/cache/refresh after adapters |
+| Explain data origin and how it is loaded | MTA complete; Google adapters pending | `DATA_SOURCES.md` records endpoint, fields, bounds, provenance, and startup-cache plan |
 | Three sample queries with expected answers and source | Designed | Owner cases in `EVALUATION_PLAN.md`; capture actual outputs later |
 | Same-model answer with no tools and no system prompt | Planned | Capture per owner after runnable build exists |
 
@@ -55,7 +55,7 @@ or deployment link.
 | Root `README.md` and valid `submission.json` | Complete for planning | `path` is `research`; replace inherited deploy URL before submission |
 | `submission.json` contains every UNI | Complete | `rf2960`, `wd2422`, `yc4745` |
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
-| At least one data source per team member | Designed | Ruochen/MTA, Andrew/Routes, Wenyu/Places |
+| At least one data source per team member | Ruochen complete; teammates planned | MTA adapter/tests exist; Andrew owns Routes and Wenyu owns Places adapters |
 | Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
 | Request may take up to 5 minutes; cap max turns | Runner bound complete; deployment planned | Runner enforces 1–12 turns and a positive per-task timeout; configure/test Cloud Run request limit later |
 | Keep service live until grades released | Planned | Operational checklist for final deployment |

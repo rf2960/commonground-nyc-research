@@ -91,6 +91,11 @@ or the live provider adapters.
 **Gate:** recorded-provider tests pass; partial failures are explicit and API secrets
 never enter prompts, traces, or git.
 
+**Current adapter checkpoint:** MTA field parsing, bounded fetch, stable station IDs,
+near-duplicate removal, three-candidate selection, provenance, and fixture tests are
+implemented. Routes and Places Researcher adapters remain teammate work; the live MTA
+startup cache and one opt-in smoke test remain integration work.
+
 ### Phase 3 — Writer, citations, and UI
 
 - Generate a concise comparison, recommendation, blocker diagnosis, and unknown list.

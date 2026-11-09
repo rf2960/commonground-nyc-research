@@ -67,6 +67,13 @@ without copying provider code or editing the same core files.
 Create `research/models.py` plus the round-1/round-2 fixture bundle and contract tests.
 This unblocks Andrew and Yulia without requiring the runner to exist yet.
 
+### Current implementation status
+
+Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, cited
+Writer, and the MTA expansion adapter are implemented on Ruochen's stacked branches.
+Remaining Ruochen work is `/chat`/trace integration, the end-to-end application slice,
+the owner grading example/baseline, and shared deployment/eval coordination.
+
 ## Andrew — Transit Researcher and commute limits
 
 ### Primary modules

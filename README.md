@@ -26,6 +26,7 @@ suite, and Cloud Run deployment remain later checkpoints.
 | [Project plan](docs/PROJECT_PLAN.md) | Scope, phases, risks, and definition of done |
 | [Architecture](docs/ARCHITECTURE.md) | Five-agent flow, follow-up policy, and Project 1 reuse |
 | [Evidence contracts](docs/EVIDENCE_CONTRACTS.md) | Shared IDs, requests, facts, sources, gaps, and `/chat` trace shape |
+| [Data sources](docs/DATA_SOURCES.md) | Endpoints, consumed fields, provenance, fixture/live boundary, and loading plan |
 | [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
 | [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
@@ -65,6 +66,12 @@ suite, and Cloud Run deployment remain later checkpoints.
   visible claim carries auditable IDs and provisional future hours remain qualified.
 - `tests/research/test_writer.py` rejects uncited or unknown references and proves both
   the feasible recommendation and insufficient-evidence output paths.
+- `commonground/research/expansion.py` loads the official MTA Socrata schema through a
+  bounded adapter, removes invalid/duplicate/initial-nearby stations, selects at most
+  three diverse candidates, and emits cited station facts.
+- `tests/research/test_expansion.py` verifies current field normalization, stable IDs,
+  bounded deterministic selection, provenance, timeouts/errors, and timestamp safety
+  without making live network calls.
 
 ## Deep Research design
 

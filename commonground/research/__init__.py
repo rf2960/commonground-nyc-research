@@ -17,12 +17,22 @@ from .models import (
     Traveler,
 )
 from .feasibility import RULE_VERSION, evaluate_all_cafes, evaluate_cafe_feasibility
+from .expansion import (
+    DATASET_ID,
+    MTADataError,
+    MTAStation,
+    build_expansion_result,
+    fetch_mta_stations,
+    parse_mta_stations,
+    select_expansion_stations,
+)
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
 
 __all__ = [
     "CONTRACT_VERSION",
+    "DATASET_ID",
     "CafeConstraints",
     "CitedClaim",
     "Candidate",
@@ -34,6 +44,8 @@ __all__ = [
     "EvidenceWriter",
     "LeadOrchestrator",
     "LeadRun",
+    "MTADataError",
+    "MTAStation",
     "MAX_FOLLOW_UP_TARGETS",
     "MissingEvidence",
     "ResearchBrief",
@@ -46,7 +58,11 @@ __all__ = [
     "Source",
     "Traveler",
     "WriterReport",
+    "build_expansion_result",
     "evaluate_all_cafes",
     "evaluate_cafe_feasibility",
+    "fetch_mta_stations",
+    "parse_mta_stations",
+    "select_expansion_stations",
     "validate_writer_report",
 ]
