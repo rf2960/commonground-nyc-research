@@ -29,6 +29,13 @@ they must use the ID assigned by Lead or the provider-derived cafe/station ID.
 
 ## Research brief
 
+Before this record exists, `ResearchIntake` may hold partial user input. Its gap checker
+must return actionable clarification records and must not dispatch tools. The sole brief
+builder requires a timezone-aware meeting time, at least two unique travelers with
+origins and individual limits, a one-to-one join to resolved Project 1 locations, and
+at least one stable initial candidate. Natural-language extraction may populate the
+intake later, but it cannot bypass these deterministic checks.
+
 Lead creates one immutable brief after clarification:
 
 ```json

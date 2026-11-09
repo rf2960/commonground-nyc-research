@@ -97,6 +97,12 @@ ordered round-2 tasks, deterministic feasibility, then Writer.
 Until live adapters are wired, research mode explicitly says it is unavailable. Fixture
 evidence may appear only in tests and must never be presented as a live API result.
 
+Before a complete brief exists, clients may send `research_intake` instead. The partial
+shape contains `meeting_time`, traveler IDs/origins/individual limits, and optional cafe
+constraints. `/chat` returns a targeted clarification and performs no research. After
+Project 1 resolves every origin and generates initial areas, Ruochen's dispatcher calls
+`build_research_brief`; adapters must not construct briefs independently.
+
 ## Pull-request handoff checklist
 
 - Changed files stay inside the documented owner boundary.

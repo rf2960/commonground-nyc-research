@@ -54,6 +54,11 @@ status and uses the returned blockers to plan a follow-up.
 creates the three initial tasks, emits at most one `FollowUpDecision`, and does not
 create an exact-cafe Transit task until the selected Cafe result supplies coordinates.
 
+`commonground/research/intake.py` owns the pre-research gate. A partial intake identifies
+the exact missing origins, per-person limits, or timezone-aware arrival time. Only a
+complete intake joined to Project 1 resolver and candidate-generator outputs can create
+the immutable `ResearchBrief`; Researchers never receive unresolved user text.
+
 ## Researcher responsibilities
 
 ### Transit Researcher

@@ -81,6 +81,12 @@ suite, and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_service.py` proves the full nine-entry fixture trace and the
   unchanged `/chat` response keys, session identity, clarification, and safe unconfigured
   behavior.
+- `commonground/research/intake.py` records partial user inputs, produces specific
+  clarification gaps, and is the only constructor joining clarified limits/time to
+  authoritative Project 1 location and candidate outputs.
+- `tests/research/test_intake.py` covers missing/naive time, per-traveler origin and
+  limit gaps, duplicate identities, unresolved joins, stable candidate IDs, and `/chat`
+  clarification without starting research prematurely.
 
 ## Deep Research design
 

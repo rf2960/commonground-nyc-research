@@ -15,7 +15,12 @@ from commonground.recommendations import (
     build_recommendation_plans,
     infer_preferred_objective,
 )
-from commonground.research import DeepResearchService, ResearchBrief
+from commonground.research import (
+    DeepResearchService,
+    ResearchBrief,
+    ResearchIntake,
+    clarification_message,
+)
 from tools import TOOLS, run_tool
 
 
@@ -195,6 +200,7 @@ class ChatRequest(BaseModel):
     session_id: str | None = Field(default=None, max_length=128)
     mode: Literal["chat", "research"] = "chat"
     research_brief: ResearchBrief | None = None
+    research_intake: ResearchIntake | None = None
 
 
 class ChatResponse(BaseModel):
@@ -237,10 +243,8 @@ def chat(request: ChatRequest):
 
     if request.mode == "research":
         if request.research_brief is None:
-            response = (
-                "Before research can start, provide resolved origins, an arrival date "
-                "and time with timezone, each traveler's commute limit, active cafe "
-                "constraints, and the initial candidate areas."
+            response = clarification_message(
+                request.research_intake or ResearchIntake()
             )
             tool_calls = []
         elif request.research_brief.session_id != session_id:

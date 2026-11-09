@@ -76,6 +76,8 @@ editing one another's primary files.
   provisional-hours qualification, and unsupported-citation rejection.
 - [x] Fixed-data `/chat` service/trace integration with preserved response keys and
   `agent`/`round` metadata; live adapter injection remains Phase 2 integration.
+- [x] Deterministic partial-intake clarification and immutable ResearchBrief construction
+  from Project 1 resolver/candidate outputs; natural-language extraction remains later.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up

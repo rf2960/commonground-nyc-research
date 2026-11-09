@@ -111,9 +111,8 @@ def test_research_mode_clarifies_missing_brief_before_any_tool_call():
     )
 
     assert response.tool_calls == []
-    assert "resolved origins" in response.response
-    assert "commute limit" in response.response
-    assert "timezone" in response.response
+    assert "at least two travelers" in response.response
+    assert "meeting arrival date and time" in response.response
 
 
 def test_unconfigured_live_research_never_claims_fixture_or_provider_results(monkeypatch):

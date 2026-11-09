@@ -27,6 +27,14 @@ from .expansion import (
     select_expansion_stations,
 )
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
+from .intake import (
+    IntakeGap,
+    ResearchIntake,
+    TravelerIntake,
+    build_research_brief,
+    clarification_message,
+    find_intake_gaps,
+)
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
@@ -44,6 +52,7 @@ __all__ = [
     "FeasibilityReason",
     "FeasibilityResult",
     "FollowUpDecision",
+    "IntakeGap",
     "EvidenceWriter",
     "LeadOrchestrator",
     "LeadRun",
@@ -52,6 +61,7 @@ __all__ = [
     "MAX_FOLLOW_UP_TARGETS",
     "MissingEvidence",
     "ResearchBrief",
+    "ResearchIntake",
     "ResearchResult",
     "ResearchTask",
     "RULE_VERSION",
@@ -60,12 +70,16 @@ __all__ = [
     "ResearchRunner",
     "Source",
     "Traveler",
+    "TravelerIntake",
     "WriterReport",
     "build_expansion_result",
+    "build_research_brief",
     "build_research_trace",
     "evaluate_all_cafes",
     "evaluate_cafe_feasibility",
     "fetch_mta_stations",
+    "clarification_message",
+    "find_intake_gaps",
     "parse_mta_stations",
     "select_expansion_stations",
     "validate_writer_report",
