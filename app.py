@@ -3,6 +3,7 @@ import os
 import time
 import uuid
 from pathlib import Path
+from typing import Literal
 
 import litellm
 import uvicorn
@@ -14,6 +15,7 @@ from commonground.recommendations import (
     build_recommendation_plans,
     infer_preferred_objective,
 )
+from commonground.research import DeepResearchService, ResearchBrief
 from tools import TOOLS, run_tool
 
 
@@ -191,12 +193,20 @@ def make_session_room() -> None:
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     session_id: str | None = Field(default=None, max_length=128)
+    mode: Literal["chat", "research"] = "chat"
+    research_brief: ResearchBrief | None = None
 
 
 class ChatResponse(BaseModel):
     response: str
     session_id: str
     tool_calls: list[dict]
+
+
+# Live Project 2 provider adapters are injected during deployment integration. Keeping
+# this unset preserves Project 1 behavior and prevents fixture evidence from being
+# presented as a live provider result.
+research_service: DeepResearchService | None = None
 
 
 @app.get("/")
@@ -214,13 +224,52 @@ def health():
 def chat(request: ChatRequest):
     now = time.monotonic()
     prune_sessions(now)
-    session_id = request.session_id or str(uuid.uuid4())
+    if request.mode == "research" and request.research_brief is not None:
+        session_id = request.session_id or request.research_brief.session_id
+    else:
+        session_id = request.session_id or str(uuid.uuid4())
     if session_id not in sessions:
         make_session_room()
         sessions[session_id] = [{"role": "system", "content": SYSTEM_PROMPT}]
     session_last_seen[session_id] = now
 
     sessions[session_id].append({"role": "user", "content": request.message})
+
+    if request.mode == "research":
+        if request.research_brief is None:
+            response = (
+                "Before research can start, provide resolved origins, an arrival date "
+                "and time with timezone, each traveler's commute limit, active cafe "
+                "constraints, and the initial candidate areas."
+            )
+            tool_calls = []
+        elif request.research_brief.session_id != session_id:
+            response = (
+                "The research brief session_id must match the requested chat session."
+            )
+            tool_calls = []
+        elif research_service is None:
+            response = (
+                "Deep Research is not connected to live Routes and Places adapters "
+                "yet. The fixed-data integration is available in tests; no live "
+                "provider result was claimed."
+            )
+            tool_calls = []
+        else:
+            try:
+                output = research_service.run_sync(request.research_brief)
+            except Exception as error:
+                response = f"Deep Research failed safely: {type(error).__name__}"
+                tool_calls = []
+            else:
+                response = output.response
+                tool_calls = list(output.tool_calls)
+        sessions[session_id].append({"role": "assistant", "content": response})
+        return ChatResponse(
+            response=response,
+            session_id=session_id,
+            tool_calls=tool_calls,
+        )
 
     try:
         response, tool_calls = run_agent(sessions[session_id])

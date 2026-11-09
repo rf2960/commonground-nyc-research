@@ -71,8 +71,9 @@ This unblocks Andrew and Yulia without requiring the runner to exist yet.
 
 Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, cited
 Writer, and the MTA expansion adapter are implemented on Ruochen's stacked branches.
-Remaining Ruochen work is `/chat`/trace integration, the end-to-end application slice,
-the owner grading example/baseline, and shared deployment/eval coordination.
+Fixed-data `/chat`/trace integration is also complete. Remaining Ruochen work is live
+adapter dispatch/integration, natural-language brief intake and clarification, the owner
+grading example/baseline, and shared deployment/eval coordination.
 
 ## Andrew — Transit Researcher and commute limits
 

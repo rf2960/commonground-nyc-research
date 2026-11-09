@@ -177,3 +177,13 @@ tests/research/
 - Agent turns: hard maximum in the runner; Cloud Run request timeout kept below the
   course's five-minute grading allowance.
 - Secrets: server environment only; never placed in prompts, tool results, or traces.
+
+## Application integration
+
+`commonground/research/service.py` is the only application-facing composition layer. It
+returns Writer text plus an ordered trace with legacy `name`, `args`, and string `result`
+fields and Project 2 `agent`/`round` metadata. Root `app.py` preserves Project 1 as the
+default mode and exposes structured research mode only through this injectable service.
+The global service stays unset until real Routes and Places adapters are present, so
+fixture evidence cannot be mistaken for a live response. See `INTEGRATION_GUIDE.md` for
+the teammate adapter callable and deployment dispatcher.

@@ -74,12 +74,13 @@ editing one another's primary files.
   exact-address Transit follow-up and deterministic feasibility handoff.
 - [x] Evidence-only Writer handoff with inline fact/source/missing/derived references,
   provisional-hours qualification, and unsupported-citation rejection.
-- [ ] `/chat` trace integration with `agent` and `round`.
+- [x] Fixed-data `/chat` service/trace integration with preserved response keys and
+  `agent`/`round` metadata; live adapter injection remains Phase 2 integration.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
-loop, and citation-audited Writer output. They do not yet prove `/chat` trace integration
-or the live provider adapters.
+loop, citation-audited Writer output, and compatible `/chat` trace integration. They do
+not yet prove the live Routes/Places provider adapters or natural-language brief intake.
 
 ### Phase 2 — real data adapters
 

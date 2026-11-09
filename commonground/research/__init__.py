@@ -28,11 +28,14 @@ from .expansion import (
 )
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
+from .service import DeepResearchOutput, DeepResearchService, build_research_trace
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
 
 __all__ = [
     "CONTRACT_VERSION",
     "DATASET_ID",
+    "DeepResearchOutput",
+    "DeepResearchService",
     "CafeConstraints",
     "CitedClaim",
     "Candidate",
@@ -59,6 +62,7 @@ __all__ = [
     "Traveler",
     "WriterReport",
     "build_expansion_result",
+    "build_research_trace",
     "evaluate_all_cafes",
     "evaluate_cafe_feasibility",
     "fetch_mta_stations",

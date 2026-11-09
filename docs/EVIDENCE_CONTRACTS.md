@@ -251,6 +251,8 @@ The top-level response stays:
 Legacy Project 1 calls may omit `agent`/`round` only during migration. All Project 2
 sub-agent calls require them. Ordering is deterministic: Lead preparation, round 1 tasks
 sorted by agent, follow-up decision, round 2 tasks, deterministic evaluation, Writer.
+`build_research_trace` implements this order; every entry retains `name`, `args`, and a
+string `result`, and adds `agent` plus integer `round`.
 
 ## Writer citation rules
 

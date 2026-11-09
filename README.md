@@ -29,6 +29,7 @@ suite, and Cloud Run deployment remain later checkpoints.
 | [Data sources](docs/DATA_SOURCES.md) | Endpoints, consumed fields, provenance, fixture/live boundary, and loading plan |
 | [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
 | [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
+| [Integration guide](docs/INTEGRATION_GUIDE.md) | Adapter callable, dispatcher, `/chat` boundary, and teammate merge checklist |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
 
@@ -72,6 +73,14 @@ suite, and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_expansion.py` verifies current field normalization, stable IDs,
   bounded deterministic selection, provenance, timeouts/errors, and timestamp safety
   without making live network calls.
+- `commonground/research/service.py` joins Lead, deterministic evaluation, and Writer,
+  then emits the ordered Project 2 trace while preserving legacy tool-call fields.
+- Root `app.py` now accepts an optional structured `research` mode without changing the
+  default Project 1 route. It clarifies a missing brief and refuses to claim fixture or
+  live results until real Routes/Places adapters are injected.
+- `tests/research/test_service.py` proves the full nine-entry fixture trace and the
+  unchanged `/chat` response keys, session identity, clarification, and safe unconfigured
+  behavior.
 
 ## Deep Research design
 

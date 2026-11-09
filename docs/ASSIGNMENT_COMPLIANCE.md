@@ -12,7 +12,7 @@ or deployment link.
 | Access data through tools/API/files/search | MTA + Project 1 baseline | Bounded Socrata loader plus existing provider modules; add Routes/Places research adapters |
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
-| Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
+| Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
 | Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
 | Deploy to Google Cloud Run | Project 1 baseline only | Create Project 2 deployment and replace `submission.json` URL |
 
@@ -64,7 +64,8 @@ or deployment link.
 
 - Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
   concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
-  Writer are implemented; provider adapters and `/chat` integration are not yet done.
+  Writer and fixed-data `/chat` trace are implemented; Routes/Places adapters and live
+  service injection are not yet done.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
   outputs do not exist yet.
