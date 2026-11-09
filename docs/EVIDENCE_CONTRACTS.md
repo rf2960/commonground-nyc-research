@@ -172,11 +172,14 @@ include the place ID and Google Maps URL when available.
 ```
 
 Common reason codes are `PROVIDER_FIELD_MISSING`, `ROUTE_UNAVAILABLE`,
-`PROVIDER_ERROR`, `DEPENDENCY_NOT_READY`, `STALE_EVIDENCE`, and `VALIDATION_ERROR`.
+`PROVIDER_ERROR`, `DEPENDENCY_NOT_READY`, `STALE_EVIDENCE`, `VALIDATION_ERROR`,
+`AGENT_EXECUTION_ERROR`, and `TIMEOUT`.
 Missing IDs use `missing:<agent>:r<round>:<sequence>`. `subject_id` identifies the
 affected traveler when a field such as an exact route is missing for only one person.
 Feasibility reasons cite `input_missing_ids`; Writer can therefore resolve each unknown
 to its provider reason and next action instead of citing an absence indirectly.
+Runner-level failures use a fixed, credential-free detail string rather than copying
+an arbitrary SDK/provider exception into the evidence trace.
 
 ## Follow-up decision
 

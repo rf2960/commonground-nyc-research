@@ -17,6 +17,7 @@ from .models import (
     Traveler,
 )
 from .feasibility import RULE_VERSION, evaluate_all_cafes, evaluate_cafe_feasibility
+from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 
 __all__ = [
     "CONTRACT_VERSION",
@@ -32,6 +33,9 @@ __all__ = [
     "ResearchResult",
     "ResearchTask",
     "RULE_VERSION",
+    "ROLE_TOOL_ALLOWLISTS",
+    "ResearchContext",
+    "ResearchRunner",
     "Source",
     "Traveler",
     "evaluate_all_cafes",

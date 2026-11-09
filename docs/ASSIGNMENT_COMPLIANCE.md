@@ -21,8 +21,8 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | At least three agent shapes with different jobs | Designed | Lead, Researcher, Writer in `ARCHITECTURE.md` |
-| Lead fans out several Researchers in one turn | Designed | Three initial Researchers; add concurrency test |
-| Researchers run in parallel in fresh contexts | Designed | Runner contract; add context-isolation test |
+| Lead fans out several Researchers in one turn | Runner complete; Lead integration planned | `ResearchRunner.run_initial_round` requires all three roles and its concurrency test observes three active tasks |
+| Researchers run in parallel in fresh contexts | Complete at runner boundary | `test_runner.py` proves overlap, distinct contexts/message lists, role tool scopes, and deterministic output ordering |
 | Lead loops back for more on a gap | Fixture contract tested; runtime planned | One bounded FollowUpDecision and two-round fixture; implement Lead execution |
 | Vague questions require clarification | Input contract tested; conversation planned | Brief rejects missing timezone/invalid limits/duplicate IDs; implement Lead clarification |
 | Output is accurately cited | Structural validation complete; Writer planned | Facts cannot reference absent sources; implement Writer citation validator |
@@ -57,13 +57,13 @@ or deployment link.
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
 | At least one data source per team member | Designed | Ruochen/MTA, Andrew/Routes, Wenyu/Places |
 | Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
-| Request may take up to 5 minutes; cap max turns | Designed | Operational bounds; configure/test Cloud Run |
+| Request may take up to 5 minutes; cap max turns | Runner bound complete; deployment planned | Runner enforces 1–12 turns and a positive per-task timeout; configure/test Cloud Run request limit later |
 | Keep service live until grades released | Planned | Operational checklist for final deployment |
 
 ## Final pre-submission blockers
 
-- Shared Project 2 contracts, fixed evidence fixtures, and deterministic feasibility
-  evaluation are implemented; the multi-agent runner, Lead, Writer, and provider
+- Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, and
+  the concurrent isolated Researcher runner are implemented; Lead, Writer, and provider
   adapters are not implemented yet.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample

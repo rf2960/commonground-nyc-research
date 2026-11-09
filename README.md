@@ -15,9 +15,9 @@ This repository preserves the complete Project 1 history and starts from
 ## Project 2 status
 
 The repository-preparation milestone is complete. The first implementation checkpoint
-is also complete: strict shared contract models and a deterministic two-round fixture
-now prove the intended evidence flow without network calls. The inherited Project 1 app
-still runs; the parallel runner, provider adapters, Writer, Project 2 UI, eval suite,
+now includes strict shared contracts, a deterministic two-round fixture, the hard-
+constraint evaluator, and a bounded concurrent Researcher runner. The inherited Project
+1 app still runs; Lead/Writer execution, provider adapters, Project 2 UI, eval suite,
 and Cloud Run deployment remain later checkpoints.
 
 | Document | Purpose |
@@ -47,6 +47,13 @@ and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_feasibility.py` proves the fixed round-2 evidence produces the
   expected result and covers commute, cafe, conflict, unknown, boundary, and inactive-
   filter cases.
+- `commonground/research/runner.py` launches the three initial Researchers concurrently
+  with a fresh message list, role-scoped tool allowlist, per-task timeout, and hard turn
+  budget. A failed task becomes explicit missing evidence while successful siblings are
+  preserved; raw provider exceptions are not copied into traces.
+- `tests/research/test_runner.py` proves actual overlap, deterministic result ordering,
+  context isolation, tool-scope enforcement, timeout handling, partial failure, result
+  identity validation, and the exact three-role initial fan-out.
 
 ## Deep Research design
 

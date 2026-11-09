@@ -45,6 +45,8 @@ MissingReasonCode = Literal[
     "DEPENDENCY_NOT_READY",
     "STALE_EVIDENCE",
     "VALIDATION_ERROR",
+    "AGENT_EXECUTION_ERROR",
+    "TIMEOUT",
 ]
 FeasibilityStatus = Literal[
     "FEASIBLE",

@@ -29,6 +29,9 @@ compatible /chat response and visible trace
 Researchers may use one generic runner, but each invocation receives a new message list,
 one role prompt, one allowlisted tool set, the same immutable research brief, and a
 deadline. No Researcher sees another Researcher's chain-of-thought or mutable context.
+`commonground/research/runner.py` now enforces this boundary for the three initial tasks,
+including concurrent execution, deterministic output order, a hard turn budget, and
+explicit missing-evidence results for timeout, execution, or validation failure.
 
 ## Lead responsibilities
 
