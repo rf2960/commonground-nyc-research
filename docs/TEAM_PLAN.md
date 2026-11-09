@@ -10,7 +10,7 @@ without copying provider code or editing the same core files.
 | Owner | Columbia UNI | GitHub | Suggested first branch |
 | --- | --- | --- | --- |
 | Ruochen Feng | `rf2960` | `rf2960` | `ruochen/orchestration-schemas` |
-| Andrew Chen | `yc4745` | `achen711` | `andrew/transit-researcher` |
+| Andrew Chen | `yc4745` | `yc4745-jpg` | `andrew/transit-researcher` |
 | Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | `yulia/cafe-researcher` |
 
 ## Ruochen — orchestration, expansion, Writer, integration

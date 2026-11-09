@@ -50,6 +50,9 @@ Lead owns planning and control flow, not provider facts.
 
 The Lead does not claim that a cafe is feasible. It asks deterministic code for the
 status and uses the returned blockers to plan a follow-up.
+`commonground/research/lead.py` implements this bounded fixed-data control flow. It
+creates the three initial tasks, emits at most one `FollowUpDecision`, and does not
+create an exact-cafe Transit task until the selected Cafe result supplies coordinates.
 
 ## Researcher responsibilities
 

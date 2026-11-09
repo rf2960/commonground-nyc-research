@@ -70,12 +70,14 @@ editing one another's primary files.
   supported blocker without model arithmetic.
 - [x] Fresh-context concurrent Researcher runner with role-scoped tools, bounded turns,
   per-task timeout, deterministic ordering, and partial-failure conversion.
-- [ ] Lead execution and Writer handoff over the fixture bundle.
+- [x] Lead execution over the fixture bundle, including one dependency-aware Cafe →
+  exact-address Transit follow-up and deterministic feasibility handoff.
+- [ ] Writer handoff over the completed evidence bundle.
 - [ ] `/chat` trace integration with `agent` and `round`.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
-decision, and concurrent isolated Researcher execution. They do not yet prove an
-executed Lead/follow-up/Writer loop.
+decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
+loop. They do not yet prove Writer output or `/chat` trace integration.
 
 ### Phase 2 — real data adapters
 

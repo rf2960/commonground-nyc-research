@@ -16,9 +16,9 @@ This repository preserves the complete Project 1 history and starts from
 
 The repository-preparation milestone is complete. The first implementation checkpoint
 now includes strict shared contracts, a deterministic two-round fixture, the hard-
-constraint evaluator, and a bounded concurrent Researcher runner. The inherited Project
-1 app still runs; Lead/Writer execution, provider adapters, Project 2 UI, eval suite,
-and Cloud Run deployment remain later checkpoints.
+constraint evaluator, a bounded concurrent Researcher runner, and a dependency-aware
+Lead vertical slice. The inherited Project 1 app still runs; Writer execution, provider
+adapters, Project 2 UI, eval suite, and Cloud Run deployment remain later checkpoints.
 
 | Document | Purpose |
 | --- | --- |
@@ -54,6 +54,11 @@ and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_runner.py` proves actual overlap, deterministic result ordering,
   context isolation, tool-scope enforcement, timeout handling, partial failure, result
   identity validation, and the exact three-role initial fan-out.
+- `commonground/research/lead.py` creates the three initial tasks, chooses at most one
+  evidence-backed follow-up, waits for expansion Cafe coordinates before exact-address
+  Transit, and passes the complete evidence bundle to deterministic feasibility.
+- `tests/research/test_lead.py` executes the fixed first-round failure through the
+  second-round feasible result and rejects unjustified or invented follow-up targets.
 
 ## Deep Research design
 
@@ -163,5 +168,5 @@ unambiguous arrival time.
 | Team member | Columbia UNI | GitHub | Project 2 focus |
 | --- | --- | --- | --- |
 | Ruochen Feng | `rf2960` | `rf2960` | Lead, Writer, parallel runner, MTA expansion, integration |
-| Andrew Chen | `yc4745` | `achen711` | Transit Researcher, commute limits, exact-address verification |
+| Andrew Chen | `yc4745` | `yc4745-jpg` | Transit Researcher, commute limits, exact-address verification |
 | Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | Cafe Researcher, opening evidence, research result UI |

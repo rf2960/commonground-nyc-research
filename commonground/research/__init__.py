@@ -17,6 +17,7 @@ from .models import (
     Traveler,
 )
 from .feasibility import RULE_VERSION, evaluate_all_cafes, evaluate_cafe_feasibility
+from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 
 __all__ = [
@@ -28,6 +29,9 @@ __all__ = [
     "FeasibilityReason",
     "FeasibilityResult",
     "FollowUpDecision",
+    "LeadOrchestrator",
+    "LeadRun",
+    "MAX_FOLLOW_UP_TARGETS",
     "MissingEvidence",
     "ResearchBrief",
     "ResearchResult",

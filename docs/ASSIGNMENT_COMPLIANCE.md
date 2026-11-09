@@ -10,7 +10,7 @@ or deployment link.
 | --- | --- | --- |
 | Use data the model does not already know deeply | Planned | Routes, Places, and MTA station records; add captured source provenance |
 | Access data through tools/API/files/search | Project 1 baseline + planned extension | Existing provider modules; add research adapters and MTA loader |
-| Combine evidence into a supported claim | Deterministic layer complete; agent runtime planned | `feasibility-v1` computes fixture outcome and blockers; implement Lead/Writer execution |
+| Combine evidence into a supported claim | Lead/evaluator complete; Writer planned | Lead executes the two-round fixture and `feasibility-v1` computes the supported outcome; implement Writer rendering |
 | State when data cannot answer | Contract checkpoint complete; Writer planned | `EVIDENCE_INSUFFICIENT` and MissingEvidence are validated; add Writer behavior test |
 | Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
 | Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
@@ -21,9 +21,9 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | At least three agent shapes with different jobs | Designed | Lead, Researcher, Writer in `ARCHITECTURE.md` |
-| Lead fans out several Researchers in one turn | Runner complete; Lead integration planned | `ResearchRunner.run_initial_round` requires all three roles and its concurrency test observes three active tasks |
+| Lead fans out several Researchers in one turn | Complete in fixed-data slice | `LeadOrchestrator` creates all three tasks and `ResearchRunner.run_initial_round` executes them concurrently |
 | Researchers run in parallel in fresh contexts | Complete at runner boundary | `test_runner.py` proves overlap, distinct contexts/message lists, role tool scopes, and deterministic output ordering |
-| Lead loops back for more on a gap | Fixture contract tested; runtime planned | One bounded FollowUpDecision and two-round fixture; implement Lead execution |
+| Lead loops back for more on a gap | Complete in fixed-data slice | Lead records one bounded FollowUpDecision, waits for Cafe coordinates, then dispatches exact-address Transit |
 | Vague questions require clarification | Input contract tested; conversation planned | Brief rejects missing timezone/invalid limits/duplicate IDs; implement Lead clarification |
 | Output is accurately cited | Structural validation complete; Writer planned | Facts cannot reference absent sources; implement Writer citation validator |
 
@@ -62,9 +62,9 @@ or deployment link.
 
 ## Final pre-submission blockers
 
-- Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, and
-  the concurrent isolated Researcher runner are implemented; Lead, Writer, and provider
-  adapters are not implemented yet.
+- Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
+  concurrent isolated Researcher runner, and bounded Lead execution are implemented;
+  Writer and provider adapters are not implemented yet.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
   outputs do not exist yet.
