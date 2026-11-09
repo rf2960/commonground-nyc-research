@@ -122,6 +122,15 @@ The evaluator joins evidence by stable IDs and produces one status per cafe:
 If several reasons apply, the evaluator returns all reason records. The top-level Writer
 may summarize them but cannot change their meaning.
 
+## Writer boundary
+
+`commonground/research/writer.py` implements the fixed-data Writer boundary. It renders
+only indexed facts, sources, missing-evidence records, follow-up decisions, and
+feasibility results. Its validator requires every referenced ID to exist, requires each
+claim's sources to match its cited facts, and requires every citation to appear in the
+user-visible response. Future regular-hours evidence is explicitly labeled as an
+estimate rather than a guarantee.
+
 ## Project 1 reuse map
 
 | Existing file/module | Reuse | Project 2 extension point |

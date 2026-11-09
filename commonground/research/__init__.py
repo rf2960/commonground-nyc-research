@@ -19,16 +19,19 @@ from .models import (
 from .feasibility import RULE_VERSION, evaluate_all_cafes, evaluate_cafe_feasibility
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
+from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
 
 __all__ = [
     "CONTRACT_VERSION",
     "CafeConstraints",
+    "CitedClaim",
     "Candidate",
     "Coordinates",
     "Fact",
     "FeasibilityReason",
     "FeasibilityResult",
     "FollowUpDecision",
+    "EvidenceWriter",
     "LeadOrchestrator",
     "LeadRun",
     "MAX_FOLLOW_UP_TARGETS",
@@ -42,6 +45,8 @@ __all__ = [
     "ResearchRunner",
     "Source",
     "Traveler",
+    "WriterReport",
     "evaluate_all_cafes",
     "evaluate_cafe_feasibility",
+    "validate_writer_report",
 ]

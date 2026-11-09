@@ -17,8 +17,9 @@ This repository preserves the complete Project 1 history and starts from
 The repository-preparation milestone is complete. The first implementation checkpoint
 now includes strict shared contracts, a deterministic two-round fixture, the hard-
 constraint evaluator, a bounded concurrent Researcher runner, and a dependency-aware
-Lead vertical slice. The inherited Project 1 app still runs; Writer execution, provider
-adapters, Project 2 UI, eval suite, and Cloud Run deployment remain later checkpoints.
+Lead vertical slice, and an evidence-only Writer with citation validation. The inherited
+Project 1 app still runs; provider adapters, `/chat` integration, Project 2 UI, eval
+suite, and Cloud Run deployment remain later checkpoints.
 
 | Document | Purpose |
 | --- | --- |
@@ -59,6 +60,11 @@ adapters, Project 2 UI, eval suite, and Cloud Run deployment remain later checkp
   Transit, and passes the complete evidence bundle to deterministic feasibility.
 - `tests/research/test_lead.py` executes the fixed first-round failure through the
   second-round feasible result and rejects unjustified or invented follow-up targets.
+- `commonground/research/writer.py` renders comparison, recommendation/blockers, and
+  unknowns only from normalized facts, sources, feasibility records, and gaps. Every
+  visible claim carries auditable IDs and provisional future hours remain qualified.
+- `tests/research/test_writer.py` rejects uncited or unknown references and proves both
+  the feasible recommendation and insufficient-evidence output paths.
 
 ## Deep Research design
 

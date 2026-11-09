@@ -260,3 +260,8 @@ sorted by agent, follow-up decision, round 2 tasks, deterministic evaluation, Wr
 - Regular-hours evidence is labeled provisional for future dates.
 - Unknowns list the matching missing-evidence record and next action.
 - Writer may omit low-value facts for readability but may not introduce uncited facts.
+
+The fixed-data implementation uses derived references such as
+`feasibility-v1:<cafe-id>` and `follow-up:r2:<reason-code>` alongside the exact input
+fact/source/missing IDs. `validate_writer_report` rejects references absent from the
+Lead evidence bundle or citations omitted from the visible response.

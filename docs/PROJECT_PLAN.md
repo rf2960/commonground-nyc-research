@@ -72,12 +72,14 @@ editing one another's primary files.
   per-task timeout, deterministic ordering, and partial-failure conversion.
 - [x] Lead execution over the fixture bundle, including one dependency-aware Cafe →
   exact-address Transit follow-up and deterministic feasibility handoff.
-- [ ] Writer handoff over the completed evidence bundle.
+- [x] Evidence-only Writer handoff with inline fact/source/missing/derived references,
+  provisional-hours qualification, and unsupported-citation rejection.
 - [ ] `/chat` trace integration with `agent` and `round`.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
-loop. They do not yet prove Writer output or `/chat` trace integration.
+loop, and citation-audited Writer output. They do not yet prove `/chat` trace integration
+or the live provider adapters.
 
 ### Phase 2 — real data adapters
 
