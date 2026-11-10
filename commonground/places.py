@@ -55,6 +55,8 @@ def search_cafes_in_areas(
     Evaluate regular weekly hours in NYC local time as an estimate, not a
     guarantee of future availability. Missing hours remain unknown.
     Coordinates come from the maps tool, never inferred by the model.
+    Deduplicated cafes retain all matched search-area names in searched_areas;
+    area remains the first match for compatibility with Project 1 consumers.
     """
     try:
         if not isinstance(areas, list) or not 1 <= len(areas) <= 4:
@@ -77,7 +79,7 @@ def search_cafes_in_areas(
         key = os.environ.get('GOOGLE_MAPS_API_KEY', '').strip()
         if not key:
             raise ValueError('Set GOOGLE_MAPS_API_KEY in the server environment, then retry. Do not provide it as a tool argument.')
-        cafes, errors, seen = [], [], set()
+        cafes, errors, seen = [], [], {}
         for area in validated:
             try:
                 places = _request_area(area, key)
@@ -85,7 +87,12 @@ def search_cafes_in_areas(
                     if not isinstance(p, dict):
                         raise ValueError('Google Places returned a malformed place record.')
                     place_id = p.get('id')
-                    if not place_id or place_id in seen:
+                    if not place_id:
+                        continue
+                    if place_id in seen:
+                        matched_areas = seen[place_id]['searched_areas']
+                        if area['area'] not in matched_areas:
+                            matched_areas.append(area['area'])
                         continue
                     rating = p.get('rating')
                     price = PRICES.get(p.get('priceLevel'))
@@ -97,16 +104,20 @@ def search_cafes_in_areas(
                     name = (p.get('displayName') or {}).get('text')
                     if not name or loc.get('latitude') is None or loc.get('longitude') is None:
                         continue
-                    seen.add(place_id)
                     status = opening_status(p, local_meeting)
-                    cafes.append({
+                    cafe = {
                         'name': name, 'area': area['area'], 'address': p.get('formattedAddress'),
+                        'searched_areas': [area['area']],
+                        'business_status': p.get('businessStatus'),
                         'rating': rating, 'review_count': p.get('userRatingCount'), 'price_level': price,
                         **status,
+                        'opening_status_provisional': status['opening_status_source'] == 'regular_schedule',
                         'lat': loc['latitude'], 'lng': loc['longitude'], 'place_id': place_id,
                         'regular_opening_hours': p.get('regularOpeningHours'),
                         'google_maps_url': p.get('googleMapsUri'), 'attributions': p.get('attributions', []),
-                    })
+                    }
+                    seen[place_id] = cafe
+                    cafes.append(cafe)
             except (requests.RequestException, ValueError, TypeError) as error:
                 message = str(error) if isinstance(error, ValueError) else 'Places request timed out, failed, or returned malformed data. Retry later.'
                 errors.append({'area': area['area'], 'error': message})
