@@ -32,28 +32,21 @@ async def execute(context, brief, task) -> ResearchResult | dict:
 - Return a validated `ResearchResult` or a JSON-compatible dict with the exact shape.
 - Every requested entity/field must produce a cited Fact or MissingEvidence record.
 
-The integration dispatcher remains small:
+The integration dispatcher is implemented in `commonground/research/dispatch.py`.
+Teammates provide only their two role callables:
 
 ```python
-async def execute(context, brief, task):
-    if task.agent == "transit_researcher":
-        return await run_transit_task(context, brief, task)
-    if task.agent == "cafe_researcher":
-        return await run_cafe_task(context, brief, task)
-    if task.agent == "expansion_researcher":
-        return run_expansion_task(brief, task)
-    raise ValueError("unsupported researcher role")
+from commonground.research import build_research_service
+
+research_service = build_research_service(
+    transit=run_transit_task,
+    cafe=run_cafe_task,
+)
 ```
 
-Deployment wiring is then:
-
-```python
-research_service = DeepResearchService(ResearchRunner(execute))
-```
-
-Ruochen owns the final dispatcher and application wiring. Teammate PRs should export
-their adapter functions and tests; they should not assign the global service in
-`app.py` themselves.
+The factory supplies Ruochen's MTA expansion task by default and keeps runner bounds in
+one place. Teammate PRs should export their adapter functions and tests; they should not
+write dispatch conditionals or assign the global service in `app.py` themselves.
 
 ## Andrew handoff
 

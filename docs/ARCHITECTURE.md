@@ -165,6 +165,7 @@ commonground/research/
   feasibility.py     deterministic hard-constraint and blocker evaluation
   writer.py          evidence-only report assembly and citation validation
   expansion.py       MTA dataset loader and expansion candidate selection
+  dispatch.py        role routing, MTA task execution, service composition
   transit_agent.py   Transit Researcher task adapter
   cafe_agent.py      Cafe Researcher task adapter
 tests/research/

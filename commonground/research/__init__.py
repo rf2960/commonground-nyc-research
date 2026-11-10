@@ -26,6 +26,12 @@ from .expansion import (
     parse_mta_stations,
     select_expansion_stations,
 )
+from .dispatch import (
+    ResearchAdapter,
+    ResearchDispatcher,
+    build_research_service,
+    run_expansion_task,
+)
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .intake import (
     IntakeGap,
@@ -61,6 +67,8 @@ __all__ = [
     "MAX_FOLLOW_UP_TARGETS",
     "MissingEvidence",
     "ResearchBrief",
+    "ResearchAdapter",
+    "ResearchDispatcher",
     "ResearchIntake",
     "ResearchResult",
     "ResearchTask",
@@ -74,6 +82,7 @@ __all__ = [
     "WriterReport",
     "build_expansion_result",
     "build_research_brief",
+    "build_research_service",
     "build_research_trace",
     "evaluate_all_cafes",
     "evaluate_cafe_feasibility",
@@ -81,6 +90,7 @@ __all__ = [
     "clarification_message",
     "find_intake_gaps",
     "parse_mta_stations",
+    "run_expansion_task",
     "select_expansion_stations",
     "validate_writer_report",
 ]

@@ -78,6 +78,8 @@ editing one another's primary files.
   `agent`/`round` metadata; live adapter injection remains Phase 2 integration.
 - [x] Deterministic partial-intake clarification and immutable ResearchBrief construction
   from Project 1 resolver/candidate outputs; natural-language extraction remains later.
+- [x] Single role dispatcher/service factory plus an async bounded MTA expansion task;
+  final app injection waits only for the Transit and Cafe adapter exports.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up

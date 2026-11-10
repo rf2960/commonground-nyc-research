@@ -92,6 +92,9 @@ suite, and Cloud Run deployment remain later checkpoints.
   regressions. Ruochen's first raw capture scores `1.0` on eight golden checks; its
   same-model/no-tools/no-system baseline remains explicitly pending rather than
   fabricated.
+- `commonground/research/dispatch.py` is the single production composition boundary:
+  it routes each task to exactly one owner adapter, provides the real bounded MTA task,
+  and constructs the service while preserving runner timeout/turn limits.
 
 ## Deep Research design
 
