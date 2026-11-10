@@ -90,6 +90,16 @@ routes versus center estimates, missing hours, source links, no JavaScript error
 no horizontal page/card overflow at both widths. Deployment integration is a separate
 team task; these tests do not claim that the live Project 2 service is deployed.
 
+Verified run: [42765954735](https://github.com/rf2960/commonground-nyc-research/actions/runs/42765954735)
+at source commit `433789a3911b9a920857c4f64a5ee12eb649f993`.
+Both browser and Python jobs succeeded. The browser job ran four checks successfully;
+the local combined branch passed 332 Python/renderer tests. The screenshot evidence
+and exact scope are retained in [the QA record](qa/yulia_browser_checks.json), with
+[desktop](qa/yulia_desktop_verification.png) and
+[mobile](qa/yulia_mobile_verification.png) viewport screenshots. Mobile evidence was
+scrolled into view and checked against the composer boundary, not just searched in
+hidden DOM text.
+
 ## Current configuration barrier
 
 The reviewed runtime has no Maps key, GCP project/model credentials, or frozen model

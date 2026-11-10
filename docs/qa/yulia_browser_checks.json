@@ -1,0 +1,36 @@
+{
+  "kind": "real_chromium_ui_checks_with_synthetic_chat",
+  "status": "passed",
+  "run_url": "https://github.com/rf2960/commonground-nyc-research/actions/runs/42765954735",
+  "source_commit": "433789a3911b9a920857c4f64a5ee12eb649f993",
+  "checks_passed": 4,
+  "viewports": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "scope": [
+    "production HTML served over local HTTP",
+    "synthetic chat responses only",
+    "no external browser requests",
+    "exact vs center routes",
+    "hours unknown",
+    "source links",
+    "no JavaScript errors",
+    "no horizontal page/card overflow",
+    "missing-evidence notice scrolls into visible area above composer"
+  ],
+  "live_api_calls": false,
+  "live_model_calls": false,
+  "screenshots": [
+    "docs/qa/yulia_desktop_top.png",
+    "docs/qa/yulia_desktop_verification.png",
+    "docs/qa/yulia_mobile_top.png",
+    "docs/qa/yulia_mobile_verification.png"
+  ]
+}

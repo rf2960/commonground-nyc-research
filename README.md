@@ -136,9 +136,12 @@ opening estimate or explicit gap, and per-person exact-cafe commute versus limit
 Area-center estimates have a separate label and cannot fill an exact-route row.
 Expandable evidence records link to HTTPS sources and expose fact/gap IDs for auditing.
 Six executable renderer tests cover the missing-hours capture, center-only routes,
-unsafe source links, provisional hours, area failures, and legacy responses. Real
-browser/mobile visual verification is still pending in an environment that can open
-the local app.
+unsafe source links, provisional hours, area failures, and legacy responses.
+The separate Playwright suite now passes four real Chromium checks at desktop and
+mobile widths, including scrolling a missing-evidence notice above the composer.
+See [the successful browser CI run](https://github.com/rf2960/commonground-nyc-research/actions/runs/42765954735)
+and [Yulia's acceptance/run instructions](docs/YULIA_ACCEPTANCE.md). These browser
+checks use synthetic chat responses, not live Google or model results.
 
 The first turn uses five agent instances across three role shapes:
 

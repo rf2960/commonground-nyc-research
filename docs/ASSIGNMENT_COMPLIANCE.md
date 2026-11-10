@@ -8,8 +8,8 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| Use data the model does not already know deeply | MTA adapter complete; Routes/Places pending | MTA records carry station-level provenance; add recorded teammate-provider evidence |
-| Access data through tools/API/files/search | MTA + Project 1 bridge complete | Bounded Socrata loader plus traced location-resolver/candidate calls; add Routes/Places research adapters |
+| Use data the model does not already know deeply | MTA and Cafe adapters implemented; Routes/live Cafe proof pending | Cafe fixture captures and source/gap normalization exist; real Places capture is blocked by missing runtime credentials |
+| Access data through tools/API/files/search | MTA, Project 1 bridge and Cafe adapter implemented | Bounded Socrata and Places requests plus traced Lead calls; Routes adapter and live service injection remain |
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
 | Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
@@ -43,7 +43,7 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
-| Explain data origin and how it is loaded | MTA complete; Google adapters pending | `DATA_SOURCES.md` records endpoint, fields, bounds, provenance, and startup-cache plan |
+| Explain data origin and how it is loaded | MTA and Cafe implementation documented; live Google proof pending | `DATA_SOURCES.md`, `INTEGRATION_GUIDE.md`, and `YULIA_ACCEPTANCE.md` record endpoints, bounds, provenance, and actual blocked capture states |
 | Three sample queries with expected answers and source | In progress | All three are designed; Ruochen golden case and raw actual capture are committed |
 | Same-model answer with no tools and no system prompt | Capture code complete; run pending | `evals/baseline.py` enforces question-only/no-tools/no-system; capture after production model freeze |
 
@@ -55,7 +55,7 @@ or deployment link.
 | Root `README.md` and valid `submission.json` | Complete for planning | `path` is `research`; replace inherited deploy URL before submission |
 | `submission.json` contains every UNI | Complete | `rf2960`, `wd2422`, `yc4745` |
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
-| At least one data source per team member | Ruochen complete; teammates planned | MTA adapter/tests exist; Andrew owns Routes and Wenyu owns Places adapters |
+| At least one data source per team member | MTA implemented, Places fixture-tested, Routes pending | Wenyu's Cafe adapter and one-area live-smoke command exist; no live Google result is claimed yet |
 | Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
 | Request may take up to 5 minutes; cap max turns | Runner bound complete; deployment planned | Runner enforces 1–12 turns and a positive per-task timeout; configure/test Cloud Run request limit later |
 | Keep service live until grades released | Planned | Operational checklist for final deployment |
@@ -64,8 +64,9 @@ or deployment link.
 
 - Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
   concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
-  Writer and fixed-data `/chat` trace are implemented; Routes/Places adapters and live
-  service injection are not yet done.
+  Writer and fixed-data `/chat` trace are implemented. Cafe adapter and desktop/mobile
+  browser tests are complete; Routes adapter, live Places validation, and live service
+  injection are not yet done.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - Credentialed rubric-judge scores, same-model no-tools baselines, and the final
   hill-climbing table remain pending the frozen production model.

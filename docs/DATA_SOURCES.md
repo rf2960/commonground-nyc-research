@@ -38,6 +38,13 @@ the server environment and never enter source records or traces.
 ## Google Places — Wenyu/Yulia
 
 The existing Project 1 Places and opening-hours layers remain authoritative. Project 2's
-Cafe adapter will normalize place identity, address, coordinates, rating, price,
-business status, and meeting-time regular-hours evidence. Future hours are provisional;
-missing fields remain explicit gaps. API credentials stay in the server environment.
+`run_cafe_task` reuses the request boundary and normalizes identity, exact address and
+coordinates, rating, price, business status, and meeting-time hours. Future regular
+hours are provisional; missing fields remain explicit gaps. All matched parent area
+IDs survive deduplication. API credentials stay in the server environment.
+
+The opt-in one-area live check is `python -m evals.yulia_delivery places-smoke --live`
+with a future `--meeting-time`. It records citations, unknown hours, request bounds,
+and whether real provider data was obtained. The current committed capture is
+**blocked**, because no Maps key is configured. It is not a live Places observation.
+See `YULIA_ACCEPTANCE.md` for commands and the separate frozen-model capture gate.
