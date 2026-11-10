@@ -207,3 +207,18 @@ def test_runner_rejects_unbounded_or_empty_turn_budgets(max_turns):
 
     with pytest.raises(ValueError, match="max_turns"):
         ResearchRunner(executor, max_turns=max_turns)
+
+
+def test_dependency_evidence_is_deeply_isolated_from_previous_results():
+    result = ResearchResult.model_validate(fixture('round_1_results.json')[2])
+    original = result.model_dump_json()
+
+    async def executor(context, brief_value, task_value):
+        coordinates = next(f for f in context.dependency_results[0].facts if f.predicate == 'coordinates')
+        coordinates.value['lat'] = 0
+        context.dependency_results[0].sources[0].request_summary['fixture'] = False
+        return complete_result(task_value)
+
+    asyncio.run(ResearchRunner(executor).run_task(
+        brief(), task('cafe_researcher'), dependency_results=(result,)))
+    assert result.model_dump_json() == original

@@ -207,6 +207,15 @@ class EvidenceWriter:
         claims: list[CitedClaim] = []
         recommended: str | None = None
 
+        if not run.feasibility_results:
+            claims.append(self._claim(
+                'No supported cafe recommendation is available from this bounded search. '
+                'This does not prove that no feasible cafe exists elsewhere; inspect the evidence and unknowns below.',
+                facts=facts, sources=sources,
+                fact_ids=tuple(f.fact_id for f in facts.values() if f.predicate == 'cafe_search_results'),
+                derived_ref='lead-policy:no-supported-recommendation',
+            ))
+
         for feasibility in sorted(
             run.feasibility_results,
             key=lambda item: (item.status != "FEASIBLE", item.cafe_id),
@@ -412,7 +421,24 @@ def validate_writer_report(report: WriterReport, run: LeadRun) -> None:
     """Reject unsupported citations or evidence that is absent from rendered output."""
 
     facts, sources, missing = _evidence_indexes(run)
+    derived_refs = {
+        f"{result.rule_version}:{result.cafe_id}" for result in run.feasibility_results
+    }
+    if not run.feasibility_results:
+        derived_refs.add('lead-policy:no-supported-recommendation')
+    if run.follow_up_decision is not None:
+        decision = run.follow_up_decision
+        derived_refs.add(f"follow-up:r{decision.round}:{decision.reason_code}")
+    if any(task.agent == 'transit_researcher' and any(
+        dep in facts and facts[dep].predicate == 'coordinates' for dep in task.dependencies
+    ) for task in run.round_two_tasks):
+        derived_refs.add('lead-policy:places-before-routes')
+    feasible_ids = {result.cafe_id for result in run.feasibility_results if result.status == 'FEASIBLE'}
+    if report.recommended_cafe_id is not None and report.recommended_cafe_id not in feasible_ids:
+        raise ValueError('Writer recommendation is not supported by a FEASIBLE result')
     for claim in (*report.claims, *report.unknowns):
+        if claim.derived_ref is not None and claim.derived_ref not in derived_refs:
+            raise ValueError('Writer report cites an unknown derived record')
         if any(fact_id not in facts for fact_id in claim.fact_ids):
             raise ValueError("Writer report cites an unknown fact")
         if any(source_id not in sources for source_id in claim.source_ids):

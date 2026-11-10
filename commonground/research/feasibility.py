@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import math
 from typing import Any, Iterable
 
 from .models import (
@@ -139,7 +140,7 @@ def _required_fact(
 def _number(value: Any) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
-    return float(value)
+    return float(value) if math.isfinite(value) else None
 
 
 def _invalid_fact_reason(fact: Fact, *, traveler_id: str | None = None) -> FeasibilityReason:
@@ -209,6 +210,8 @@ def evaluate_cafe_feasibility(
         if not isinstance(value, dict) or _number(value.get("lat")) is None or _number(
             value.get("lng")
         ) is None:
+            evidence_reasons.append(_invalid_fact_reason(coordinates))
+        elif not (-90 <= value["lat"] <= 90 and -180 <= value["lng"] <= 180):
             evidence_reasons.append(_invalid_fact_reason(coordinates))
 
     business_status = cafe_facts["business_status"]

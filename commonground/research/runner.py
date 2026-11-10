@@ -61,6 +61,8 @@ class ResearchContext:
     messages: list[dict[str, str]]
     allowed_tools: tuple[str, ...]
     max_turns: int
+    # Only structured evidence is handed forward, never another agent's messages.
+    dependency_results: tuple[ResearchResult, ...] = ()
 
 
 ResearchExecutor = Callable[
@@ -115,6 +117,8 @@ class ResearchRunner:
         self,
         brief: ResearchBrief,
         task: ResearchTask,
+        *,
+        dependency_results: tuple[ResearchResult, ...] = (),
     ) -> ResearchResult:
         """Execute one task or convert a bounded failure into explicit missing evidence."""
 
@@ -125,7 +129,14 @@ class ResearchRunner:
         if not set(task.allowed_tools).issubset(role_allowlist):
             return self._failed_result(task, "VALIDATION_ERROR")
 
-        context = self._fresh_context(brief, task)
+        if any(
+            not result.task_id.startswith(f'task:{brief.session_id}:')
+            or result.round > task.round
+            for result in dependency_results
+        ):
+            return self._failed_result(task, 'VALIDATION_ERROR')
+
+        context = self._fresh_context(brief, task, dependency_results)
         try:
             payload = await asyncio.wait_for(
                 self._executor(context, brief, task),
@@ -155,12 +166,23 @@ class ResearchRunner:
         self,
         brief: ResearchBrief,
         task: ResearchTask,
+        dependency_results: tuple[ResearchResult, ...] = (),
     ) -> ResearchContext:
         input_payload = {
             "contract": "research-contract-v1",
             "brief": brief.model_dump(mode="json"),
             "task": task.model_dump(mode="json"),
         }
+        # JSON round-trip isolates nested Fact values and Source request summaries,
+        # which Pydantic's frozen records alone do not make deeply immutable.
+        evidence = tuple(
+            ResearchResult.model_validate_json(result.model_dump_json())
+            for result in dependency_results
+        )
+        if evidence:
+            input_payload["dependency_results"] = [
+                result.model_dump(mode="json") for result in evidence
+            ]
         return ResearchContext(
             messages=[
                 {"role": "system", "content": ROLE_PROMPTS[task.agent]},
@@ -175,6 +197,7 @@ class ResearchRunner:
             ],
             allowed_tools=tuple(task.allowed_tools),
             max_turns=self.max_turns,
+            dependency_results=evidence,
         )
 
     @staticmethod

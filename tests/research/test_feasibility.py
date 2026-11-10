@@ -196,3 +196,20 @@ def test_evaluate_all_cafes_is_stable_and_rejects_empty_evidence():
 
     with pytest.raises(ValueError, match="no cafe evidence"):
         evaluate_all_cafes(brief(), [])
+
+
+@pytest.mark.parametrize('value', [float('nan'), float('inf'), float('-inf')])
+def test_nonfinite_route_duration_cannot_be_feasible(value):
+    facts = replace_fact(round_two_facts(), 'fact:transit:r2:001', value=value)
+    result = evaluate_cafe_feasibility(brief(), CAFE_ID, facts)
+    assert result.status == 'EVIDENCE_INSUFFICIENT'
+    assert any(reason.code == 'INVALID_FACT_VALUE' for reason in result.reasons)
+
+
+@pytest.mark.parametrize('coordinates', [
+    {'lat': float('nan'), 'lng': -73.9}, {'lat': 91, 'lng': -73.9},
+    {'lat': 40.7, 'lng': 181}, {'lat': True, 'lng': -73.9},
+])
+def test_invalid_exact_coordinates_cannot_support_recommendation(coordinates):
+    facts = replace_fact(round_two_facts(), 'fact:cafe:r2:004', value=coordinates)
+    assert evaluate_cafe_feasibility(brief(), CAFE_ID, facts).status == 'EVIDENCE_INSUFFICIENT'
