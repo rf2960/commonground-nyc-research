@@ -29,6 +29,11 @@ async def execute(context, brief, task) -> ResearchResult | dict:
 - `context.messages` is fresh for this task and must not be shared or cached.
 - `context.allowed_tools` is the role's hard allowlist.
 - `context.max_turns` is a hard bound, not a suggestion.
+- `context.dependency_results` contains independent, deep-copied structured prior
+  results for round-2 destinations. It contains no other Researcher's messages. Read
+  expansion station coordinates from these records for Cafe tasks and exact venue
+  coordinates from Cafe records for Transit tasks. A dependency ID alone is not the
+  coordinate payload. Never use cross-session global caches to reconstruct it.
 - `brief` and `task` are frozen Pydantic records.
 - Return a validated `ResearchResult` or a JSON-compatible dict with the exact shape.
 - Every requested entity/field must produce a cited Fact or MissingEvidence record.
@@ -69,6 +74,27 @@ route to cafes or relax constraints in this adapter.
 
 Your PR is integration-ready when success, missing-hours, duplicate-place, and partial-
 provider fixtures return valid ResearchResults and the full suite remains green.
+
+The Cafe callable is now exported as `commonground.research.run_cafe_task`. It uses
+the existing Places `_request_area` boundary and `opening_status`; there is no second
+Google HTTP client. At most six areas and three concurrent requests are allowed,
+each with the inherited 15-second timeout and ten-record/800-meter search bound.
+An empty response means this bounded request returned no cafe, not that no feasible
+venue exists anywhere in NYC. There are no automatic retries.
+
+Each cafe has one canonical `parent_candidate_id` Fact (lexically first stable area
+ID). Every cafe Fact also carries all matched IDs in `valid_for.parent_candidate_ids`.
+This additive metadata preserves deduplication across areas without creating
+conflicting singular parent facts. Missing values have no value-bearing Fact and do
+have a field-specific MissingEvidence record, as required by the frozen v1 model.
+Transit consumes the cafe ID plus `coordinates.value={lat,lng}` (and address when
+present); it must not route to the parent area's center instead.
+
+The provider collection keeps low-rated, over-budget, and incomplete cafe records as
+evidence. This does not relax user constraints: Lead and feasibility still apply the
+unchanged brief. Known failing cafes are never upgraded to recommendations. When only
+hours are unknown, Lead may use its one exact-routing follow-up and the final status
+remains `EVIDENCE_INSUFFICIENT` with the original hours gap.
 
 ## `/chat` boundary
 

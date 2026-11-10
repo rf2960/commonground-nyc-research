@@ -1,0 +1,47 @@
+{
+  "schema_version": "eval-case-v1",
+  "case_id": "yulia-missing-hours-001",
+  "owner": "yulia",
+  "provenance": {
+    "kind": "gold",
+    "description": "Synthetic provider-shaped Places normalization plus fixture Routes; no live-provider or model evidence.",
+    "source_paths": [
+      "tests/research/fixtures/yulia_places_missing_hours.json",
+      "tests/research/fixtures/yulia_round_1_results.json",
+      "tests/research/fixtures/yulia_round_2_results.json",
+      "commonground/research/cafe_agent.py"
+    ],
+    "prompt_reuse_prohibited": true,
+    "live_provider_observation": false
+  },
+  "question": "For October 10, 2026 at 2:00 PM Eastern Time, our cafe has rating 4.5, moderate price and exact commutes of 20 minutes for each traveler, but Google Places has no regular opening periods. Can you support recommending it as open?",
+  "fixtures": {
+    "brief_path": "tests/research/fixtures/yulia_research_brief.json",
+    "result_paths": [
+      "tests/research/fixtures/yulia_round_1_results.json",
+      "tests/research/fixtures/yulia_round_2_results.json"
+    ]
+  },
+  "expected": {
+    "recommended_cafe_id": null,
+    "feasibility_statuses": {
+      "cafe:gplaces:fixture-yulia": "EVIDENCE_INSUFFICIENT"
+    },
+    "follow_up_reason_code": "EXACT_DESTINATION_REQUIRED",
+    "follow_up_selected_ids": [
+      "cafe:gplaces:fixture-yulia"
+    ],
+    "required_source_ids": [
+      "source:google-places:060dc1b393f0deac8217",
+      "source:google-places:060dc1b393f0deac8217-00",
+      "source:google-places:090eaf4a4c0f3b0a968f",
+      "source:google-places:090eaf4a4c0f3b0a968f-00",
+      "source:google-routes:yulia-r2"
+    ],
+    "required_response_fragments": [
+      "EVIDENCE_INSUFFICIENT",
+      "open_at_meeting_time",
+      "venue"
+    ]
+  }
+}

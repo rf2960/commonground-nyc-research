@@ -1,0 +1,78 @@
+[
+  {
+    "task_id": "task:session-123:r2:transit:1",
+    "agent": "transit_researcher",
+    "round": 2,
+    "status": "complete",
+    "candidate_ids_considered": [
+      "cafe:gplaces:fixture-yulia"
+    ],
+    "facts": [
+      {
+        "fact_id": "fact:transit:r2:001",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r2"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "exact_cafe"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r2:002",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r2"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "exact_cafe"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r2:003",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r2"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "exact_cafe"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:yulia-r2",
+        "provider": "google_routes",
+        "title": "Synthetic Routes fixture",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-10-01T16:00:00+00:00",
+        "request_summary": {
+          "fixture": true,
+          "arrival_time": "2026-10-10T14:00:00-04:00"
+        },
+        "provider_record_ids": [],
+        "attribution": "Synthetic Google Routes shaped fixture"
+      }
+    ],
+    "missing": [],
+    "summary": "Synthetic evaluation evidence; no live provider observation."
+  }
+]

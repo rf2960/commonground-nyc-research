@@ -18,8 +18,10 @@ The repository-preparation and fixed-data vertical-slice milestones are complete
 current build includes strict contracts, bounded concurrent research, one justified
 follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
 natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
-50-case deterministic contract corpus. Teammate-owned live Routes/Places adapters,
-credentialed model eval captures, final integration, and Cloud Run remain.
+50-case deterministic contract corpus. The Cafe Researcher adapter now exists and is
+fixture-tested, including the complete missing-hours path. The Transit adapter, live
+provider smoke evidence, credentialed model eval captures, final integration, and
+Cloud Run remain.
 
 | Document | Purpose |
 | --- | --- |
@@ -30,6 +32,7 @@ credentialed model eval captures, final integration, and Cloud Run remain.
 | [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
 | [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
 | [Integration guide](docs/INTEGRATION_GUIDE.md) | Adapter callable, dispatcher, `/chat` boundary, and teammate merge checklist |
+| [Cafe review and handoff](docs/YULIA_REVIEW_AND_HANDOFF.md) | Confirmed integration fixes, Cafe delivery, contract assumptions, and remaining grading work |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
 
@@ -115,6 +118,18 @@ credentialed model eval captures, final integration, and Cloud Run remain.
   legacy Project 1 API behavior and result cards remain compatible.
 
 ## Deep Research design
+
+Yulia's missing-hours grading example runs through the actual fixed-data pipeline:
+`uv run python -m evals.runner --case evals/cases/yulia_missing_hours.json`.
+It returns `EVIDENCE_INSUFFICIENT`, never recommends the venue as open, and cites the
+missing-hours record plus the successful exact-route evidence. See the
+[raw synthetic input](tests/research/fixtures/yulia_places_missing_hours.json) and
+[actual program output and trace](evals/examples/yulia/actual_agent.json).
+The deterministic result is 8/8 checks. This is simulated provider evidence, not a
+live Google request or model run. The
+[same-model baseline](evals/examples/yulia/no_tools_baseline.json) remains explicitly
+pending model freeze; the credentialed rubric score and hill-climbing table are also
+pending.
 
 The first turn uses five agent instances across three role shapes:
 

@@ -52,8 +52,12 @@ from .intake_extraction import (
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
+from .cafe_agent import AreaObservation, build_cafe_result, run_cafe_task
 
 __all__ = [
+    "AreaObservation",
+    "build_cafe_result",
+    "run_cafe_task",
     "CONTRACT_VERSION",
     "DATASET_ID",
     "DeepResearchOutput",
