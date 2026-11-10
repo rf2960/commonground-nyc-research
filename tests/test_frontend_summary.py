@@ -49,7 +49,7 @@ def test_priority_instruction_is_not_echoed_as_user_authored_text():
     end = HTML.index("reset.addEventListener", start)
     send = HTML[start:end]
 
-    assert "body:JSON.stringify({message,session_id:sessionId})" in send
+    assert "body:JSON.stringify({message,session_id:sessionId,mode:'research'})" in send
     assert "addMessage('you',text)" in send
     assert "addMessage('you',message)" not in send
 

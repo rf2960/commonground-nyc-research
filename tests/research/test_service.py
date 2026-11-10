@@ -153,9 +153,36 @@ def test_chat_prepares_brief_with_project_one_tools_before_research(monkeypatch)
     assert "Fixture Commons Cafe" in response.response
 
 
-def test_research_mode_clarifies_missing_brief_before_any_tool_call():
+def test_research_mode_clarifies_natural_language_before_provider_calls(monkeypatch):
     webapp.sessions.clear()
     webapp.session_last_seen.clear()
+    monkeypatch.setattr(
+        webapp,
+        "extract_research_intake",
+        lambda *_args, **_kwargs: ResearchIntake(),
+    )
+
+    response = webapp.chat(
+        webapp.ChatRequest(message="Find somewhere for us", mode="research")
+    )
+
+    assert [call["name"] for call in response.tool_calls] == [
+        "extract_research_intake"
+    ]
+    assert "at least two travelers" in response.response
+    assert "meeting arrival date and time" in response.response
+
+
+def test_research_mode_model_failure_degrades_to_deterministic_clarification(
+    monkeypatch,
+):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+
+    def fail(*_args, **_kwargs):
+        raise webapp.IntakeExtractionError("credential details stay hidden")
+
+    monkeypatch.setattr(webapp, "extract_research_intake", fail)
 
     response = webapp.chat(
         webapp.ChatRequest(message="Find somewhere for us", mode="research")
@@ -163,7 +190,7 @@ def test_research_mode_clarifies_missing_brief_before_any_tool_call():
 
     assert response.tool_calls == []
     assert "at least two travelers" in response.response
-    assert "meeting arrival date and time" in response.response
+    assert "credential" not in response.response
 
 
 def test_unconfigured_live_research_never_claims_fixture_or_provider_results(monkeypatch):

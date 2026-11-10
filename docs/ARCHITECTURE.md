@@ -62,6 +62,11 @@ the immutable `ResearchBrief`; Researchers never receive unresolved user text.
 boundaries, records both calls as Lead trace entries, and stops before candidate
 generation when any origin remains unresolved.
 
+`commonground/research/intake_extraction.py` is the natural-language boundary. It uses
+one no-tool structured extraction call over user messages, then independently rejects
+any field whose verbatim evidence quote is absent. Meeting times are admitted only with
+an explicit UTC offset; failures degrade to the deterministic empty-intake prompt.
+
 ## Researcher responsibilities
 
 ### Transit Researcher
@@ -163,6 +168,7 @@ and imports remain clear.
 ```text
 commonground/research/
   models.py          shared typed records and validation
+  intake_extraction.py  quote-validated natural-language partial intake
   runner.py          fresh-context researcher execution and bounded concurrency
   lead.py            clarification, fan-out, follow-up decision, Writer handoff
   feasibility.py     deterministic hard-constraint and blocker evaluation

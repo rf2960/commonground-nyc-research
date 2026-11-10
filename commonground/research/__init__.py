@@ -43,6 +43,12 @@ from .intake import (
     find_intake_gaps,
     prepare_research_brief,
 )
+from .intake_extraction import (
+    EXTRACTION_SYSTEM_PROMPT,
+    IntakeExtractionError,
+    extract_research_intake,
+    intake_from_extraction_payload,
+)
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
@@ -62,6 +68,7 @@ __all__ = [
     "FeasibilityResult",
     "FollowUpDecision",
     "IntakeGap",
+    "IntakeExtractionError",
     "EvidenceWriter",
     "LeadOrchestrator",
     "LeadRun",
@@ -92,9 +99,12 @@ __all__ = [
     "fetch_mta_stations",
     "clarification_message",
     "find_intake_gaps",
+    "extract_research_intake",
+    "intake_from_extraction_payload",
     "prepare_research_brief",
     "parse_mta_stations",
     "run_expansion_task",
     "select_expansion_stations",
     "validate_writer_report",
+    "EXTRACTION_SYSTEM_PROMPT",
 ]

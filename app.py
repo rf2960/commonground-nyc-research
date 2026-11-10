@@ -20,6 +20,8 @@ from commonground.research import (
     ResearchBrief,
     ResearchIntake,
     clarification_message,
+    extract_research_intake,
+    IntakeExtractionError,
     prepare_research_brief,
 )
 from tools import TOOLS, run_tool
@@ -245,13 +247,44 @@ def chat(request: ChatRequest):
     if request.mode == "research":
         brief = request.research_brief
         preparation_calls: list[dict] = []
-        if brief is None and request.research_intake is not None:
+        intake = request.research_intake
+        if brief is None and intake is None:
+            user_messages = [
+                item["content"]
+                for item in sessions[session_id]
+                if item.get("role") == "user" and isinstance(item.get("content"), str)
+            ]
+            try:
+                intake = extract_research_intake(
+                    user_messages,
+                    model=MODEL,
+                    vertex_location=VERTEX_LOCATION,
+                )
+            except IntakeExtractionError:
+                response = clarification_message(ResearchIntake())
+                tool_calls = []
+                sessions[session_id].append({"role": "assistant", "content": response})
+                return ChatResponse(
+                    response=response,
+                    session_id=session_id,
+                    tool_calls=tool_calls,
+                )
+            preparation_calls.append(
+                {
+                    "agent": "lead",
+                    "round": 1,
+                    "name": "extract_research_intake",
+                    "args": {"message_count": len(user_messages)},
+                    "result": intake.model_dump_json(),
+                }
+            )
+        if brief is None and intake is not None:
             preparation = prepare_research_brief(
-                request.research_intake,
+                intake,
                 session_id=session_id,
             )
             brief = preparation.brief
-            preparation_calls = list(preparation.tool_calls)
+            preparation_calls.extend(preparation.tool_calls)
             if brief is None:
                 response = preparation.response
                 tool_calls = preparation_calls

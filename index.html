@@ -434,7 +434,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       }
       function addMessage(role,text,loading=false){const el=node('div',`msg ${role==='you'?'user':'assistant'}${loading?' loading':''}`);el.append(node('div','role',role),node('div','content',text));messages.append(el);return el;}
       function intro(){const el=node('section','intro');el.append(node('h3','', 'A better place to meet.'),node('p','','Share 2–6 starting locations, a date and time, your budget, and whether you care most about fairness, speed, or the cafe.'));const choices=node('div','suggestions');for(const [label,text] of [
-        ['Plan a group meetup','We are coming from Columbia University, Astoria, and Bedford Ave Station. Help us plan coffee this Saturday at 2pm, moderate budget, minimum rating 4.3.'],
+        ['Plan a group meetup','Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet October 10, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3.'],
         ['Compare cafe quality','Compare these example cafes: A has rating 4.9 with 2 reviews; B has rating 4.6 with 500 reviews. Both are price level 2 and open at our meeting time. Use the cafe scoring tool.']
       ]){const b=node('button','',label);b.addEventListener('click',()=>{input.value=text;resizeInput();input.focus();});choices.append(b);}el.append(choices);messages.append(el);}
       function toolLog(calls){const group=node('details','tool-list');group.append(node('summary','',`${calls.length} tool call${calls.length===1?'':'s'} · inspect inputs and results`));for(const call of calls){const d=node('details');d.append(node('summary','',call.name||'Tool'),node('h4','','Arguments'),node('pre','',pretty(call.args)),node('h4','','Result'),node('pre','',pretty(call.result)));group.append(d);}return group;}
@@ -510,7 +510,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         addMessage('you',text);const loading=addMessage('CommonGround','',true);const stopLoading=startLoading(loading);
         messages.scrollTop=messages.scrollHeight;
         try{
-          const response=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,session_id:sessionId})});
+          const response=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,session_id:sessionId,mode:'research'})});
           if(!response.ok)throw new Error(`Chat request failed (${response.status}). Please try again.`);
           const data=await response.json();
           if(typeof data.response!=='string'||typeof data.session_id!=='string')throw new Error('Unexpected chat response. Please try again.');

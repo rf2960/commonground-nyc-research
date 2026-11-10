@@ -85,7 +85,8 @@ and Wenyu only need to export the documented async callables; Ruochen will pass 
 The Project 1 bridge is complete too: a validated structured intake now calls the real
 location resolver, stops on only unresolved travelers, calls the inherited candidate
 generator, and appends both Lead tool records before the research trace. Natural-language
-extraction into that structure remains a final model-integration task, not an adapter task.
+extraction is also implemented with verbatim quote checks and safe failure fallback; it
+is Ruochen-owned and does not require changes inside either teammate adapter.
 
 ## Andrew — Transit Researcher and commute limits
 

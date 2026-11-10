@@ -88,6 +88,10 @@ suite, and Cloud Run deployment remain later checkpoints.
   `generate_candidate_areas` boundaries in order, stops on only the unresolved people,
   preserves both calls in the Lead trace, and dispatches research only after the joined
   brief validates.
+- `commonground/research/intake_extraction.py` converts multi-turn user text into partial
+  intake without tools. Every extracted identity, origin, limit, and normalized meeting
+  time must cite an exact quote present in the user's messages; unsupported fields are
+  rejected and model/auth failures fall back to deterministic clarification.
 - `tests/research/test_intake.py` covers missing/naive time, per-traveler origin and
   limit gaps, duplicate identities, unresolved joins, stable candidate IDs, and `/chat`
   clarification without starting research prematurely.
@@ -101,7 +105,8 @@ suite, and Cloud Run deployment remain later checkpoints.
   and constructs the service while preserving runner timeout/turn limits.
 - `index.html` identifies the Project 2 research purpose and renders an accessible,
   round-grouped Lead/Researcher/Writer evidence path whenever `/chat` returns Project 2
-  `agent` and `round` trace entries; legacy Project 1 result cards remain compatible.
+  `agent` and `round` trace entries. Its requests now use Project 2 research mode, while
+  legacy Project 1 API behavior and result cards remain compatible.
 
 ## Deep Research design
 

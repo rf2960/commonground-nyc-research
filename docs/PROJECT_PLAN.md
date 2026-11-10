@@ -80,6 +80,8 @@ editing one another's primary files.
   from Project 1 resolver/candidate outputs; natural-language extraction remains later.
 - [x] Application bridge reuses the real Project 1 location resolver and candidate
   generator, traces both calls, and stops on unresolved/provider/validation failures.
+- [x] Quote-validated natural-language extraction over multi-turn user messages, with
+  no tools, explicit-offset enforcement, and deterministic model/auth failure fallback.
 - [x] Single role dispatcher/service factory plus an async bounded MTA expansion task;
   final app injection waits only for the Transit and Cafe adapter exports.
 

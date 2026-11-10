@@ -24,7 +24,7 @@ or deployment link.
 | Lead fans out several Researchers in one turn | Complete in fixed-data slice | `LeadOrchestrator` creates all three tasks and `ResearchRunner.run_initial_round` executes them concurrently |
 | Researchers run in parallel in fresh contexts | Complete at runner boundary | `test_runner.py` proves overlap, distinct contexts/message lists, role tool scopes, and deterministic output ordering |
 | Lead loops back for more on a gap | Complete in fixed-data slice | Lead records one bounded FollowUpDecision, waits for Cafe coordinates, then dispatches exact-address Transit |
-| Vague questions require clarification | Complete at structured intake boundary | Partial intake names missing travelers/origins/limits/timezone and `/chat` returns those prompts before dispatch; natural-language extraction remains integration work |
+| Vague questions require clarification | Complete at natural-language boundary | Quote-validated extraction creates partial intake; missing travelers/origins/limits/timezone produce deterministic prompts before provider or Researcher dispatch |
 | Output is accurately cited | Complete in fixed-data slice | `validate_writer_report` rejects unknown/mismatched references and verifies every cited ID appears in rendered text |
 
 ## Evaluation requirements
