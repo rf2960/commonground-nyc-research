@@ -46,7 +46,7 @@ The singular parent Fact keeps a deterministic primary parent for existing consu
 
 | Requirement | Current evidence | Remaining work / owner |
 | --- | --- | --- |
-| Real provider data | Cafe adapter is mock-tested; MTA loader exists | Record bounded live Places and Routes smoke evidence, wire both adapters / team integration |
+| Real provider data | Live Places capture passed: ten cafes, 81 cited facts, eleven sources from one Union Square request; MTA loader exists | Routes live proof and injection of both adapters remain team integration work |
 | Usable deployed application | Project 2 `/chat` boundary and research timeline exist | Production service injection and a new live Cloud Run URL / Ruochen |
 | Complete readable evidence UI | Existing timeline and raw trace exist | Venue cards with citations, gaps, and exact-vs-center distinctions / Yulia follow-up |
 | Three grading examples | Ruochen and Yulia synthetic cases now run | Andrew example and live/model captures / each owner |

@@ -19,9 +19,9 @@ current build includes strict contracts, bounded concurrent research, one justif
 follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
 natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
 50-case deterministic contract corpus. The Cafe Researcher adapter now exists and is
-fixture-tested, including the complete missing-hours path. The Transit adapter, live
-provider smoke evidence, credentialed model eval captures, final integration, and
-Cloud Run remain.
+fixture-tested, including the complete missing-hours path. A separate live Places smoke
+passed with ten cafes from one Union Square request. The Transit adapter/live Routes
+proof, credentialed model eval captures, final integration, and Cloud Run remain.
 
 | Document | Purpose |
 | --- | --- |
@@ -130,6 +130,12 @@ live Google request or model run. The
 [same-model baseline](evals/examples/yulia/no_tools_baseline.json) remains explicitly
 pending model freeze; the credentialed rubric score and hill-climbing table are also
 pending.
+
+The separate [live Places capture](evals/examples/yulia/live_places_smoke.json) passed
+all six smoke checks on `2026-11-10T07:07:28.941671+00:00`: ten cafes, 81 cited Facts
+and eleven Sources from one bounded request. Its ten meeting-time opening estimates
+are provisional; it contains no Routes or production-model claims. This live success
+is separate from the synthetic missing-hours grading example above.
 
 The first turn uses five agent instances across three role shapes:
 
