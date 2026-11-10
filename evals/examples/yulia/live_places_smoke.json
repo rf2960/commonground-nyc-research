@@ -1,0 +1,8 @@
+{
+  "schema_version": "yulia-delivery-v1",
+  "kind": "places_smoke",
+  "status": "blocked",
+  "captured_at": "2026-11-10T05:57:42.489719+00:00",
+  "reason_code": "MAPS_KEY_NOT_CONFIGURED",
+  "live_provider_observation": false
+}
