@@ -11,8 +11,8 @@
 - Cafe evidence UI with linked sources/gaps and separate exact-vs-center estimates.
 - An executable desktop/mobile Chromium suite and GitHub Actions artifact capture.
 
-These are implementation and fixture claims. They are not live Google or production
-model observations. See the two remaining capture files for current runtime status.
+The grading example and browser tests use synthetic data. A separate live Places smoke
+has now passed in Google Cloud Shell; it is not a production-model or Routes run.
 
 ## Live Places smoke (at most one request)
 
@@ -38,6 +38,16 @@ Without the key, it exits 2 and records `MAPS_KEY_NOT_CONFIGURED`. A successful 
 response with incomplete fields can still pass the smoke checks when the adapter
 correctly represents those gaps. An empty bounded search is not evidence of city-wide
 absence. A later blocked/failed attempt will not overwrite an earlier successful file.
+
+Verified live capture: `evals/examples/yulia/live_places_smoke.json`, recorded at
+`2026-11-10T07:07:28.941671+00:00` in the user's authenticated Cloud Shell. The single
+Union Square request returned ten unique cafes, 81 cited Facts, eleven Google Places
+Sources, and no missing fields. All six smoke checks passed. All ten meeting-time
+opening Facts are provisional estimates for `2026-11-18T14:00:00-05:00`; no venue
+opening is guaranteed and no commute or final feasibility claim is made. The imported
+capture validates against `ResearchResult` and contains no detected API key. This
+success does not turn the separately synthetic missing-hours grading case into live
+missing-hours evidence.
 
 ## Same-model baseline and rubric captures
 
@@ -100,10 +110,13 @@ and exact scope are retained in [the QA record](qa/yulia_browser_checks.json), w
 scrolled into view and checked against the composer boundary, not just searched in
 hidden DOM text.
 
-## Current configuration barrier
+## Remaining model configuration barrier
 
-The reviewed runtime has no Maps key, GCP project/model credentials, or frozen model
-manifest. The repository's Actions secret list is empty, and the connected collaborator
-has write access but no repository-admin access. No new project, billing account,
-credential, permission grant, or secret was created. These are real prerequisites for
-the last two captures, not missing adapter code.
+The live Places capture is complete using the existing key in Cloud Shell. Its
+credential is not included in the imported JSON or committed files. The assistant
+runtime still has no GCP model authentication or frozen production model manifest.
+The repository's Actions secret list was empty at the configuration check, and the
+connected collaborator has write access but no repository-admin access. Actual
+model-backed grading output, same-model baseline and rubric scores remain pending
+those shared model inputs. No new project, billing account, credential or permission
+grant was created.
