@@ -42,6 +42,14 @@
       "EVIDENCE_INSUFFICIENT",
       "open_at_meeting_time",
       "venue"
+    ],
+    "rubric_reference_claims": [
+      "The cafe has known rating 4.5 and price level 2 in the synthetic Places evidence.",
+      "Exact cafe commutes are 20 minutes each, within individual limits 35, 30 and 40 minutes.",
+      "Regular opening periods are absent, so opening at the meeting time is unknown, not known open or closed.",
+      "The supported status is EVIDENCE_INSUFFICIENT and the venue must not be recommended as verified open.",
+      "Identify the missing hours evidence and recommend direct venue verification.",
+      "Distinguish initial area-center estimates from exact cafe routing and cite the supplied sources."
     ]
   }
 }
