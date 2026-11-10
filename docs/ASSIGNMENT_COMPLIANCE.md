@@ -9,7 +9,7 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | Use data the model does not already know deeply | MTA adapter complete; Routes/Places pending | MTA records carry station-level provenance; add recorded teammate-provider evidence |
-| Access data through tools/API/files/search | MTA + Project 1 baseline | Bounded Socrata loader plus existing provider modules; add Routes/Places research adapters |
+| Access data through tools/API/files/search | MTA + Project 1 bridge complete | Bounded Socrata loader plus traced location-resolver/candidate calls; add Routes/Places research adapters |
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
 | Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |

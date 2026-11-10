@@ -34,12 +34,14 @@ from .dispatch import (
 )
 from .lead import MAX_FOLLOW_UP_TARGETS, LeadOrchestrator, LeadRun
 from .intake import (
+    BriefPreparation,
     IntakeGap,
     ResearchIntake,
     TravelerIntake,
     build_research_brief,
     clarification_message,
     find_intake_gaps,
+    prepare_research_brief,
 )
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
@@ -53,6 +55,7 @@ __all__ = [
     "CafeConstraints",
     "CitedClaim",
     "Candidate",
+    "BriefPreparation",
     "Coordinates",
     "Fact",
     "FeasibilityReason",
@@ -89,6 +92,7 @@ __all__ = [
     "fetch_mta_stations",
     "clarification_message",
     "find_intake_gaps",
+    "prepare_research_brief",
     "parse_mta_stations",
     "run_expansion_task",
     "select_expansion_stations",

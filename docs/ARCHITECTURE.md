@@ -58,6 +58,9 @@ create an exact-cafe Transit task until the selected Cafe result supplies coordi
 the exact missing origins, per-person limits, or timezone-aware arrival time. Only a
 complete intake joined to Project 1 resolver and candidate-generator outputs can create
 the immutable `ResearchBrief`; Researchers never receive unresolved user text.
+`prepare_research_brief` now performs that join through the real Project 1 tool
+boundaries, records both calls as Lead trace entries, and stops before candidate
+generation when any origin remains unresolved.
 
 ## Researcher responsibilities
 

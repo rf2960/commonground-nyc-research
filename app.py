@@ -20,6 +20,7 @@ from commonground.research import (
     ResearchBrief,
     ResearchIntake,
     clarification_message,
+    prepare_research_brief,
 )
 from tools import TOOLS, run_tool
 
@@ -242,32 +243,48 @@ def chat(request: ChatRequest):
     sessions[session_id].append({"role": "user", "content": request.message})
 
     if request.mode == "research":
-        if request.research_brief is None:
-            response = clarification_message(
-                request.research_intake or ResearchIntake()
+        brief = request.research_brief
+        preparation_calls: list[dict] = []
+        if brief is None and request.research_intake is not None:
+            preparation = prepare_research_brief(
+                request.research_intake,
+                session_id=session_id,
             )
+            brief = preparation.brief
+            preparation_calls = list(preparation.tool_calls)
+            if brief is None:
+                response = preparation.response
+                tool_calls = preparation_calls
+                sessions[session_id].append({"role": "assistant", "content": response})
+                return ChatResponse(
+                    response=response,
+                    session_id=session_id,
+                    tool_calls=tool_calls,
+                )
+        if brief is None:
+            response = clarification_message(ResearchIntake())
             tool_calls = []
-        elif request.research_brief.session_id != session_id:
+        elif brief.session_id != session_id:
             response = (
                 "The research brief session_id must match the requested chat session."
             )
-            tool_calls = []
+            tool_calls = preparation_calls
         elif research_service is None:
             response = (
                 "Deep Research is not connected to live Routes and Places adapters "
                 "yet. The fixed-data integration is available in tests; no live "
                 "provider result was claimed."
             )
-            tool_calls = []
+            tool_calls = preparation_calls
         else:
             try:
-                output = research_service.run_sync(request.research_brief)
+                output = research_service.run_sync(brief)
             except Exception as error:
                 response = f"Deep Research failed safely: {type(error).__name__}"
-                tool_calls = []
+                tool_calls = preparation_calls
             else:
                 response = output.response
-                tool_calls = list(output.tool_calls)
+                tool_calls = preparation_calls + list(output.tool_calls)
         sessions[session_id].append({"role": "assistant", "content": response})
         return ChatResponse(
             response=response,

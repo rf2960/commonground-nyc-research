@@ -84,6 +84,10 @@ suite, and Cloud Run deployment remain later checkpoints.
 - `commonground/research/intake.py` records partial user inputs, produces specific
   clarification gaps, and is the only constructor joining clarified limits/time to
   authoritative Project 1 location and candidate outputs.
+- The same intake module now runs the actual Project 1 `resolve_group_locations` and
+  `generate_candidate_areas` boundaries in order, stops on only the unresolved people,
+  preserves both calls in the Lead trace, and dispatches research only after the joined
+  brief validates.
 - `tests/research/test_intake.py` covers missing/naive time, per-traveler origin and
   limit gaps, duplicate identities, unresolved joins, stable candidate IDs, and `/chat`
   clarification without starting research prematurely.

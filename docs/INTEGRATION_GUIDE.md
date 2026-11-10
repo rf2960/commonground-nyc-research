@@ -94,7 +94,8 @@ Before a complete brief exists, clients may send `research_intake` instead. The 
 shape contains `meeting_time`, traveler IDs/origins/individual limits, and optional cafe
 constraints. `/chat` returns a targeted clarification and performs no research. After
 Project 1 resolves every origin and generates initial areas, Ruochen's dispatcher calls
-`build_research_brief`; adapters must not construct briefs independently.
+`prepare_research_brief`, which invokes both inherited boundaries and then calls the
+validated builder. Adapters must not resolve user text or construct briefs independently.
 
 ## Pull-request handoff checklist
 

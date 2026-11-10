@@ -3,8 +3,10 @@ from pathlib import Path
 
 import app as webapp
 from commonground.research import (
+    BriefPreparation,
     DeepResearchService,
     ResearchBrief,
+    ResearchIntake,
     ResearchResult,
     ResearchRunner,
 )
@@ -100,6 +102,55 @@ def test_chat_research_mode_preserves_response_shape_and_session_identity(monkey
         "role": "assistant",
         "content": response.response,
     }
+
+
+def test_chat_prepares_brief_with_project_one_tools_before_research(monkeypatch):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+    monkeypatch.setattr(webapp, "research_service", service())
+    preparation_calls = (
+        {
+            "agent": "lead",
+            "round": 1,
+            "name": "resolve_group_locations",
+            "args": {},
+            "result": "{}",
+        },
+        {
+            "agent": "lead",
+            "round": 1,
+            "name": "generate_candidate_areas",
+            "args": {},
+            "result": "{}",
+        },
+    )
+
+    def prepare(_intake, *, session_id):
+        assert session_id == "session-123"
+        return BriefPreparation(
+            brief=brief(),
+            response="ready",
+            tool_calls=preparation_calls,
+        )
+
+    monkeypatch.setattr(webapp, "prepare_research_brief", prepare)
+
+    response = webapp.chat(
+        webapp.ChatRequest(
+            message="Resolve us and start research",
+            session_id="session-123",
+            mode="research",
+            research_intake=ResearchIntake(),
+        )
+    )
+
+    assert len(response.tool_calls) == 11
+    assert [call["name"] for call in response.tool_calls[:2]] == [
+        "resolve_group_locations",
+        "generate_candidate_areas",
+    ]
+    assert response.tool_calls[2]["name"] == "prepare_research_brief"
+    assert "Fixture Commons Cafe" in response.response
 
 
 def test_research_mode_clarifies_missing_brief_before_any_tool_call():
