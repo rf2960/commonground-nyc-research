@@ -6,6 +6,19 @@ Run every registered case from the repository root:
 uv run python -m evals.runner
 ```
 
+Run the 50-case deterministic contract corpus:
+
+```bash
+uv run python -m evals.contract_corpus
+```
+
+The corpus contains 10 cases in each of five slices: feasible boundaries, commute-limit
+blockers, cafe-condition blockers, missing evidence, and clarification/intake. Every
+case records its source fixture/code path, prohibits prompt reuse, and explicitly says
+that its boundary mutations are synthetic rather than live provider observations. The
+current result is 50/50. This complements the full-pipeline registry; it does not claim
+that 50 live Google/MTA requests occurred.
+
 Regenerate the raw capture for one owner case:
 
 ```bash
@@ -40,10 +53,19 @@ with **no tools and no system prompt**. Record the exact model identifier, UTC t
 raw output, and the two disabled conditions in
 `evals/examples/<owner>/no_tools_baseline.json`.
 
-The committed Ruochen baseline file is deliberately `pending`: no model run has yet been
-performed, so it does not contain a fabricated answer. Select and freeze the production
-model before capturing this comparison. Do not use the structured evidence bundle as
-baseline input; only the question is allowed.
+`evals/baseline.py` enforces exactly one user message, no tools, and no system prompt,
+and records model, timestamp, conditions, question, and raw output. The committed
+Ruochen baseline file remains deliberately `pending`: no credentialed production-model
+run has yet been performed, so it contains no fabricated answer. Freeze the production
+model before capturing it. Only the question—not the evidence bundle—is allowed.
+
+## Second scorer
+
+`evals/rubric_judge.py` independently scores recommendation correctness, calibrated
+uncertainty, comparison usefulness, and citation support on a strict 0–4 scale against
+expected claims and an allowed source-ID set. Its schema rejects missing or out-of-range
+scores. Tests use an injected completion; actual judge scores remain pending until the
+production judge model and credentials are frozen.
 
 ## Team handoff
 
@@ -52,6 +74,5 @@ baseline input; only the question is allowed.
 - Ruochen owns this harness, the expansion-success case, aggregate scoring, and the
   final hill-climbing table.
 
-The 50+ submission corpus can share this schema. Provider-specific fixture creation
-remains inside each Researcher owner's module; aggregate case discovery and scoring stay
-here so all owners receive the same pass/fail semantics.
+Provider-specific full-pipeline cases remain inside each Researcher owner's module;
+aggregate discovery and scoring stay here so all owners receive the same semantics.

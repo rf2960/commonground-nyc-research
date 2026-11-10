@@ -14,12 +14,12 @@ This repository preserves the complete Project 1 history and starts from
 
 ## Project 2 status
 
-The repository-preparation milestone is complete. The first implementation checkpoint
-now includes strict shared contracts, a deterministic two-round fixture, the hard-
-constraint evaluator, a bounded concurrent Researcher runner, and a dependency-aware
-Lead vertical slice, and an evidence-only Writer with citation validation. The inherited
-Project 1 app still runs; provider adapters, `/chat` integration, Project 2 UI, eval
-suite, and Cloud Run deployment remain later checkpoints.
+The repository-preparation and fixed-data vertical-slice milestones are complete. The
+current build includes strict contracts, bounded concurrent research, one justified
+follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
+natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
+50-case deterministic contract corpus. Teammate-owned live Routes/Places adapters,
+credentialed model eval captures, final integration, and Cloud Run remain.
 
 | Document | Purpose |
 | --- | --- |
@@ -100,6 +100,12 @@ suite, and Cloud Run deployment remain later checkpoints.
   regressions. Ruochen's first raw capture scores `1.0` on eight golden checks; its
   same-model/no-tools/no-system baseline remains explicitly pending rather than
   fabricated.
+- `evals/contract_corpus.py` runs 50 provenance-recorded synthetic gold boundary cases
+  through the actual feasibility and intake functions: 10 each for feasible, commute,
+  cafe, missing-evidence, and clarification slices. The current result is 50/50.
+- `evals/rubric_judge.py` supplies the second scoring method with a strict 0–4 reference
+  rubric, while `evals/baseline.py` enforces the same-model question-only comparison
+  with no tools and no system prompt. Credentialed captures remain pending model freeze.
 - `commonground/research/dispatch.py` is the single production composition boundary:
   it routes each task to exactly one owner adapter, provides the real bounded MTA task,
   and constructs the service while preserving runner timeout/turn limits.
@@ -199,6 +205,12 @@ Run the current provenance-recorded case registry with:
 
 ```bash
 uv run python -m evals.runner
+```
+
+Run the 50-case contract corpus with:
+
+```bash
+uv run python -m evals.contract_corpus
 ```
 
 See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner

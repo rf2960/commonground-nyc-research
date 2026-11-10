@@ -2,8 +2,10 @@
 
 ## Required corpus and scorers
 
-Before submission, create at least 50 gold or silver cases and record where every case
-came from. No evaluation case may also appear in an agent prompt as a few-shot example.
+The deterministic contract corpus now contains 50 synthetic gold cases and records the
+fixture or code path from which each is derived. No evaluation case may also appear in
+an agent prompt as a few-shot example. These cases test the real feasibility/intake
+functions; they are explicitly not represented as live provider observations.
 
 The suite uses at least two scoring approaches:
 
@@ -17,12 +19,11 @@ Suggested coverage:
 
 | Slice | Minimum cases |
 | --- | ---: |
-| Expansion finds a feasible option | 10 |
-| Exact-address routing changes the answer | 10 |
-| Commute limit remains the blocker | 8 |
-| Cafe constraints remain the blocker | 8 |
-| Missing/partial evidence must stay unknown | 8 |
-| Clarification, malformed inputs, provider errors | 6 |
+| Feasible and exact-limit boundaries | 10 complete |
+| Commute limit remains the blocker | 10 complete |
+| Cafe constraints remain the blocker | 10 complete |
+| Missing/partial evidence must stay unknown | 10 complete |
+| Clarification and incomplete intake | 10 complete |
 
 Record `case_id`, provenance, fixture/live-record version, question, expected structured
 outcome, expected claims/source IDs, and scorer results.
@@ -44,9 +45,9 @@ uv run python -m evals.runner
 
 The first registered gold case executes the actual fixed-data application pipeline,
 scores eight deterministic properties, writes a raw agent/trace capture, and exits
-nonzero on regression. Expand the registry to 50+ cases as live adapters and owner
-fixtures arrive. A rubric/reference judge remains required before submission; do not
-mislabel the deterministic golden checks as the second scorer.
+nonzero on regression. The separate contract corpus runs 50 cases at 50/50. The strict
+rubric/reference judge is implemented in `evals/rubric_judge.py`; credentialed scores
+remain pending the frozen model and must not be replaced by hand-authored numbers.
 
 ## Three owner-specific grading examples
 

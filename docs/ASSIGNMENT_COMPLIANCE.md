@@ -31,11 +31,11 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| At least 50 gold/silver samples with provenance | In progress: 1 registered gold case | Runnable registry and provenance are under `evals/`; 49+ cases remain |
-| Eval cases not reused as few-shot prompt examples | Policy set | Add prompt/corpus separation check |
-| At least two scorer types | In progress: deterministic scorer complete | Eight golden checks run now; rubric/reference judge remains required |
-| Documented command to run evals | Complete for current registry | `uv run python -m evals.runner` |
-| README hill-climbing log with baseline and 2+ changes | Planned | Add scores after eval harness exists |
+| At least 50 gold/silver samples with provenance | Complete for contract corpus | `evals.contract_corpus` runs 50 provenance-recorded synthetic gold boundary cases across five slices; provider/full-pipeline cases continue to grow |
+| Eval cases not reused as few-shot prompt examples | Enforced in corpus metadata | Every case records `prompt_reuse_prohibited=true`; no eval case is embedded in an agent prompt |
+| At least two scorer types | Implemented; live judge run pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
+| Documented command to run evals | Complete | `uv run python -m evals.runner` and `uv run python -m evals.contract_corpus` |
+| README hill-climbing log with baseline and 2+ changes | Pending frozen-model runs | Harness, 50-case score, judge schema, and no-tools capture boundary exist |
 | Identify gains larger than `±1/sqrt(n)` | Planned | Compute in final hill-climbing table |
 
 ## README and sample-query requirements
@@ -67,8 +67,8 @@ or deployment link.
   Writer and fixed-data `/chat` trace are implemented; Routes/Places adapters and live
   service injection are not yet done.
 - The current `deploy_url` still points to the inherited Project 1 service.
-- The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
-  outputs do not exist yet.
+- Credentialed rubric-judge scores, same-model no-tools baselines, and the final
+  hill-climbing table remain pending the frozen production model.
 - The Project 2 frontend and Cloud Run deployment do not exist yet.
 
 These are expected at the planning milestone; none should be described as complete in a

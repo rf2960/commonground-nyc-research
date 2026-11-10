@@ -116,9 +116,10 @@ startup cache and one opt-in smoke test remain integration work.
 
 ### Phase 4 — evaluation and hill climbing
 
-- Build at least 50 gold/silver cases with source provenance; none may appear in prompts
-  as few-shot examples.
-- Use deterministic contract/constraint checks plus a rubric or golden-reference judge.
+- [x] Build 50 provenance-recorded synthetic gold contract cases; none may appear in
+  prompts or few-shot examples. Continue adding owner-specific full-pipeline cases.
+- [x] Add deterministic contract/constraint checks plus a strict reference/rubric
+  judge boundary.
 - Capture the three team-owned grading examples and same-model no-tools/no-system
   baselines.
 - Record baseline score, at least two changes with new scores, and gains greater than
@@ -126,10 +127,12 @@ startup cache and one opt-in smoke test remain integration work.
 
 **Gate:** the documented eval command is reproducible from a clean checkout.
 
-Current progress: the registry, reproducible command, first provenance-recorded gold
-case, eight-check deterministic scorer, and Ruochen raw agent/trace capture are complete.
-The remaining corpus, reference/rubric judge, frozen-model baselines, and hill-climbing
-runs depend on the live Researcher adapters and final model selection.
+Current progress: the full-pipeline registry and first raw Ruochen trace are complete.
+A separate 50-case contract corpus scores the actual hard-decision and intake functions
+at 50/50 across five balanced slices. The reference/rubric judge and no-tools capture
+code are implemented and tested. Credentialed judge/baseline captures and the hill-
+climbing table depend on final model selection; live end-to-end cases also depend on the
+teammate Researcher adapters.
 
 ### Phase 5 — Cloud Run and submission
 

@@ -70,17 +70,17 @@ This unblocks Andrew and Yulia without requiring the runner to exist yet.
 ### Current implementation status
 
 Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, cited
-Writer, and the MTA expansion adapter are implemented on Ruochen's stacked branches.
-Fixed-data `/chat`/trace integration is also complete. Remaining Ruochen work is live
-Transit/Cafe adapter injection, natural-language extraction into the now-validated intake,
-the frozen-model baseline/reference-judge run, and shared deployment/eval coordination.
-The runnable eval registry, first gold case, deterministic score, and raw Ruochen
-agent/trace capture are complete; Andrew and Wenyu can copy the documented case schema
-without touching orchestration code.
+Writer, MTA expansion, natural-language intake, Project 1 bridge, and fixed-data
+`/chat`/trace integration are all on `main`. Ruochen's 50-case provenance-recorded
+contract corpus currently passes 50/50; the strict reference/rubric judge and the
+same-model no-tools/no-system capture boundary are implemented and tested. Remaining
+Ruochen work is live Transit/Cafe adapter injection after teammate delivery, frozen-
+model judge/baseline runs, hill-climbing reporting, and Cloud Run release.
 
 The dispatcher, service factory, and live MTA expansion task are also complete. Andrew
-and Wenyu only need to export the documented async callables; Ruochen will pass them to
-`build_research_service` during final integration.
+and Wenyu should branch or rebase from the latest `main` now; they do not need to wait
+for more Ruochen contracts. They only need to export the documented async callables,
+which Ruochen will pass to `build_research_service` during final integration.
 
 The Project 1 bridge is complete too: a validated structured intake now calls the real
 location resolver, stops on only unresolved travelers, calls the inherited candidate
