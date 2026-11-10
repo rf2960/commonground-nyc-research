@@ -131,6 +131,18 @@ live Google request or model run. The
 pending model freeze; the credentialed rubric score and hill-climbing table are also
 pending.
 
+The research evidence UI now presents each cafe's status, known attributes, provisional
+opening estimate or explicit gap, and per-person exact-cafe commute versus limit.
+Area-center estimates have a separate label and cannot fill an exact-route row.
+Expandable evidence records link to HTTPS sources and expose fact/gap IDs for auditing.
+Six executable renderer tests cover the missing-hours capture, center-only routes,
+unsafe source links, provisional hours, area failures, and legacy responses.
+The separate Playwright suite now passes four real Chromium checks at desktop and
+mobile widths, including scrolling a missing-evidence notice above the composer.
+See [the successful browser CI run](https://github.com/rf2960/commonground-nyc-research/actions/runs/42765954735)
+and [Yulia's acceptance/run instructions](docs/YULIA_ACCEPTANCE.md). These browser
+checks use synthetic chat responses, not live Google or model results.
+
 The separate [live Places capture](evals/examples/yulia/live_places_smoke.json) passed
 all six smoke checks on `2026-11-10T07:07:28.941671+00:00`: ten cafes, 81 cited Facts
 and eleven Sources from one bounded request. Its ten meeting-time opening estimates
