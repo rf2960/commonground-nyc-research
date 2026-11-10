@@ -29,6 +29,9 @@ compatible /chat response and visible trace
 Researchers may use one generic runner, but each invocation receives a new message list,
 one role prompt, one allowlisted tool set, the same immutable research brief, and a
 deadline. No Researcher sees another Researcher's chain-of-thought or mutable context.
+`commonground/research/runner.py` now enforces this boundary for the three initial tasks,
+including concurrent execution, deterministic output order, a hard turn budget, and
+explicit missing-evidence results for timeout, execution, or validation failure.
 
 ## Lead responsibilities
 
@@ -47,6 +50,22 @@ Lead owns planning and control flow, not provider facts.
 
 The Lead does not claim that a cafe is feasible. It asks deterministic code for the
 status and uses the returned blockers to plan a follow-up.
+`commonground/research/lead.py` implements this bounded fixed-data control flow. It
+creates the three initial tasks, emits at most one `FollowUpDecision`, and does not
+create an exact-cafe Transit task until the selected Cafe result supplies coordinates.
+
+`commonground/research/intake.py` owns the pre-research gate. A partial intake identifies
+the exact missing origins, per-person limits, or timezone-aware arrival time. Only a
+complete intake joined to Project 1 resolver and candidate-generator outputs can create
+the immutable `ResearchBrief`; Researchers never receive unresolved user text.
+`prepare_research_brief` now performs that join through the real Project 1 tool
+boundaries, records both calls as Lead trace entries, and stops before candidate
+generation when any origin remains unresolved.
+
+`commonground/research/intake_extraction.py` is the natural-language boundary. It uses
+one no-tool structured extraction call over user messages, then independently rejects
+any field whose verbatim evidence quote is absent. Meeting times are admitted only with
+an explicit UTC offset; failures degrade to the deterministic empty-intake prompt.
 
 ## Researcher responsibilities
 
@@ -116,6 +135,15 @@ The evaluator joins evidence by stable IDs and produces one status per cafe:
 If several reasons apply, the evaluator returns all reason records. The top-level Writer
 may summarize them but cannot change their meaning.
 
+## Writer boundary
+
+`commonground/research/writer.py` implements the fixed-data Writer boundary. It renders
+only indexed facts, sources, missing-evidence records, follow-up decisions, and
+feasibility results. Its validator requires every referenced ID to exist, requires each
+claim's sources to match its cited facts, and requires every citation to appear in the
+user-visible response. Future regular-hours evidence is explicitly labeled as an
+estimate rather than a guarantee.
+
 ## Project 1 reuse map
 
 | Existing file/module | Reuse | Project 2 extension point |
@@ -140,11 +168,13 @@ and imports remain clear.
 ```text
 commonground/research/
   models.py          shared typed records and validation
+  intake_extraction.py  quote-validated natural-language partial intake
   runner.py          fresh-context researcher execution and bounded concurrency
   lead.py            clarification, fan-out, follow-up decision, Writer handoff
   feasibility.py     deterministic hard-constraint and blocker evaluation
   writer.py          evidence-only report assembly and citation validation
   expansion.py       MTA dataset loader and expansion candidate selection
+  dispatch.py        role routing, MTA task execution, service composition
   transit_agent.py   Transit Researcher task adapter
   cafe_agent.py      Cafe Researcher task adapter
 tests/research/
@@ -162,3 +192,13 @@ tests/research/
 - Agent turns: hard maximum in the runner; Cloud Run request timeout kept below the
   course's five-minute grading allowance.
 - Secrets: server environment only; never placed in prompts, tool results, or traces.
+
+## Application integration
+
+`commonground/research/service.py` is the only application-facing composition layer. It
+returns Writer text plus an ordered trace with legacy `name`, `args`, and string `result`
+fields and Project 2 `agent`/`round` metadata. Root `app.py` preserves Project 1 as the
+default mode and exposes structured research mode only through this injectable service.
+The global service stays unset until real Routes and Places adapters are present, so
+fixture evidence cannot be mistaken for a live response. See `INTEGRATION_GUIDE.md` for
+the teammate adapter callable and deployment dispatcher.

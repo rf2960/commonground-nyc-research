@@ -8,12 +8,12 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| Use data the model does not already know deeply | Planned | Routes, Places, and MTA station records; add captured source provenance |
-| Access data through tools/API/files/search | Project 1 baseline + planned extension | Existing provider modules; add research adapters and MTA loader |
-| Combine evidence into a supported claim | Planned | Evidence contract and deterministic feasibility result; add vertical-slice test |
-| State when data cannot answer | Planned | `EVIDENCE_INSUFFICIENT` and MissingEvidence; add Writer test |
-| Show work and preserve `/chat` shape | Project 1 baseline + planned extension | Existing response keys; add `agent` and `round` trace tests |
-| Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
+| Use data the model does not already know deeply | MTA adapter complete; Routes/Places pending | MTA records carry station-level provenance; add recorded teammate-provider evidence |
+| Access data through tools/API/files/search | MTA + Project 1 bridge complete | Bounded Socrata loader plus traced location-resolver/candidate calls; add Routes/Places research adapters |
+| Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
+| State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
+| Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
+| Frontend explains purpose, audience, and use | Complete for fixed-data boundary | Project 2 copy, guided sample, and round-grouped Lead/Researcher/Writer evidence timeline are in `index.html` |
 | Deploy to Google Cloud Run | Project 1 baseline only | Create Project 2 deployment and replace `submission.json` URL |
 
 ## Deep Research path
@@ -21,21 +21,21 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | At least three agent shapes with different jobs | Designed | Lead, Researcher, Writer in `ARCHITECTURE.md` |
-| Lead fans out several Researchers in one turn | Designed | Three initial Researchers; add concurrency test |
-| Researchers run in parallel in fresh contexts | Designed | Runner contract; add context-isolation test |
-| Lead loops back for more on a gap | Designed | One bounded FollowUpDecision; add two-round fixture test |
-| Vague questions require clarification | Designed | ResearchBrief validation; add clarification tests |
-| Output is accurately cited | Designed | Fact/source IDs and Writer rules; add citation validator tests |
+| Lead fans out several Researchers in one turn | Complete in fixed-data slice | `LeadOrchestrator` creates all three tasks and `ResearchRunner.run_initial_round` executes them concurrently |
+| Researchers run in parallel in fresh contexts | Complete at runner boundary | `test_runner.py` proves overlap, distinct contexts/message lists, role tool scopes, and deterministic output ordering |
+| Lead loops back for more on a gap | Complete in fixed-data slice | Lead records one bounded FollowUpDecision, waits for Cafe coordinates, then dispatches exact-address Transit |
+| Vague questions require clarification | Complete at natural-language boundary | Quote-validated extraction creates partial intake; missing travelers/origins/limits/timezone produce deterministic prompts before provider or Researcher dispatch |
+| Output is accurately cited | Complete in fixed-data slice | `validate_writer_report` rejects unknown/mismatched references and verifies every cited ID appears in rendered text |
 
 ## Evaluation requirements
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| At least 50 gold/silver samples with provenance | Planned | Coverage table in `EVALUATION_PLAN.md`; build case registry |
-| Eval cases not reused as few-shot prompt examples | Policy set | Add prompt/corpus separation check |
-| At least two scorer types | Planned | Deterministic checks plus rubric/reference judge |
-| Documented command to run evals | Planned | Choose framework and commit runnable command |
-| README hill-climbing log with baseline and 2+ changes | Planned | Add scores after eval harness exists |
+| At least 50 gold/silver samples with provenance | Complete for contract corpus | `evals.contract_corpus` runs 50 provenance-recorded synthetic gold boundary cases across five slices; provider/full-pipeline cases continue to grow |
+| Eval cases not reused as few-shot prompt examples | Enforced in corpus metadata | Every case records `prompt_reuse_prohibited=true`; no eval case is embedded in an agent prompt |
+| At least two scorer types | Implemented; live judge run pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
+| Documented command to run evals | Complete | `uv run python -m evals.runner` and `uv run python -m evals.contract_corpus` |
+| README hill-climbing log with baseline and 2+ changes | Pending frozen-model runs | Harness, 50-case score, judge schema, and no-tools capture boundary exist |
 | Identify gains larger than `±1/sqrt(n)` | Planned | Compute in final hill-climbing table |
 
 ## README and sample-query requirements
@@ -43,9 +43,9 @@ or deployment link.
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
-| Explain data origin and how it is loaded | Designed | README sources; add exact endpoints/cache/refresh after adapters |
-| Three sample queries with expected answers and source | Designed | Owner cases in `EVALUATION_PLAN.md`; capture actual outputs later |
-| Same-model answer with no tools and no system prompt | Planned | Capture per owner after runnable build exists |
+| Explain data origin and how it is loaded | MTA complete; Google adapters pending | `DATA_SOURCES.md` records endpoint, fields, bounds, provenance, and startup-cache plan |
+| Three sample queries with expected answers and source | In progress | All three are designed; Ruochen golden case and raw actual capture are committed |
+| Same-model answer with no tools and no system prompt | Capture code complete; run pending | `evals/baseline.py` enforces question-only/no-tools/no-system; capture after production model freeze |
 
 ## Repository and deployment requirements
 
@@ -55,18 +55,21 @@ or deployment link.
 | Root `README.md` and valid `submission.json` | Complete for planning | `path` is `research`; replace inherited deploy URL before submission |
 | `submission.json` contains every UNI | Complete | `rf2960`, `wd2422`, `yc4745` |
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
-| At least one data source per team member | Designed | Ruochen/MTA, Andrew/Routes, Wenyu/Places |
+| At least one data source per team member | Ruochen complete; teammates planned | MTA adapter/tests exist; Andrew owns Routes and Wenyu owns Places adapters |
 | Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
-| Request may take up to 5 minutes; cap max turns | Designed | Operational bounds; configure/test Cloud Run |
+| Request may take up to 5 minutes; cap max turns | Runner bound complete; deployment planned | Runner enforces 1–12 turns and a positive per-task timeout; configure/test Cloud Run request limit later |
 | Keep service live until grades released | Planned | Operational checklist for final deployment |
 
 ## Final pre-submission blockers
 
-- Project 2 multi-agent code is not implemented yet.
+- Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
+  concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
+  Writer and fixed-data `/chat` trace are implemented; Routes/Places adapters and live
+  service injection are not yet done.
 - The current `deploy_url` still points to the inherited Project 1 service.
-- The 50+ case eval corpus, scorer runs, hill-climbing log, and actual/baseline sample
-  outputs do not exist yet.
-- The Project 2 frontend and Cloud Run deployment do not exist yet.
+- Credentialed rubric-judge scores, same-model no-tools baselines, and the final
+  hill-climbing table remain pending the frozen production model.
+- Project 2 frontend changes exist; the new Cloud Run deployment does not yet.
 
 These are expected at the planning milestone; none should be described as complete in a
 submission until the linked evidence exists.

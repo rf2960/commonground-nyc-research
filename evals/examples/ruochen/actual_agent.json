@@ -1,0 +1,215 @@
+{
+  "schema_version": "eval-capture-v1",
+  "case_id": "ruochen-expansion-success-001",
+  "owner": "ruochen",
+  "passed": true,
+  "deterministic_score": 1.0,
+  "checks": [
+    {
+      "name": "recommended cafe",
+      "passed": true,
+      "expected": "cafe:gplaces:fixture-expansion-cafe",
+      "actual": "cafe:gplaces:fixture-expansion-cafe"
+    },
+    {
+      "name": "feasibility statuses",
+      "passed": true,
+      "expected": {
+        "cafe:gplaces:fixture-expansion-cafe": "FEASIBLE"
+      },
+      "actual": {
+        "cafe:gplaces:fixture-expansion-cafe": "FEASIBLE"
+      }
+    },
+    {
+      "name": "follow-up reason",
+      "passed": true,
+      "expected": "NO_FEASIBLE_INITIAL_CAFE",
+      "actual": "NO_FEASIBLE_INITIAL_CAFE"
+    },
+    {
+      "name": "follow-up targets",
+      "passed": true,
+      "expected": [
+        "area:mta:fixture-queensboro-plaza"
+      ],
+      "actual": [
+        "area:mta:fixture-queensboro-plaza"
+      ]
+    },
+    {
+      "name": "required source coverage",
+      "passed": true,
+      "expected": [
+        "source:google-places:fixture-r2",
+        "source:google-routes:fixture-r2",
+        "source:mta-stations:fixture-queensboro-plaza"
+      ],
+      "actual": [
+        "source:google-places:fixture-r2",
+        "source:google-routes:fixture-r2",
+        "source:mta-stations:fixture-queensboro-plaza"
+      ]
+    },
+    {
+      "name": "required answer fragments",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "bounded follow-up",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "trace agent and round fields",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "actual": {
+    "recommended_cafe_id": "cafe:gplaces:fixture-expansion-cafe",
+    "feasibility_statuses": {
+      "cafe:gplaces:fixture-expansion-cafe": "FEASIBLE"
+    },
+    "follow_up_reason_code": "NO_FEASIBLE_INITIAL_CAFE",
+    "follow_up_selected_ids": [
+      "area:mta:fixture-queensboro-plaza"
+    ],
+    "source_ids": [
+      "source:google-places:fixture-r1",
+      "source:google-places:fixture-r2",
+      "source:google-routes:fixture-r1",
+      "source:google-routes:fixture-r2",
+      "source:mta-stations:fixture-queensboro-plaza"
+    ],
+    "response": "## Result\n\n- Recommend Fixture Commons Cafe (`cafe:gplaces:fixture-expansion-cafe`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r2:002,fact:cafe:r2:003,fact:cafe:r2:004,fact:cafe:r2:005,fact:cafe:r2:006,fact:cafe:r2:007,fact:cafe:r2:008,fact:transit:r2:001,fact:transit:r2:002,fact:transit:r2:003; sources=source:google-places:fixture-r2,source:google-routes:fixture-r2; derived=feasibility-v1:cafe:gplaces:fixture-expansion-cafe]\n- Exact-cafe commute checks all pass: traveler:alice 30/35 minutes, traveler:bob 28/30 minutes, traveler:carol 35/40 minutes. [facts=fact:transit:r2:001,fact:transit:r2:002,fact:transit:r2:003; sources=source:google-routes:fixture-r2; derived=feasibility-v1:cafe:gplaces:fixture-expansion-cafe]\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r2:008; sources=source:google-places:fixture-r2]\n\n## Why the initial candidates failed\n\n- Union Square failed at the area-center stage: Astoria 32 > 30 minutes. [facts=fact:transit:r1:002; sources=source:google-routes:fixture-r1]\n- Downtown Brooklyn failed at the area-center stage: Columbia University 45 > 35 minutes. [facts=fact:transit:r1:004; sources=source:google-routes:fixture-r1]\n- Initial cafe `cafe:gplaces:fixture-initial-cafe` was expected to be closed at the requested meeting time. [facts=fact:cafe:r1:002; sources=source:google-places:fixture-r1]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `NO_FEASIBLE_INITIAL_CAFE` and selected `area:mta:fixture-queensboro-plaza`. Expected information gain: Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check. [facts=fact:expansion:r1:003; sources=source:mta-stations:fixture-queensboro-plaza; derived=follow-up:r2:NO_FEASIBLE_INITIAL_CAFE]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r2:004; sources=source:google-places:fixture-r2; derived=lead-policy:places-before-routes]",
+    "tool_calls": [
+      {
+        "agent": "lead",
+        "round": 1,
+        "name": "prepare_research_brief",
+        "args": {
+          "research_id": "research:session-123:1",
+          "session_id": "session-123"
+        },
+        "result": "{\"research_id\":\"research:session-123:1\",\"session_id\":\"session-123\",\"question\":\"Can bounded expansion find a feasible cafe without relaxing constraints?\",\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"travelers\":[{\"traveler_id\":\"traveler:alice\",\"input_location\":\"Columbia University\",\"resolved_location\":{\"lat\":40.8075,\"lng\":-73.9626},\"max_commute_minutes\":35.0},{\"traveler_id\":\"traveler:bob\",\"input_location\":\"Astoria\",\"resolved_location\":{\"lat\":40.7644,\"lng\":-73.9235},\"max_commute_minutes\":30.0},{\"traveler_id\":\"traveler:carol\",\"input_location\":\"Bedford Avenue\",\"resolved_location\":{\"lat\":40.7177,\"lng\":-73.9576},\"max_commute_minutes\":40.0}],\"cafe_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"initial_candidates\":[{\"candidate_id\":\"area:initial:union-square\",\"name\":\"Union Square\",\"kind\":\"initial_area\",\"lat\":40.7359,\"lng\":-73.9911},{\"candidate_id\":\"area:initial:downtown-brooklyn\",\"name\":\"Downtown Brooklyn\",\"kind\":\"initial_area\",\"lat\":40.6928,\"lng\":-73.9903}],\"max_follow_up_rounds\":1}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 1,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-123:r1:transit:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:transit:1\",\"agent\":\"transit_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r1:001\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":25,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:002\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":32,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:003\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:004\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":45,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:005\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":22,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:006\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":28,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:fixture-r1\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:fixture-r1\",\"provider\":\"google_routes\",\"title\":\"Fixture Routes API area-center matrix\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"fixture\":true,\"origin_count\":3,\"destination_count\":2,\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic fixture shaped like Google Routes output\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\",\"area:initial:downtown-brooklyn\"],\"summary\":\"Both initial area centers exceed at least one traveler's hard limit.\"}"
+      },
+      {
+        "agent": "cafe_researcher",
+        "round": 1,
+        "name": "search_cafes_in_areas",
+        "args": {
+          "task_id": "task:session-123:r1:cafe:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:cafe:1\",\"agent\":\"cafe_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:cafe:r1:001\",\"candidate_id\":\"cafe:gplaces:fixture-initial-cafe\",\"subject_id\":\"cafe:gplaces:fixture-initial-cafe\",\"predicate\":\"parent_candidate_id\",\"value\":\"area:initial:union-square\",\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r1\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:002\",\"candidate_id\":\"cafe:gplaces:fixture-initial-cafe\",\"subject_id\":\"cafe:gplaces:fixture-initial-cafe\",\"predicate\":\"open_at_meeting_time\",\"value\":false,\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"basis\":\"regular_schedule\"},\"source_ids\":[\"source:google-places:fixture-r1\"],\"provisional\":true}],\"sources\":[{\"source_id\":\"source:google-places:fixture-r1\",\"provider\":\"google_places\",\"title\":\"Fixture Places API initial-area response\",\"url\":\"https://developers.google.com/maps/documentation/places/web-service/nearby-search\",\"accessed_at\":\"2026-10-01T16:01:00Z\",\"request_summary\":{\"fixture\":true,\"area_count\":2,\"meeting_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[\"fixture-initial-cafe\"],\"attribution\":\"Synthetic fixture shaped like Google Places output\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\",\"area:initial:downtown-brooklyn\"],\"summary\":\"The only fixture cafe is expected closed at the meeting time.\"}"
+      },
+      {
+        "agent": "expansion_researcher",
+        "round": 1,
+        "name": "search_mta_expansion_candidates",
+        "args": {
+          "task_id": "task:session-123:r1:expansion:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:expansion:1\",\"agent\":\"expansion_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:expansion:r1:001\",\"candidate_id\":\"area:mta:fixture-queensboro-plaza\",\"subject_id\":\"area:mta:fixture-queensboro-plaza\",\"predicate\":\"station_name\",\"value\":\"Queensboro Plaza\",\"unit\":null,\"observed_at\":\"2026-10-01T16:02:00Z\",\"valid_for\":{\"dataset_id\":\"39hk-dx4f\",\"fixture\":true},\"source_ids\":[\"source:mta-stations:fixture-queensboro-plaza\"],\"provisional\":false},{\"fact_id\":\"fact:expansion:r1:002\",\"candidate_id\":\"area:mta:fixture-queensboro-plaza\",\"subject_id\":\"area:mta:fixture-queensboro-plaza\",\"predicate\":\"coordinates\",\"value\":{\"lat\":40.7506,\"lng\":-73.9402},\"unit\":\"WGS84\",\"observed_at\":\"2026-10-01T16:02:00Z\",\"valid_for\":{\"dataset_id\":\"39hk-dx4f\",\"fixture\":true},\"source_ids\":[\"source:mta-stations:fixture-queensboro-plaza\"],\"provisional\":false},{\"fact_id\":\"fact:expansion:r1:003\",\"candidate_id\":\"area:mta:fixture-queensboro-plaza\",\"subject_id\":\"area:mta:fixture-queensboro-plaza\",\"predicate\":\"expansion_selection_reason\",\"value\":\"Omitted from the initial shortlist and geographically distinct from both initial centers.\",\"unit\":null,\"observed_at\":\"2026-10-01T16:02:00Z\",\"valid_for\":{\"fixture\":true},\"source_ids\":[\"source:mta-stations:fixture-queensboro-plaza\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:mta-stations:fixture-queensboro-plaza\",\"provider\":\"mta_subway_stations\",\"title\":\"Fixture MTA Subway Stations record\",\"url\":\"https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data\",\"accessed_at\":\"2026-10-01T16:02:00Z\",\"request_summary\":{\"fixture\":true,\"dataset_id\":\"39hk-dx4f\"},\"provider_record_ids\":[\"fixture-queensboro-plaza\"],\"attribution\":\"Synthetic fixture based on the MTA Subway Stations schema\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:mta:fixture-queensboro-plaza\"],\"summary\":\"One bounded expansion candidate is available for targeted verification.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "choose_follow_up",
+        "args": {
+          "research_id": "research:session-123:1",
+          "max_follow_up_rounds": 1
+        },
+        "result": "{\"round\":2,\"reason_code\":\"NO_FEASIBLE_INITIAL_CAFE\",\"unresolved_predicate\":\"Whether the MTA-backed expansion area contains a cafe that passes cafe constraints and exact-address commute limits\",\"selected_ids\":[\"area:mta:fixture-queensboro-plaza\"],\"task_agents\":[\"cafe_researcher\",\"transit_researcher\"],\"dependencies\":[\"fact:expansion:r1:003\"],\"expected_information_gain\":\"Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check.\",\"omitted_candidate_reason\":\"The fixture exposes only one non-duplicate expansion station, so no lower-value station is queried.\"}"
+      },
+      {
+        "agent": "cafe_researcher",
+        "round": 2,
+        "name": "search_cafes_in_areas",
+        "args": {
+          "task_id": "task:session-123:r2:cafe:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:mta:fixture-queensboro-plaza"
+          ],
+          "dependencies": [
+            "fact:expansion:r1:003"
+          ]
+        },
+        "result": "{\"task_id\":\"task:session-123:r2:cafe:1\",\"agent\":\"cafe_researcher\",\"round\":2,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:cafe:r2:001\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"parent_candidate_id\",\"value\":\"area:mta:fixture-queensboro-plaza\",\"unit\":null,\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:002\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"name\",\"value\":\"Fixture Commons Cafe\",\"unit\":null,\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:003\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"address\",\"value\":\"Fixture address near Queensboro Plaza\",\"unit\":null,\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"fixture\":true},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:004\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"coordinates\",\"value\":{\"lat\":40.751,\"lng\":-73.9398},\"unit\":\"WGS84\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"fixture\":true},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:005\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"rating\",\"value\":4.5,\"unit\":\"stars\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:006\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"price_level\",\"value\":2,\"unit\":\"google_price_level\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:007\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"business_status\",\"value\":\"OPERATIONAL\",\"unit\":null,\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r2:008\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"predicate\":\"open_at_meeting_time\",\"value\":true,\"unit\":null,\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"basis\":\"regular_schedule\"},\"source_ids\":[\"source:google-places:fixture-r2\"],\"provisional\":true}],\"sources\":[{\"source_id\":\"source:google-places:fixture-r2\",\"provider\":\"google_places\",\"title\":\"Fixture Places API expansion-area response\",\"url\":\"https://developers.google.com/maps/documentation/places/web-service/nearby-search\",\"accessed_at\":\"2026-10-01T16:10:00Z\",\"request_summary\":{\"fixture\":true,\"parent_candidate_id\":\"area:mta:fixture-queensboro-plaza\",\"meeting_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[\"fixture-expansion-cafe\"],\"attribution\":\"Synthetic fixture shaped like Google Places output\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:mta:fixture-queensboro-plaza\"],\"summary\":\"The expansion search returns one cafe that passes known cafe constraints with provisional regular-hours evidence.\"}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 2,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-123:r2:transit:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "cafe:gplaces:fixture-expansion-cafe"
+          ],
+          "dependencies": [
+            "fact:cafe:r2:004"
+          ]
+        },
+        "result": "{\"task_id\":\"task:session-123:r2:transit:1\",\"agent\":\"transit_researcher\",\"round\":2,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r2:001\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":30,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:11:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:002\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":28,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:11:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:fixture-r2\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:003\",\"candidate_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":35,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:11:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:fixture-r2\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:fixture-r2\",\"provider\":\"google_routes\",\"title\":\"Fixture Routes API exact-cafe matrix\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:11:00Z\",\"request_summary\":{\"fixture\":true,\"origin_count\":3,\"destination_count\":1,\"destination_kind\":\"exact_cafe\",\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic fixture shaped like Google Routes output\"}],\"missing\":[],\"candidate_ids_considered\":[\"cafe:gplaces:fixture-expansion-cafe\"],\"summary\":\"Exact-cafe durations are present and within every fixture traveler's hard limit.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "evaluate_feasibility",
+        "args": {
+          "research_id": "research:session-123:1",
+          "rule_version": "feasibility-v1"
+        },
+        "result": "[{\"cafe_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"status\":\"FEASIBLE\",\"reasons\":[],\"rule_version\":\"feasibility-v1\"}]"
+      },
+      {
+        "agent": "writer",
+        "round": 2,
+        "name": "write_evidence_report",
+        "args": {
+          "research_id": "research:session-123:1",
+          "claim_count": 8,
+          "unknown_count": 0
+        },
+        "result": "{\"recommended_cafe_id\":\"cafe:gplaces:fixture-expansion-cafe\",\"response\":\"## Result\\n\\n- Recommend Fixture Commons Cafe (`cafe:gplaces:fixture-expansion-cafe`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r2:002,fact:cafe:r2:003,fact:cafe:r2:004,fact:cafe:r2:005,fact:cafe:r2:006,fact:cafe:r2:007,fact:cafe:r2:008,fact:transit:r2:001,fact:transit:r2:002,fact:transit:r2:003; sources=source:google-places:fixture-r2,source:google-routes:fixture-r2; derived=feasibility-v1:cafe:gplaces:fixture-expansion-cafe]\\n- Exact-cafe commute checks all pass: traveler:alice 30/35 minutes, traveler:bob 28/30 minutes, traveler:carol 35/40 minutes. [facts=fact:transit:r2:001,fact:transit:r2:002,fact:transit:r2:003; sources=source:google-routes:fixture-r2; derived=feasibility-v1:cafe:gplaces:fixture-expansion-cafe]\\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r2:008; sources=source:google-places:fixture-r2]\\n\\n## Why the initial candidates failed\\n\\n- Union Square failed at the area-center stage: Astoria 32 > 30 minutes. [facts=fact:transit:r1:002; sources=source:google-routes:fixture-r1]\\n- Downtown Brooklyn failed at the area-center stage: Columbia University 45 > 35 minutes. [facts=fact:transit:r1:004; sources=source:google-routes:fixture-r1]\\n- Initial cafe `cafe:gplaces:fixture-initial-cafe` was expected to be closed at the requested meeting time. [facts=fact:cafe:r1:002; sources=source:google-places:fixture-r1]\\n\\n## What the targeted follow-up added\\n\\n- Lead used its single follow-up round for `NO_FEASIBLE_INITIAL_CAFE` and selected `area:mta:fixture-queensboro-plaza`. Expected information gain: Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check. [facts=fact:expansion:r1:003; sources=source:mta-stations:fixture-queensboro-plaza; derived=follow-up:r2:NO_FEASIBLE_INITIAL_CAFE]\\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r2:004; sources=source:google-places:fixture-r2; derived=lead-policy:places-before-routes]\"}"
+      }
+    ]
+  },
+  "captured_at": "2026-11-10T04:09:23.471112+00:00",
+  "build": {
+    "kind": "fixed-data vertical slice"
+  }
+}

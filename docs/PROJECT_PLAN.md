@@ -61,6 +61,36 @@ editing one another's primary files.
 **Gate:** an integration test proves initial failure → justified follow-up → new evidence
 → supported final diagnosis, without network calls.
 
+**Current checkpoint (2026-11-09):**
+
+- [x] Strict shared contract models and stable-ID validation.
+- [x] Synthetic round-1 failure, FollowUpDecision, round-2 evidence, and expected outcome.
+- [x] Contract and fixture-story tests, including citation and secret-safety checks.
+- [x] Deterministic feasibility evaluator that computes the expected outcome and every
+  supported blocker without model arithmetic.
+- [x] Fresh-context concurrent Researcher runner with role-scoped tools, bounded turns,
+  per-task timeout, deterministic ordering, and partial-failure conversion.
+- [x] Lead execution over the fixture bundle, including one dependency-aware Cafe →
+  exact-address Transit follow-up and deterministic feasibility handoff.
+- [x] Evidence-only Writer handoff with inline fact/source/missing/derived references,
+  provisional-hours qualification, and unsupported-citation rejection.
+- [x] Fixed-data `/chat` service/trace integration with preserved response keys and
+  `agent`/`round` metadata; live adapter injection remains Phase 2 integration.
+- [x] Deterministic partial-intake clarification and immutable ResearchBrief construction
+  from Project 1 resolver/candidate outputs.
+- [x] Application bridge reuses the real Project 1 location resolver and candidate
+  generator, traces both calls, and stops on unresolved/provider/validation failures.
+- [x] Quote-validated natural-language extraction over multi-turn user messages, with
+  no tools, explicit-offset enforcement, and deterministic model/auth failure fallback.
+- [x] Single role dispatcher/service factory plus an async bounded MTA expansion task;
+  final app injection waits only for the Transit and Cafe adapter exports.
+
+The current tests prove the data story, contract boundaries, deterministic feasibility
+decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
+loop, citation-audited Writer output, compatible `/chat` trace integration, and quote-
+validated natural-language brief intake. They do not yet prove the live Routes/Places
+provider adapters.
+
 ### Phase 2 — real data adapters
 
 - Load and normalize MTA station data with provenance and a reproducible refresh path.
@@ -70,6 +100,11 @@ editing one another's primary files.
 
 **Gate:** recorded-provider tests pass; partial failures are explicit and API secrets
 never enter prompts, traces, or git.
+
+**Current adapter checkpoint:** MTA field parsing, bounded fetch, stable station IDs,
+near-duplicate removal, three-candidate selection, provenance, and fixture tests are
+implemented. Routes and Places Researcher adapters remain teammate work; the live MTA
+startup cache and one opt-in smoke test remain integration work.
 
 ### Phase 3 — Writer, citations, and UI
 
@@ -82,15 +117,23 @@ never enter prompts, traces, or git.
 
 ### Phase 4 — evaluation and hill climbing
 
-- Build at least 50 gold/silver cases with source provenance; none may appear in prompts
-  as few-shot examples.
-- Use deterministic contract/constraint checks plus a rubric or golden-reference judge.
+- [x] Build 50 provenance-recorded synthetic gold contract cases; none may appear in
+  prompts or few-shot examples. Continue adding owner-specific full-pipeline cases.
+- [x] Add deterministic contract/constraint checks plus a strict reference/rubric
+  judge boundary.
 - Capture the three team-owned grading examples and same-model no-tools/no-system
   baselines.
 - Record baseline score, at least two changes with new scores, and gains greater than
   the margin of error `±1/sqrt(n)`.
 
 **Gate:** the documented eval command is reproducible from a clean checkout.
+
+Current progress: the full-pipeline registry and first raw Ruochen trace are complete.
+A separate 50-case contract corpus scores the actual hard-decision and intake functions
+at 50/50 across five balanced slices. The reference/rubric judge and no-tools capture
+code are implemented and tested. Credentialed judge/baseline captures and the hill-
+climbing table depend on final model selection; live end-to-end cases also depend on the
+teammate Researcher adapters.
 
 ### Phase 5 — Cloud Run and submission
 

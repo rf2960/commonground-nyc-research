@@ -1,0 +1,10 @@
+{
+  "round": 2,
+  "reason_code": "NO_FEASIBLE_INITIAL_CAFE",
+  "unresolved_predicate": "Whether the MTA-backed expansion area contains a cafe that passes cafe constraints and exact-address commute limits",
+  "selected_ids": ["area:mta:fixture-queensboro-plaza"],
+  "task_agents": ["cafe_researcher", "transit_researcher"],
+  "dependencies": ["fact:expansion:r1:003"],
+  "expected_information_gain": "Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check.",
+  "omitted_candidate_reason": "The fixture exposes only one non-duplicate expansion station, so no lower-value station is queried."
+}

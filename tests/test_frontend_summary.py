@@ -25,8 +25,23 @@ def test_decision_summary_precedes_results_and_tool_details():
     end = HTML.index("reset.addEventListener", start)
     send = HTML[start:end]
 
+    assert send.index("researchTrace(calls)") < send.index("decisionSummary(calls)")
     assert send.index("decisionSummary(calls)") < send.index("resultCards(calls)")
     assert send.index("resultCards(calls)") < send.index("toolLog(calls)")
+
+
+def test_research_trace_groups_agent_events_by_round():
+    start = HTML.index("function researchTrace")
+    end = HTML.index("function safeLink", start)
+    implementation = HTML[start:end]
+
+    assert "typeof call.agent==='string'" in implementation
+    assert "Number.isInteger(call.round)" in implementation
+    assert "Transit Researcher" in implementation
+    assert "Cafe Researcher" in implementation
+    assert "Expansion Researcher" in implementation
+    assert "How the answer was researched" in implementation
+    assert "result.selected_ids" in implementation
 
 
 def test_priority_instruction_is_not_echoed_as_user_authored_text():
@@ -34,7 +49,7 @@ def test_priority_instruction_is_not_echoed_as_user_authored_text():
     end = HTML.index("reset.addEventListener", start)
     send = HTML[start:end]
 
-    assert "body:JSON.stringify({message,session_id:sessionId})" in send
+    assert "body:JSON.stringify({message,session_id:sessionId,mode:'research'})" in send
     assert "addMessage('you',text)" in send
     assert "addMessage('you',message)" not in send
 

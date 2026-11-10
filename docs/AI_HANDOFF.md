@@ -4,6 +4,10 @@ This file is the shortest safe entry point for a teammate starting a fresh AI co
 session. The AI must also read `AGENTS.md`, `docs/EVIDENCE_CONTRACTS.md`, the relevant
 section of `docs/TEAM_PLAN.md`, and the Project 1 module it will reuse before editing.
 
+**Current handoff:** Ruochen's shared contracts, orchestration, natural-language intake,
+fixed-data vertical slice, and evaluation gates are already on `main`. Andrew and Wenyu
+should use their sections below now; they do not need to wait for another Ruochen PR.
+
 ## Shared rules for every teammate and AI
 
 1. Work from the latest `main` on a focused branch; do not commit directly to `main`.
@@ -23,6 +27,8 @@ git status
 git pull --ff-only origin main
 uv sync
 uv run pytest
+uv run python -m evals.runner
+uv run python -m evals.contract_corpus
 ```
 
 If the baseline is not clean or tests fail before the change, stop and report the exact
@@ -68,8 +74,8 @@ Read AGENTS.md, docs/EVIDENCE_CONTRACTS.md, docs/ARCHITECTURE.md, docs/AI_HANDOF
 Andrew's section of docs/TEAM_PLAN.md, and the existing commonground/transit.py plus its
 tests completely before editing.
 
-Prerequisite: Ruochen's shared models/fixtures must already exist on main. If not, stop
-and report that dependency; do not invent a competing schema.
+Prerequisite status: satisfied on main. Confirm `commonground/research/models.py` and
+`evals/contract_corpus.py` exist after pulling; do not invent a competing schema.
 
 Scope: write fixture-driven contract tests for one area-center task and one exact-cafe
 task, then implement a thin commonground/research/transit_agent.py adapter around the
@@ -103,8 +109,8 @@ Yulia's section of docs/TEAM_PLAN.md, and the existing commonground/places.py,
 commonground/opening_hours.py, commonground/cafes.py, and their tests completely before
 editing.
 
-Prerequisite: Ruochen's shared models/fixtures must already exist on main. If not, stop
-and report that dependency; do not invent a competing schema.
+Prerequisite status: satisfied on main. Confirm `commonground/research/models.py` and
+`evals/contract_corpus.py` exist after pulling; do not invent a competing schema.
 
 Scope: first write normalization tests for a successful cafe, missing future hours, and
 the same Places ID returned from two areas. Then implement a thin

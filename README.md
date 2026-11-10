@@ -14,21 +14,105 @@ This repository preserves the complete Project 1 history and starts from
 
 ## Project 2 status
 
-The repository-preparation milestone is complete: the research question, staged plan,
-team ownership, agent boundaries, evidence contract, and evaluation plan are agreed in
-the documents below. The inherited Project 1 application still runs, but the
-multi-agent business implementation and Project 2 Cloud Run deployment intentionally
-begin in the next milestone.
+The repository-preparation and fixed-data vertical-slice milestones are complete. The
+current build includes strict contracts, bounded concurrent research, one justified
+follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
+natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
+50-case deterministic contract corpus. Teammate-owned live Routes/Places adapters,
+credentialed model eval captures, final integration, and Cloud Run remain.
 
 | Document | Purpose |
 | --- | --- |
 | [Project plan](docs/PROJECT_PLAN.md) | Scope, phases, risks, and definition of done |
 | [Architecture](docs/ARCHITECTURE.md) | Five-agent flow, follow-up policy, and Project 1 reuse |
 | [Evidence contracts](docs/EVIDENCE_CONTRACTS.md) | Shared IDs, requests, facts, sources, gaps, and `/chat` trace shape |
+| [Data sources](docs/DATA_SOURCES.md) | Endpoints, consumed fields, provenance, fixture/live boundary, and loading plan |
 | [Team plan](docs/TEAM_PLAN.md) | Module ownership, inputs/outputs, deliverables, and acceptance checks |
 | [AI handoff](docs/AI_HANDOFF.md) | Copy-ready prompts and first-PR boundaries for each teammate |
+| [Integration guide](docs/INTEGRATION_GUIDE.md) | Adapter callable, dispatcher, `/chat` boundary, and teammate merge checklist |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
+
+### Implemented in the current checkpoint
+
+- `commonground/research/models.py` validates stable IDs, explicit time zones,
+  per-traveler limits, agent/round identity, cited facts, explicit gaps, bounded
+  follow-up, feasibility states, and credential-free source metadata.
+- `tests/research/fixtures/` contains clearly labeled synthetic evidence for initial
+  failure, a justified MTA-backed follow-up, and decisive round-2 cafe/exact-route data.
+- `tests/research/test_models.py` checks contract round trips, invalid/ambiguous input,
+  source integrity, secret rejection, the one-follow-up bound, and the complete fixture
+  story. These are fixture claims only, not live provider results.
+- `commonground/research/feasibility.py` deterministically computes the four documented
+  statuses from normalized evidence, preserves every blocker, treats equality at a
+  commute limit as passing, and refuses to hide an absent field that lacks an explicit
+  MissingEvidence record.
+- `tests/research/test_feasibility.py` proves the fixed round-2 evidence produces the
+  expected result and covers commute, cafe, conflict, unknown, boundary, and inactive-
+  filter cases.
+- `commonground/research/runner.py` launches the three initial Researchers concurrently
+  with a fresh message list, role-scoped tool allowlist, per-task timeout, and hard turn
+  budget. A failed task becomes explicit missing evidence while successful siblings are
+  preserved; raw provider exceptions are not copied into traces.
+- `tests/research/test_runner.py` proves actual overlap, deterministic result ordering,
+  context isolation, tool-scope enforcement, timeout handling, partial failure, result
+  identity validation, and the exact three-role initial fan-out.
+- `commonground/research/lead.py` creates the three initial tasks, chooses at most one
+  evidence-backed follow-up, waits for expansion Cafe coordinates before exact-address
+  Transit, and passes the complete evidence bundle to deterministic feasibility.
+- `tests/research/test_lead.py` executes the fixed first-round failure through the
+  second-round feasible result and rejects unjustified or invented follow-up targets.
+- `commonground/research/writer.py` renders comparison, recommendation/blockers, and
+  unknowns only from normalized facts, sources, feasibility records, and gaps. Every
+  visible claim carries auditable IDs and provisional future hours remain qualified.
+- `tests/research/test_writer.py` rejects uncited or unknown references and proves both
+  the feasible recommendation and insufficient-evidence output paths.
+- `commonground/research/expansion.py` loads the official MTA Socrata schema through a
+  bounded adapter, removes invalid/duplicate/initial-nearby stations, selects at most
+  three diverse candidates, and emits cited station facts.
+- `tests/research/test_expansion.py` verifies current field normalization, stable IDs,
+  bounded deterministic selection, provenance, timeouts/errors, and timestamp safety
+  without making live network calls.
+- `commonground/research/service.py` joins Lead, deterministic evaluation, and Writer,
+  then emits the ordered Project 2 trace while preserving legacy tool-call fields.
+- Root `app.py` now accepts an optional structured `research` mode without changing the
+  default Project 1 route. It clarifies a missing brief and refuses to claim fixture or
+  live results until real Routes/Places adapters are injected.
+- `tests/research/test_service.py` proves the full nine-entry fixture trace and the
+  unchanged `/chat` response keys, session identity, clarification, and safe unconfigured
+  behavior.
+- `commonground/research/intake.py` records partial user inputs, produces specific
+  clarification gaps, and is the only constructor joining clarified limits/time to
+  authoritative Project 1 location and candidate outputs.
+- The same intake module now runs the actual Project 1 `resolve_group_locations` and
+  `generate_candidate_areas` boundaries in order, stops on only the unresolved people,
+  preserves both calls in the Lead trace, and dispatches research only after the joined
+  brief validates.
+- `commonground/research/intake_extraction.py` converts multi-turn user text into partial
+  intake without tools. Every extracted identity, origin, limit, and normalized meeting
+  time must cite an exact quote present in the user's messages; unsupported fields are
+  rejected and model/auth failures fall back to deterministic clarification.
+- `tests/research/test_intake.py` covers missing/naive time, per-traveler origin and
+  limit gaps, duplicate identities, unresolved joins, stable candidate IDs, and `/chat`
+  clarification without starting research prematurely.
+- `evals/runner.py` runs provenance-recorded cases through the real fixed-data pipeline
+  and fails on recommendation, feasibility, follow-up, source, answer, bound, or trace
+  regressions. Ruochen's first raw capture scores `1.0` on eight golden checks; its
+  same-model/no-tools/no-system baseline remains explicitly pending rather than
+  fabricated.
+- `evals/contract_corpus.py` runs 50 provenance-recorded synthetic gold boundary cases
+  through the actual feasibility and intake functions: 10 each for feasible, commute,
+  cafe, missing-evidence, and clarification slices. The current result is 50/50.
+- `evals/rubric_judge.py` supplies the second scoring method with a strict 0–4 reference
+  rubric, while `evals/baseline.py` enforces the same-model question-only comparison
+  with no tools and no system prompt. Credentialed captures remain pending model freeze.
+- `commonground/research/dispatch.py` is the single production composition boundary:
+  it routes each task to exactly one owner adapter, provides the real bounded MTA task,
+  and constructs the service while preserving runner timeout/turn limits.
+- `index.html` identifies the Project 2 research purpose and renders an accessible,
+  round-grouped Lead/Researcher/Writer evidence path whenever `/chat` returns Project 2
+  `agent` and `round` trace entries. Its requests now use Project 2 research mode, while
+  legacy Project 1 API behavior and result cards remain compatible.
 
 ## Deep Research design
 
@@ -114,8 +198,23 @@ sources, agent-output capture, and no-tools/no-system-prompt baseline format are
 | Andrew | “The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?” | Request the dependency-aware exact-address route check; report actual versus limit for any failing traveler and do not treat a center ETA as cafe ETA. | Google Routes center and exact-cafe requests, Google Places address, clarified traveler limits |
 | Wenyu/Yulia | “This cafe has a good rating and acceptable commutes, but can you prove it will be open at our meeting time?” | If regular hours are missing, return `EVIDENCE_INSUFFICIENT`, identify the missing field, and recommend venue verification rather than claiming open/closed. | Google Places record/request, MissingEvidence record, exact-cafe Routes result |
 
-The final README will include the recorded agent answer and same-model baseline for
-each example after the fixed-fixture slice exists.
+Ruochen's fixed-data agent answer and full trace are now captured under `evals/examples/`.
+The same-model baseline must be recorded only after the production model is frozen.
+
+Run the current provenance-recorded case registry with:
+
+```bash
+uv run python -m evals.runner
+```
+
+Run the 50-case contract corpus with:
+
+```bash
+uv run python -m evals.contract_corpus
+```
+
+See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
+handoff.
 
 The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
 Routes, Places-hours, expected-answer, and baseline comparison refers to the same
@@ -138,5 +237,5 @@ unambiguous arrival time.
 | Team member | Columbia UNI | GitHub | Project 2 focus |
 | --- | --- | --- | --- |
 | Ruochen Feng | `rf2960` | `rf2960` | Lead, Writer, parallel runner, MTA expansion, integration |
-| Andrew Chen | `yc4745` | `achen711` | Transit Researcher, commute limits, exact-address verification |
+| Andrew Chen | `yc4745` | `yc4745-jpg` | Transit Researcher, commute limits, exact-address verification |
 | Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | Cafe Researcher, opening evidence, research result UI |

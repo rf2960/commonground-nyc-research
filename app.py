@@ -3,6 +3,7 @@ import os
 import time
 import uuid
 from pathlib import Path
+from typing import Literal
 
 import litellm
 import uvicorn
@@ -13,6 +14,15 @@ from pydantic import BaseModel, Field
 from commonground.recommendations import (
     build_recommendation_plans,
     infer_preferred_objective,
+)
+from commonground.research import (
+    DeepResearchService,
+    ResearchBrief,
+    ResearchIntake,
+    clarification_message,
+    extract_research_intake,
+    IntakeExtractionError,
+    prepare_research_brief,
 )
 from tools import TOOLS, run_tool
 
@@ -191,12 +201,21 @@ def make_session_room() -> None:
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     session_id: str | None = Field(default=None, max_length=128)
+    mode: Literal["chat", "research"] = "chat"
+    research_brief: ResearchBrief | None = None
+    research_intake: ResearchIntake | None = None
 
 
 class ChatResponse(BaseModel):
     response: str
     session_id: str
     tool_calls: list[dict]
+
+
+# Live Project 2 provider adapters are injected during deployment integration. Keeping
+# this unset preserves Project 1 behavior and prevents fixture evidence from being
+# presented as a live provider result.
+research_service: DeepResearchService | None = None
 
 
 @app.get("/")
@@ -214,13 +233,97 @@ def health():
 def chat(request: ChatRequest):
     now = time.monotonic()
     prune_sessions(now)
-    session_id = request.session_id or str(uuid.uuid4())
+    if request.mode == "research" and request.research_brief is not None:
+        session_id = request.session_id or request.research_brief.session_id
+    else:
+        session_id = request.session_id or str(uuid.uuid4())
     if session_id not in sessions:
         make_session_room()
         sessions[session_id] = [{"role": "system", "content": SYSTEM_PROMPT}]
     session_last_seen[session_id] = now
 
     sessions[session_id].append({"role": "user", "content": request.message})
+
+    if request.mode == "research":
+        brief = request.research_brief
+        preparation_calls: list[dict] = []
+        intake = request.research_intake
+        if brief is None and intake is None:
+            user_messages = [
+                item["content"]
+                for item in sessions[session_id]
+                if item.get("role") == "user" and isinstance(item.get("content"), str)
+            ]
+            try:
+                intake = extract_research_intake(
+                    user_messages,
+                    model=MODEL,
+                    vertex_location=VERTEX_LOCATION,
+                )
+            except IntakeExtractionError:
+                response = clarification_message(ResearchIntake())
+                tool_calls = []
+                sessions[session_id].append({"role": "assistant", "content": response})
+                return ChatResponse(
+                    response=response,
+                    session_id=session_id,
+                    tool_calls=tool_calls,
+                )
+            preparation_calls.append(
+                {
+                    "agent": "lead",
+                    "round": 1,
+                    "name": "extract_research_intake",
+                    "args": {"message_count": len(user_messages)},
+                    "result": intake.model_dump_json(),
+                }
+            )
+        if brief is None and intake is not None:
+            preparation = prepare_research_brief(
+                intake,
+                session_id=session_id,
+            )
+            brief = preparation.brief
+            preparation_calls.extend(preparation.tool_calls)
+            if brief is None:
+                response = preparation.response
+                tool_calls = preparation_calls
+                sessions[session_id].append({"role": "assistant", "content": response})
+                return ChatResponse(
+                    response=response,
+                    session_id=session_id,
+                    tool_calls=tool_calls,
+                )
+        if brief is None:
+            response = clarification_message(ResearchIntake())
+            tool_calls = []
+        elif brief.session_id != session_id:
+            response = (
+                "The research brief session_id must match the requested chat session."
+            )
+            tool_calls = preparation_calls
+        elif research_service is None:
+            response = (
+                "Deep Research is not connected to live Routes and Places adapters "
+                "yet. The fixed-data integration is available in tests; no live "
+                "provider result was claimed."
+            )
+            tool_calls = preparation_calls
+        else:
+            try:
+                output = research_service.run_sync(brief)
+            except Exception as error:
+                response = f"Deep Research failed safely: {type(error).__name__}"
+                tool_calls = preparation_calls
+            else:
+                response = output.response
+                tool_calls = preparation_calls + list(output.tool_calls)
+        sessions[session_id].append({"role": "assistant", "content": response})
+        return ChatResponse(
+            response=response,
+            session_id=session_id,
+            tool_calls=tool_calls,
+        )
 
     try:
         response, tool_calls = run_agent(sessions[session_id])

@@ -10,7 +10,7 @@ without copying provider code or editing the same core files.
 | Owner | Columbia UNI | GitHub | Suggested first branch |
 | --- | --- | --- | --- |
 | Ruochen Feng | `rf2960` | `rf2960` | `ruochen/orchestration-schemas` |
-| Andrew Chen | `yc4745` | `achen711` | `andrew/transit-researcher` |
+| Andrew Chen | `yc4745` | `yc4745-jpg` | `andrew/transit-researcher` |
 | Wenyu Duan (Yulia) | `wd2422` | `Dwyyy123` | `yulia/cafe-researcher` |
 
 ## Ruochen — orchestration, expansion, Writer, integration
@@ -66,6 +66,27 @@ without copying provider code or editing the same core files.
 
 Create `research/models.py` plus the round-1/round-2 fixture bundle and contract tests.
 This unblocks Andrew and Yulia without requiring the runner to exist yet.
+
+### Current implementation status
+
+Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, cited
+Writer, MTA expansion, natural-language intake, Project 1 bridge, and fixed-data
+`/chat`/trace integration are all on `main`. Ruochen's 50-case provenance-recorded
+contract corpus currently passes 50/50; the strict reference/rubric judge and the
+same-model no-tools/no-system capture boundary are implemented and tested. Remaining
+Ruochen work is live Transit/Cafe adapter injection after teammate delivery, frozen-
+model judge/baseline runs, hill-climbing reporting, and Cloud Run release.
+
+The dispatcher, service factory, and live MTA expansion task are also complete. Andrew
+and Wenyu should branch or rebase from the latest `main` now; they do not need to wait
+for more Ruochen contracts. They only need to export the documented async callables,
+which Ruochen will pass to `build_research_service` during final integration.
+
+The Project 1 bridge is complete too: a validated structured intake now calls the real
+location resolver, stops on only unresolved travelers, calls the inherited candidate
+generator, and appends both Lead tool records before the research trace. Natural-language
+extraction is also implemented with verbatim quote checks and safe failure fallback; it
+is Ruochen-owned and does not require changes inside either teammate adapter.
 
 ## Andrew — Transit Researcher and commute limits
 

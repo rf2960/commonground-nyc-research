@@ -4,6 +4,16 @@ These shapes are the shared boundary between Lead, the three Researchers, determ
 evaluation, Writer, `/chat`, and the UI. Examples use JSON-compatible values even if the
 implementation uses Pydantic models or dataclasses.
 
+Contract version `research-contract-v1` is implemented in
+`commonground/research/models.py`. Canonical synthetic examples live in
+`tests/research/fixtures/`; they are test evidence and must never be presented as live
+MTA, Google Routes, or Google Places results.
+
+The implementation additionally enforces three cross-record safety rules implied by
+this document: `research_id` and `task_id` must refer to the same session, every Fact's
+source must be present in its ResearchResult, and Source URLs/request summaries must not
+contain credential fields.
+
 ## Stable identifiers
 
 - Traveler: `traveler:<lead-assigned-slug>`; stable for the session.
@@ -18,6 +28,13 @@ IDs are never recomputed from display labels. When two agents refer to the same 
 they must use the ID assigned by Lead or the provider-derived cafe/station ID.
 
 ## Research brief
+
+Before this record exists, `ResearchIntake` may hold partial user input. Its gap checker
+must return actionable clarification records and must not dispatch tools. The sole brief
+builder requires a timezone-aware meeting time, at least two unique travelers with
+origins and individual limits, a one-to-one join to resolved Project 1 locations, and
+at least one stable initial candidate. Natural-language extraction may populate the
+intake later, but it cannot bypass these deterministic checks.
 
 Lead creates one immutable brief after clarification:
 
@@ -150,7 +167,9 @@ include the place ID and Google Maps URL when available.
 
 ```json
 {
+  "missing_id": "missing:cafe:r1:001",
   "candidate_id": "cafe:gplaces:place-123",
+  "subject_id": null,
   "field": "open_at_meeting_time",
   "reason_code": "PROVIDER_FIELD_MISSING",
   "detail": "Regular opening periods were absent.",
@@ -160,7 +179,14 @@ include the place ID and Google Maps URL when available.
 ```
 
 Common reason codes are `PROVIDER_FIELD_MISSING`, `ROUTE_UNAVAILABLE`,
-`PROVIDER_ERROR`, `DEPENDENCY_NOT_READY`, `STALE_EVIDENCE`, and `VALIDATION_ERROR`.
+`PROVIDER_ERROR`, `DEPENDENCY_NOT_READY`, `STALE_EVIDENCE`, `VALIDATION_ERROR`,
+`AGENT_EXECUTION_ERROR`, and `TIMEOUT`.
+Missing IDs use `missing:<agent>:r<round>:<sequence>`. `subject_id` identifies the
+affected traveler when a field such as an exact route is missing for only one person.
+Feasibility reasons cite `input_missing_ids`; Writer can therefore resolve each unknown
+to its provider reason and next action instead of citing an absence indirectly.
+Runner-level failures use a fixed, credential-free detail string rather than copying
+an arbitrary SDK/provider exception into the evidence trace.
 
 ## Follow-up decision
 
@@ -192,7 +218,8 @@ round and task bounds.
       "traveler_id": "traveler:alice",
       "actual_minutes": 38.4,
       "limit_minutes": 35,
-      "input_fact_ids": ["fact:transit:r2:004"]
+      "input_fact_ids": ["fact:transit:r2:004"],
+      "input_missing_ids": []
     }
   ],
   "rule_version": "feasibility-v1"
@@ -201,6 +228,12 @@ round and task bounds.
 
 Allowed statuses are `FEASIBLE`, `COMMUTE_LIMIT_EXCEEDED`,
 `CAFE_CONSTRAINT_FAILED`, and `EVIDENCE_INSUFFICIENT`.
+
+`commonground/research/feasibility.py` implements `feasibility-v1`. Evidence
+insufficiency takes status precedence, followed by commute-limit failure and cafe-
+constraint failure, while the result retains every supported reason. A required field
+that has neither a Fact nor a MissingEvidence record is a contract error, not a silent
+unknown.
 
 ## `/chat` compatibility and trace
 
@@ -225,6 +258,8 @@ The top-level response stays:
 Legacy Project 1 calls may omit `agent`/`round` only during migration. All Project 2
 sub-agent calls require them. Ordering is deterministic: Lead preparation, round 1 tasks
 sorted by agent, follow-up decision, round 2 tasks, deterministic evaluation, Writer.
+`build_research_trace` implements this order; every entry retains `name`, `args`, and a
+string `result`, and adds `agent` plus integer `round`.
 
 ## Writer citation rules
 
@@ -234,3 +269,8 @@ sorted by agent, follow-up decision, round 2 tasks, deterministic evaluation, Wr
 - Regular-hours evidence is labeled provisional for future dates.
 - Unknowns list the matching missing-evidence record and next action.
 - Writer may omit low-value facts for readability but may not introduce uncited facts.
+
+The fixed-data implementation uses derived references such as
+`feasibility-v1:<cafe-id>` and `follow-up:r2:<reason-code>` alongside the exact input
+fact/source/missing IDs. `validate_writer_report` rejects references absent from the
+Lead evidence bundle or citations omitted from the visible response.

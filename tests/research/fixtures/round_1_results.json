@@ -1,0 +1,203 @@
+[
+  {
+    "task_id": "task:session-123:r1:transit:1",
+    "agent": "transit_researcher",
+    "round": 1,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:transit:r1:001",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 25,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r1:002",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 32,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r1:003",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r1:004",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 45,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r1:005",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 22,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r1:006",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 28,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "area_center"},
+        "source_ids": ["source:google-routes:fixture-r1"],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:fixture-r1",
+        "provider": "google_routes",
+        "title": "Fixture Routes API area-center matrix",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-10-01T16:00:00Z",
+        "request_summary": {"fixture": true, "origin_count": 3, "destination_count": 2, "arrival_time": "2026-10-10T14:00:00-04:00"},
+        "provider_record_ids": [],
+        "attribution": "Synthetic fixture shaped like Google Routes output"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["area:initial:union-square", "area:initial:downtown-brooklyn"],
+    "summary": "Both initial area centers exceed at least one traveler's hard limit."
+  },
+  {
+    "task_id": "task:session-123:r1:cafe:1",
+    "agent": "cafe_researcher",
+    "round": 1,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:cafe:r1:001",
+        "candidate_id": "cafe:gplaces:fixture-initial-cafe",
+        "subject_id": "cafe:gplaces:fixture-initial-cafe",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-10-01T16:01:00Z",
+        "valid_for": {},
+        "source_ids": ["source:google-places:fixture-r1"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:002",
+        "candidate_id": "cafe:gplaces:fixture-initial-cafe",
+        "subject_id": "cafe:gplaces:fixture-initial-cafe",
+        "predicate": "open_at_meeting_time",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-01T16:01:00Z",
+        "valid_for": {"meeting_time": "2026-10-10T14:00:00-04:00", "basis": "regular_schedule"},
+        "source_ids": ["source:google-places:fixture-r1"],
+        "provisional": true
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-places:fixture-r1",
+        "provider": "google_places",
+        "title": "Fixture Places API initial-area response",
+        "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+        "accessed_at": "2026-10-01T16:01:00Z",
+        "request_summary": {"fixture": true, "area_count": 2, "meeting_time": "2026-10-10T14:00:00-04:00"},
+        "provider_record_ids": ["fixture-initial-cafe"],
+        "attribution": "Synthetic fixture shaped like Google Places output"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["area:initial:union-square", "area:initial:downtown-brooklyn"],
+    "summary": "The only fixture cafe is expected closed at the meeting time."
+  },
+  {
+    "task_id": "task:session-123:r1:expansion:1",
+    "agent": "expansion_researcher",
+    "round": 1,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:expansion:r1:001",
+        "candidate_id": "area:mta:fixture-queensboro-plaza",
+        "subject_id": "area:mta:fixture-queensboro-plaza",
+        "predicate": "station_name",
+        "value": "Queensboro Plaza",
+        "unit": null,
+        "observed_at": "2026-10-01T16:02:00Z",
+        "valid_for": {"dataset_id": "39hk-dx4f", "fixture": true},
+        "source_ids": ["source:mta-stations:fixture-queensboro-plaza"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:expansion:r1:002",
+        "candidate_id": "area:mta:fixture-queensboro-plaza",
+        "subject_id": "area:mta:fixture-queensboro-plaza",
+        "predicate": "coordinates",
+        "value": {"lat": 40.7506, "lng": -73.9402},
+        "unit": "WGS84",
+        "observed_at": "2026-10-01T16:02:00Z",
+        "valid_for": {"dataset_id": "39hk-dx4f", "fixture": true},
+        "source_ids": ["source:mta-stations:fixture-queensboro-plaza"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:expansion:r1:003",
+        "candidate_id": "area:mta:fixture-queensboro-plaza",
+        "subject_id": "area:mta:fixture-queensboro-plaza",
+        "predicate": "expansion_selection_reason",
+        "value": "Omitted from the initial shortlist and geographically distinct from both initial centers.",
+        "unit": null,
+        "observed_at": "2026-10-01T16:02:00Z",
+        "valid_for": {"fixture": true},
+        "source_ids": ["source:mta-stations:fixture-queensboro-plaza"],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:mta-stations:fixture-queensboro-plaza",
+        "provider": "mta_subway_stations",
+        "title": "Fixture MTA Subway Stations record",
+        "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+        "accessed_at": "2026-10-01T16:02:00Z",
+        "request_summary": {"fixture": true, "dataset_id": "39hk-dx4f"},
+        "provider_record_ids": ["fixture-queensboro-plaza"],
+        "attribution": "Synthetic fixture based on the MTA Subway Stations schema"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["area:mta:fixture-queensboro-plaza"],
+    "summary": "One bounded expansion candidate is available for targeted verification."
+  }
+]

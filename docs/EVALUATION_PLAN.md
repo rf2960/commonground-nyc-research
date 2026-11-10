@@ -2,8 +2,10 @@
 
 ## Required corpus and scorers
 
-Before submission, create at least 50 gold or silver cases and record where every case
-came from. No evaluation case may also appear in an agent prompt as a few-shot example.
+The deterministic contract corpus now contains 50 synthetic gold cases and records the
+fixture or code path from which each is derived. No evaluation case may also appear in
+an agent prompt as a few-shot example. These cases test the real feasibility/intake
+functions; they are explicitly not represented as live provider observations.
 
 The suite uses at least two scoring approaches:
 
@@ -17,12 +19,11 @@ Suggested coverage:
 
 | Slice | Minimum cases |
 | --- | ---: |
-| Expansion finds a feasible option | 10 |
-| Exact-address routing changes the answer | 10 |
-| Commute limit remains the blocker | 8 |
-| Cafe constraints remain the blocker | 8 |
-| Missing/partial evidence must stay unknown | 8 |
-| Clarification, malformed inputs, provider errors | 6 |
+| Feasible and exact-limit boundaries | 10 complete |
+| Commute limit remains the blocker | 10 complete |
+| Cafe constraints remain the blocker | 10 complete |
+| Missing/partial evidence must stay unknown | 10 complete |
+| Clarification and incomplete intake | 10 complete |
 
 Record `case_id`, provenance, fixture/live-record version, question, expected structured
 outcome, expected claims/source IDs, and scorer results.
@@ -36,8 +37,17 @@ The final README must report:
 - which gains exceed the margin of error `±1/sqrt(n)`; and
 - any regressions or slices still below target.
 
-The command to run the suite must be documented (target: `uv run inspect eval task.py`,
-or an equivalently reproducible framework chosen by the team).
+The chosen reproducible command is:
+
+```bash
+uv run python -m evals.runner
+```
+
+The first registered gold case executes the actual fixed-data application pipeline,
+scores eight deterministic properties, writes a raw agent/trace capture, and exits
+nonzero on regression. The separate contract corpus runs 50 cases at 50/50. The strict
+rubric/reference judge is implemented in `evals/rubric_judge.py`; credentialed scores
+remain pending the frozen model and must not be replaced by hand-authored numbers.
 
 ## Three owner-specific grading examples
 
@@ -62,6 +72,11 @@ Google Routes exact-destination request, and deterministic rule/version record.
 
 **Owner deliverables.** Golden structured bundle, actual Writer response and trace,
 no-tools/no-system baseline, deterministic score, rubric score, and a short comparison.
+
+**Current capture status.** Golden bundle, actual response/trace, and deterministic
+score are committed under `evals/`; the score is `1.0` (8/8 checks). The production
+model is not frozen, so the no-tools baseline and rubric/reference-judge score remain
+explicitly pending rather than hand-authored.
 
 ### Example 2 — Andrew: exact cafe invalidates center estimate
 

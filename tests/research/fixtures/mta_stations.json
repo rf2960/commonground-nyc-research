@@ -1,0 +1,82 @@
+[
+  {
+    "gtfs_stop_id": "R20",
+    "station_id": "100",
+    "complex_id": "100",
+    "stop_name": "Union Square",
+    "borough": "M",
+    "daytime_routes": "L N Q R W 4 5 6",
+    "gtfs_latitude": "40.7359",
+    "gtfs_longitude": "-73.9911"
+  },
+  {
+    "gtfs_stop_id": "A41",
+    "station_id": "101",
+    "complex_id": "101",
+    "stop_name": "Court Street",
+    "borough": "Bk",
+    "daytime_routes": "R",
+    "gtfs_latitude": "40.6931",
+    "gtfs_longitude": "-73.9900"
+  },
+  {
+    "gtfs_stop_id": "R09",
+    "station_id": "200",
+    "complex_id": "200",
+    "stop_name": "Queensboro Plaza",
+    "borough": "Q",
+    "daytime_routes": "N W 7",
+    "gtfs_latitude": "40.7506",
+    "gtfs_longitude": "-73.9402"
+  },
+  {
+    "gtfs_stop_id": "G22",
+    "station_id": "201",
+    "complex_id": "201",
+    "stop_name": "Court Sq",
+    "borough": "Q",
+    "daytime_routes": "E F G 7",
+    "gtfs_latitude": "40.7470",
+    "gtfs_longitude": "-73.9453"
+  },
+  {
+    "gtfs_stop_id": "R05",
+    "station_id": "202",
+    "complex_id": "202",
+    "stop_name": "Astoria Blvd",
+    "borough": "Q",
+    "daytime_routes": "N W",
+    "gtfs_latitude": "40.7703",
+    "gtfs_longitude": "-73.9178"
+  },
+  {
+    "gtfs_stop_id": "L10",
+    "station_id": "203",
+    "complex_id": "203",
+    "stop_name": "Lorimer St",
+    "borough": "Bk",
+    "daytime_routes": "L G",
+    "gtfs_latitude": "40.7140",
+    "gtfs_longitude": "-73.9503"
+  },
+  {
+    "gtfs_stop_id": "R09-duplicate",
+    "station_id": "200",
+    "complex_id": "200",
+    "stop_name": "Queensboro Plaza Duplicate",
+    "borough": "Q",
+    "daytime_routes": "N",
+    "gtfs_latitude": "40.7507",
+    "gtfs_longitude": "-73.9403"
+  },
+  {
+    "gtfs_stop_id": "bad",
+    "station_id": "bad/id",
+    "complex_id": "bad",
+    "stop_name": "Invalid Station",
+    "borough": "M",
+    "daytime_routes": "X",
+    "gtfs_latitude": "not-a-number",
+    "gtfs_longitude": "-73.9"
+  }
+]
