@@ -131,6 +131,15 @@ live Google request or model run. The
 pending model freeze; the credentialed rubric score and hill-climbing table are also
 pending.
 
+The research evidence UI now presents each cafe's status, known attributes, provisional
+opening estimate or explicit gap, and per-person exact-cafe commute versus limit.
+Area-center estimates have a separate label and cannot fill an exact-route row.
+Expandable evidence records link to HTTPS sources and expose fact/gap IDs for auditing.
+Six executable renderer tests cover the missing-hours capture, center-only routes,
+unsafe source links, provisional hours, area failures, and legacy responses. Real
+browser/mobile visual verification is still pending in an environment that can open
+the local app.
+
 The first turn uses five agent instances across three role shapes:
 
 1. **Lead** clarifies origins, arrival time, and per-person commute limits; reuses the
