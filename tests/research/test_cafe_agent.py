@@ -170,9 +170,11 @@ def test_missing_identity_is_an_area_gap():
     assert all(g.field == 'place_identity' for g in result.missing)
 
 
-def test_secret_bearing_maps_url_is_not_echoed():
-    result = normalize([dict(PLACE, googleMapsUri='https://maps.google.com/?key=fixture-secret')])
+@pytest.mark.parametrize('parameter', ['key', 'client_secret', 'password', 'secret', 'x-goog-api-key'])
+def test_secret_bearing_maps_url_is_not_echoed(parameter):
+    result = normalize([dict(PLACE, googleMapsUri=f'https://maps.google.com/?{parameter}=fixture-secret')])
     assert 'fixture-secret' not in result.model_dump_json()
+    assert result.status == 'complete'
 
 
 def test_malformed_maps_url_does_not_discard_other_evidence():
