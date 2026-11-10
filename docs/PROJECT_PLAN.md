@@ -77,7 +77,7 @@ editing one another's primary files.
 - [x] Fixed-data `/chat` service/trace integration with preserved response keys and
   `agent`/`round` metadata; live adapter injection remains Phase 2 integration.
 - [x] Deterministic partial-intake clarification and immutable ResearchBrief construction
-  from Project 1 resolver/candidate outputs; natural-language extraction remains later.
+  from Project 1 resolver/candidate outputs.
 - [x] Application bridge reuses the real Project 1 location resolver and candidate
   generator, traces both calls, and stops on unresolved/provider/validation failures.
 - [x] Quote-validated natural-language extraction over multi-turn user messages, with
@@ -87,8 +87,9 @@ editing one another's primary files.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
-loop, citation-audited Writer output, and compatible `/chat` trace integration. They do
-not yet prove the live Routes/Places provider adapters or natural-language brief intake.
+loop, citation-audited Writer output, compatible `/chat` trace integration, and quote-
+validated natural-language brief intake. They do not yet prove the live Routes/Places
+provider adapters.
 
 ### Phase 2 — real data adapters
 

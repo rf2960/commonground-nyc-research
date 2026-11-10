@@ -13,7 +13,7 @@ or deployment link.
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
 | Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
-| Frontend explains purpose, audience, and use | Project 1 baseline; Project 2 update planned | Update result UI after vertical slice |
+| Frontend explains purpose, audience, and use | Complete for fixed-data boundary | Project 2 copy, guided sample, and round-grouped Lead/Researcher/Writer evidence timeline are in `index.html` |
 | Deploy to Google Cloud Run | Project 1 baseline only | Create Project 2 deployment and replace `submission.json` URL |
 
 ## Deep Research path
@@ -45,7 +45,7 @@ or deployment link.
 | Describe project and target user | Complete | Root README research question and workflow |
 | Explain data origin and how it is loaded | MTA complete; Google adapters pending | `DATA_SOURCES.md` records endpoint, fields, bounds, provenance, and startup-cache plan |
 | Three sample queries with expected answers and source | In progress | All three are designed; Ruochen golden case and raw actual capture are committed |
-| Same-model answer with no tools and no system prompt | Planned | Capture per owner after runnable build exists |
+| Same-model answer with no tools and no system prompt | Capture code complete; run pending | `evals/baseline.py` enforces question-only/no-tools/no-system; capture after production model freeze |
 
 ## Repository and deployment requirements
 
@@ -69,7 +69,7 @@ or deployment link.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - Credentialed rubric-judge scores, same-model no-tools baselines, and the final
   hill-climbing table remain pending the frozen production model.
-- The Project 2 frontend and Cloud Run deployment do not exist yet.
+- Project 2 frontend changes exist; the new Cloud Run deployment does not yet.
 
 These are expected at the planning milestone; none should be described as complete in a
 submission until the linked evidence exists.
