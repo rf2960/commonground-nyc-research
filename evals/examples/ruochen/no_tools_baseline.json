@@ -1,0 +1,15 @@
+{
+  "schema_version": "baseline-capture-v1",
+  "case_id": "ruochen-expansion-success-001",
+  "owner": "ruochen",
+  "status": "pending",
+  "model": null,
+  "captured_at": null,
+  "conditions": {
+    "tools": false,
+    "system_prompt": false,
+    "input": "question_only"
+  },
+  "output": null,
+  "reason": "A same-model authenticated run has not been selected or executed. This placeholder prevents a hand-authored answer from being mistaken for the required raw baseline capture."
+}

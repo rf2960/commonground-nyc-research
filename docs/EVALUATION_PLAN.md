@@ -36,8 +36,17 @@ The final README must report:
 - which gains exceed the margin of error `±1/sqrt(n)`; and
 - any regressions or slices still below target.
 
-The command to run the suite must be documented (target: `uv run inspect eval task.py`,
-or an equivalently reproducible framework chosen by the team).
+The chosen reproducible command is:
+
+```bash
+uv run python -m evals.runner
+```
+
+The first registered gold case executes the actual fixed-data application pipeline,
+scores eight deterministic properties, writes a raw agent/trace capture, and exits
+nonzero on regression. Expand the registry to 50+ cases as live adapters and owner
+fixtures arrive. A rubric/reference judge remains required before submission; do not
+mislabel the deterministic golden checks as the second scorer.
 
 ## Three owner-specific grading examples
 
@@ -62,6 +71,11 @@ Google Routes exact-destination request, and deterministic rule/version record.
 
 **Owner deliverables.** Golden structured bundle, actual Writer response and trace,
 no-tools/no-system baseline, deterministic score, rubric score, and a short comparison.
+
+**Current capture status.** Golden bundle, actual response/trace, and deterministic
+score are committed under `evals/`; the score is `1.0` (8/8 checks). The production
+model is not frozen, so the no-tools baseline and rubric/reference-judge score remain
+explicitly pending rather than hand-authored.
 
 ### Example 2 — Andrew: exact cafe invalidates center estimate
 

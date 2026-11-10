@@ -31,10 +31,10 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| At least 50 gold/silver samples with provenance | Planned | Coverage table in `EVALUATION_PLAN.md`; build case registry |
+| At least 50 gold/silver samples with provenance | In progress: 1 registered gold case | Runnable registry and provenance are under `evals/`; 49+ cases remain |
 | Eval cases not reused as few-shot prompt examples | Policy set | Add prompt/corpus separation check |
-| At least two scorer types | Planned | Deterministic checks plus rubric/reference judge |
-| Documented command to run evals | Planned | Choose framework and commit runnable command |
+| At least two scorer types | In progress: deterministic scorer complete | Eight golden checks run now; rubric/reference judge remains required |
+| Documented command to run evals | Complete for current registry | `uv run python -m evals.runner` |
 | README hill-climbing log with baseline and 2+ changes | Planned | Add scores after eval harness exists |
 | Identify gains larger than `±1/sqrt(n)` | Planned | Compute in final hill-climbing table |
 
@@ -44,7 +44,7 @@ or deployment link.
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
 | Explain data origin and how it is loaded | MTA complete; Google adapters pending | `DATA_SOURCES.md` records endpoint, fields, bounds, provenance, and startup-cache plan |
-| Three sample queries with expected answers and source | Designed | Owner cases in `EVALUATION_PLAN.md`; capture actual outputs later |
+| Three sample queries with expected answers and source | In progress | All three are designed; Ruochen golden case and raw actual capture are committed |
 | Same-model answer with no tools and no system prompt | Planned | Capture per owner after runnable build exists |
 
 ## Repository and deployment requirements

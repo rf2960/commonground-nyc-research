@@ -73,7 +73,10 @@ Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, 
 Writer, and the MTA expansion adapter are implemented on Ruochen's stacked branches.
 Fixed-data `/chat`/trace integration is also complete. Remaining Ruochen work is live
 adapter dispatch/integration, natural-language extraction into the now-validated intake,
-the owner grading example/baseline, and shared deployment/eval coordination.
+the frozen-model baseline/reference-judge run, and shared deployment/eval coordination.
+The runnable eval registry, first gold case, deterministic score, and raw Ruochen
+agent/trace capture are complete; Andrew and Wenyu can copy the documented case schema
+without touching orchestration code.
 
 ## Andrew — Transit Researcher and commute limits
 

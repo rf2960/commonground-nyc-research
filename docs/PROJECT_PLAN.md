@@ -120,6 +120,11 @@ startup cache and one opt-in smoke test remain integration work.
 
 **Gate:** the documented eval command is reproducible from a clean checkout.
 
+Current progress: the registry, reproducible command, first provenance-recorded gold
+case, eight-check deterministic scorer, and Ruochen raw agent/trace capture are complete.
+The remaining corpus, reference/rubric judge, frozen-model baselines, and hill-climbing
+runs depend on the live Researcher adapters and final model selection.
+
 ### Phase 5 — Cloud Run and submission
 
 - Connect the new repository to continuous deployment.

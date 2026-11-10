@@ -1,0 +1,47 @@
+{
+  "schema_version": "eval-case-v1",
+  "case_id": "ruochen-expansion-success-001",
+  "owner": "ruochen",
+  "provenance": {
+    "kind": "gold",
+    "description": "Team-authored fixed-data vertical slice shaped like the named provider contracts; synthetic values are never represented as live API observations.",
+    "source_paths": [
+      "tests/research/fixtures/research_brief.json",
+      "tests/research/fixtures/round_1_results.json",
+      "tests/research/fixtures/round_2_results.json",
+      "tests/research/fixtures/follow_up_decision.json",
+      "tests/research/fixtures/expected_feasibility.json"
+    ],
+    "created_for": "Project 2 first implementation milestone",
+    "prompt_reuse_prohibited": true
+  },
+  "question": "Can bounded expansion find a feasible cafe without relaxing constraints?",
+  "fixtures": {
+    "brief_path": "tests/research/fixtures/research_brief.json",
+    "result_paths": [
+      "tests/research/fixtures/round_1_results.json",
+      "tests/research/fixtures/round_2_results.json"
+    ]
+  },
+  "expected": {
+    "recommended_cafe_id": "cafe:gplaces:fixture-expansion-cafe",
+    "feasibility_statuses": {
+      "cafe:gplaces:fixture-expansion-cafe": "FEASIBLE"
+    },
+    "follow_up_reason_code": "NO_FEASIBLE_INITIAL_CAFE",
+    "follow_up_selected_ids": [
+      "area:mta:fixture-queensboro-plaza"
+    ],
+    "required_source_ids": [
+      "source:google-places:fixture-r2",
+      "source:google-routes:fixture-r2",
+      "source:mta-stations:fixture-queensboro-plaza"
+    ],
+    "required_response_fragments": [
+      "Why the initial candidates failed",
+      "What the targeted follow-up added",
+      "FEASIBLE",
+      "future regular-schedule estimate"
+    ]
+  }
+}

@@ -87,6 +87,11 @@ suite, and Cloud Run deployment remain later checkpoints.
 - `tests/research/test_intake.py` covers missing/naive time, per-traveler origin and
   limit gaps, duplicate identities, unresolved joins, stable candidate IDs, and `/chat`
   clarification without starting research prematurely.
+- `evals/runner.py` runs provenance-recorded cases through the real fixed-data pipeline
+  and fails on recommendation, feasibility, follow-up, source, answer, bound, or trace
+  regressions. Ruochen's first raw capture scores `1.0` on eight golden checks; its
+  same-model/no-tools/no-system baseline remains explicitly pending rather than
+  fabricated.
 
 ## Deep Research design
 
@@ -172,8 +177,17 @@ sources, agent-output capture, and no-tools/no-system-prompt baseline format are
 | Andrew | “The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?” | Request the dependency-aware exact-address route check; report actual versus limit for any failing traveler and do not treat a center ETA as cafe ETA. | Google Routes center and exact-cafe requests, Google Places address, clarified traveler limits |
 | Wenyu/Yulia | “This cafe has a good rating and acceptable commutes, but can you prove it will be open at our meeting time?” | If regular hours are missing, return `EVIDENCE_INSUFFICIENT`, identify the missing field, and recommend venue verification rather than claiming open/closed. | Google Places record/request, MissingEvidence record, exact-cafe Routes result |
 
-The final README will include the recorded agent answer and same-model baseline for
-each example after the fixed-fixture slice exists.
+Ruochen's fixed-data agent answer and full trace are now captured under `evals/examples/`.
+The same-model baseline must be recorded only after the production model is frozen.
+
+Run the current provenance-recorded case registry with:
+
+```bash
+uv run python -m evals.runner
+```
+
+See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
+handoff.
 
 The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
 Routes, Places-hours, expected-answer, and baseline comparison refers to the same
