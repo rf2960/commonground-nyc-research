@@ -1,0 +1,204 @@
+{
+  "schema_version": "eval-capture-v1",
+  "case_id": "yulia-missing-hours-001",
+  "owner": "yulia",
+  "passed": true,
+  "deterministic_score": 1.0,
+  "checks": [
+    {
+      "name": "recommended cafe",
+      "passed": true,
+      "expected": null,
+      "actual": null
+    },
+    {
+      "name": "feasibility statuses",
+      "passed": true,
+      "expected": {
+        "cafe:gplaces:fixture-yulia": "EVIDENCE_INSUFFICIENT"
+      },
+      "actual": {
+        "cafe:gplaces:fixture-yulia": "EVIDENCE_INSUFFICIENT"
+      }
+    },
+    {
+      "name": "follow-up reason",
+      "passed": true,
+      "expected": "EXACT_DESTINATION_REQUIRED",
+      "actual": "EXACT_DESTINATION_REQUIRED"
+    },
+    {
+      "name": "follow-up targets",
+      "passed": true,
+      "expected": [
+        "cafe:gplaces:fixture-yulia"
+      ],
+      "actual": [
+        "cafe:gplaces:fixture-yulia"
+      ]
+    },
+    {
+      "name": "required source coverage",
+      "passed": true,
+      "expected": [
+        "source:google-places:060dc1b393f0deac8217",
+        "source:google-places:060dc1b393f0deac8217-00",
+        "source:google-places:090eaf4a4c0f3b0a968f",
+        "source:google-places:090eaf4a4c0f3b0a968f-00",
+        "source:google-routes:yulia-r2"
+      ],
+      "actual": [
+        "source:google-places:060dc1b393f0deac8217",
+        "source:google-places:060dc1b393f0deac8217-00",
+        "source:google-places:090eaf4a4c0f3b0a968f",
+        "source:google-places:090eaf4a4c0f3b0a968f-00",
+        "source:google-routes:yulia-r2"
+      ]
+    },
+    {
+      "name": "required answer fragments",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "bounded follow-up",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "trace agent and round fields",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "actual": {
+    "recommended_cafe_id": null,
+    "feasibility_statuses": {
+      "cafe:gplaces:fixture-yulia": "EVIDENCE_INSUFFICIENT"
+    },
+    "follow_up_reason_code": "EXACT_DESTINATION_REQUIRED",
+    "follow_up_selected_ids": [
+      "cafe:gplaces:fixture-yulia"
+    ],
+    "source_ids": [
+      "source:google-places:060dc1b393f0deac8217",
+      "source:google-places:060dc1b393f0deac8217-00",
+      "source:google-places:090eaf4a4c0f3b0a968f",
+      "source:google-places:090eaf4a4c0f3b0a968f-00",
+      "source:google-routes:yulia-r1",
+      "source:google-routes:yulia-r2"
+    ],
+    "response": "## Result\n\n- Do not recommend Fixture Cafe (`cafe:gplaces:fixture-yulia`): status is EVIDENCE_INSUFFICIENT; supported blocker(s): REQUIRED_EVIDENCE_MISSING. [facts=fact:cafe:r1:1004; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; missing=missing:cafe:r1:1001; derived=feasibility-v1:cafe:gplaces:fixture-yulia]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:fixture-yulia`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1006; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1006; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; derived=lead-policy:places-before-routes]\n\n## Unknowns\n\n- Unknown `open_at_meeting_time` for `cafe:gplaces:fixture-yulia`: Places did not provide usable open_at_meeting_time evidence. Next action: Verify meeting-time opening directly with the venue; keep it unknown. [missing=missing:cafe:r1:1001]",
+    "tool_calls": [
+      {
+        "agent": "lead",
+        "round": 1,
+        "name": "prepare_research_brief",
+        "args": {
+          "research_id": "research:session-123:1",
+          "session_id": "session-123"
+        },
+        "result": "{\"research_id\":\"research:session-123:1\",\"session_id\":\"session-123\",\"question\":\"For October 10, 2026 at 2:00 PM Eastern Time, our cafe has rating 4.5, moderate price and exact commutes of 20 minutes for each traveler, but Google Places has no regular opening periods. Can you support recommending it as open?\",\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"travelers\":[{\"traveler_id\":\"traveler:alice\",\"input_location\":\"Columbia University\",\"resolved_location\":{\"lat\":40.8075,\"lng\":-73.9626},\"max_commute_minutes\":35.0},{\"traveler_id\":\"traveler:bob\",\"input_location\":\"Astoria\",\"resolved_location\":{\"lat\":40.7644,\"lng\":-73.9235},\"max_commute_minutes\":30.0},{\"traveler_id\":\"traveler:carol\",\"input_location\":\"Bedford Avenue\",\"resolved_location\":{\"lat\":40.7177,\"lng\":-73.9576},\"max_commute_minutes\":40.0}],\"cafe_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"initial_candidates\":[{\"candidate_id\":\"area:initial:union-square\",\"name\":\"Union Square\",\"kind\":\"initial_area\",\"lat\":40.7359,\"lng\":-73.9911},{\"candidate_id\":\"area:initial:downtown-brooklyn\",\"name\":\"Downtown Brooklyn\",\"kind\":\"initial_area\",\"lat\":40.6928,\"lng\":-73.9903}],\"max_follow_up_rounds\":1}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 1,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-123:r1:transit:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:transit:1\",\"agent\":\"transit_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r1:001\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:002\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:003\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:004\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:005\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:006\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:yulia-r1\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:yulia-r1\",\"provider\":\"google_routes\",\"title\":\"Synthetic Routes fixture\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"fixture\":true,\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic Google Routes shaped fixture\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\",\"area:initial:downtown-brooklyn\"],\"summary\":\"Synthetic evaluation evidence; no live provider observation.\"}"
+      },
+      {
+        "agent": "cafe_researcher",
+        "round": 1,
+        "name": "search_cafes_in_areas",
+        "args": {
+          "task_id": "task:session-123:r1:cafe:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:cafe:1\",\"agent\":\"cafe_researcher\",\"round\":1,\"status\":\"partial\",\"facts\":[{\"fact_id\":\"fact:cafe:r1:1001\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"area:initial:union-square\",\"predicate\":\"cafe_search_results\",\"value\":[\"cafe:gplaces:fixture-yulia\"],\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"scope\":\"bounded_nearby_search\",\"exhaustive\":false},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1002\",\"candidate_id\":\"area:initial:downtown-brooklyn\",\"subject_id\":\"area:initial:downtown-brooklyn\",\"predicate\":\"cafe_search_results\",\"value\":[\"cafe:gplaces:fixture-yulia\"],\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"scope\":\"bounded_nearby_search\",\"exhaustive\":false},\"source_ids\":[\"source:google-places:060dc1b393f0deac8217\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1003\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"parent_candidate_id\",\"value\":\"area:initial:downtown-brooklyn\",\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1004\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"name\",\"value\":\"Fixture Cafe\",\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1005\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"address\",\"value\":\"123 Fixture Street, New York, NY\",\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1006\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"coordinates\",\"value\":{\"lat\":40.736,\"lng\":-73.991},\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1007\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"rating\",\"value\":4.5,\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1008\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"price_level\",\"value\":2,\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:1009\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"cafe:gplaces:fixture-yulia\",\"predicate\":\"business_status\",\"value\":\"OPERATIONAL\",\"unit\":null,\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:downtown-brooklyn\",\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"source:google-places:060dc1b393f0deac8217-00\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-places:090eaf4a4c0f3b0a968f\",\"provider\":\"google_places\",\"title\":\"Places nearby cafe search\",\"url\":\"https://developers.google.com/maps/documentation/places/web-service/nearby-search\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"candidate_id\":\"area:initial:union-square\",\"center\":{\"lat\":40.7359,\"lng\":-73.9911},\"radius_meters\":800,\"max_result_count\":10,\"field_mask\":\"places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions\",\"included_primary_types\":[\"cafe\",\"coffee_shop\"],\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"active_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"retrieval_note\":\"Collect bounded evidence; apply unchanged constraints in feasibility.\"},\"provider_record_ids\":[\"fixture-yulia\"],\"attribution\":\"Google Maps\"},{\"source_id\":\"source:google-places:090eaf4a4c0f3b0a968f-00\",\"provider\":\"google_places\",\"title\":\"Google Places cafe record\",\"url\":\"https://maps.google.com/?cid=123\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"candidate_id\":\"area:initial:union-square\",\"center\":{\"lat\":40.7359,\"lng\":-73.9911},\"radius_meters\":800,\"max_result_count\":10,\"field_mask\":\"places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions\",\"included_primary_types\":[\"cafe\",\"coffee_shop\"],\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"active_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"retrieval_note\":\"Collect bounded evidence; apply unchanged constraints in feasibility.\",\"place_id\":\"fixture-yulia\"},\"provider_record_ids\":[\"fixture-yulia\"],\"attribution\":\"Google Maps\"},{\"source_id\":\"source:google-places:060dc1b393f0deac8217\",\"provider\":\"google_places\",\"title\":\"Places nearby cafe search\",\"url\":\"https://developers.google.com/maps/documentation/places/web-service/nearby-search\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"candidate_id\":\"area:initial:downtown-brooklyn\",\"center\":{\"lat\":40.6928,\"lng\":-73.9903},\"radius_meters\":800,\"max_result_count\":10,\"field_mask\":\"places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions\",\"included_primary_types\":[\"cafe\",\"coffee_shop\"],\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"active_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"retrieval_note\":\"Collect bounded evidence; apply unchanged constraints in feasibility.\"},\"provider_record_ids\":[\"fixture-yulia\"],\"attribution\":\"Google Maps\"},{\"source_id\":\"source:google-places:060dc1b393f0deac8217-00\",\"provider\":\"google_places\",\"title\":\"Google Places cafe record\",\"url\":\"https://maps.google.com/?cid=123\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"candidate_id\":\"area:initial:downtown-brooklyn\",\"center\":{\"lat\":40.6928,\"lng\":-73.9903},\"radius_meters\":800,\"max_result_count\":10,\"field_mask\":\"places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions\",\"included_primary_types\":[\"cafe\",\"coffee_shop\"],\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"active_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"retrieval_note\":\"Collect bounded evidence; apply unchanged constraints in feasibility.\",\"place_id\":\"fixture-yulia\"},\"provider_record_ids\":[\"fixture-yulia\"],\"attribution\":\"Google Maps\"}],\"missing\":[{\"missing_id\":\"missing:cafe:r1:1001\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":null,\"field\":\"open_at_meeting_time\",\"reason_code\":\"PROVIDER_FIELD_MISSING\",\"detail\":\"Places did not provide usable open_at_meeting_time evidence.\",\"retryable\":false,\"next_action\":\"Verify meeting-time opening directly with the venue; keep it unknown.\"}],\"candidate_ids_considered\":[\"area:initial:union-square\",\"area:initial:downtown-brooklyn\"],\"summary\":\"Collected bounded Places evidence for 1 unique cafes; 1 explicit gaps.\"}"
+      },
+      {
+        "agent": "expansion_researcher",
+        "round": 1,
+        "name": "search_mta_expansion_candidates",
+        "args": {
+          "task_id": "task:session-123:r1:expansion:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "area:initial:union-square",
+            "area:initial:downtown-brooklyn"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-123:r1:expansion:1\",\"agent\":\"expansion_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[],\"sources\":[],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\",\"area:initial:downtown-brooklyn\"],\"summary\":\"Synthetic evaluation evidence; no live provider observation.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "choose_follow_up",
+        "args": {
+          "research_id": "research:session-123:1",
+          "max_follow_up_rounds": 1
+        },
+        "result": "{\"round\":2,\"reason_code\":\"EXACT_DESTINATION_REQUIRED\",\"unresolved_predicate\":\"Exact-cafe transit duration for every traveler\",\"selected_ids\":[\"cafe:gplaces:fixture-yulia\"],\"task_agents\":[\"transit_researcher\"],\"dependencies\":[\"fact:cafe:r1:1006\"],\"expected_information_gain\":\"Replace area-center estimates with the route evidence required for hard commute-limit decisions.\",\"omitted_candidate_reason\":\"Route at most three cafes with coordinates and passing known constraints; an explicit missing-hours gap remains unknown.\"}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 2,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-123:r2:transit:1",
+          "research_id": "research:session-123:1",
+          "candidate_ids": [
+            "cafe:gplaces:fixture-yulia"
+          ],
+          "dependencies": [
+            "fact:cafe:r1:1006"
+          ]
+        },
+        "result": "{\"task_id\":\"task:session-123:r2:transit:1\",\"agent\":\"transit_researcher\",\"round\":2,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r2:001\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:yulia-r2\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:002\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:yulia-r2\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:003\",\"candidate_id\":\"cafe:gplaces:fixture-yulia\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":20,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:yulia-r2\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:yulia-r2\",\"provider\":\"google_routes\",\"title\":\"Synthetic Routes fixture\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"fixture\":true,\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic Google Routes shaped fixture\"}],\"missing\":[],\"candidate_ids_considered\":[\"cafe:gplaces:fixture-yulia\"],\"summary\":\"Synthetic evaluation evidence; no live provider observation.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "evaluate_feasibility",
+        "args": {
+          "research_id": "research:session-123:1",
+          "rule_version": "feasibility-v1"
+        },
+        "result": "[{\"cafe_id\":\"cafe:gplaces:fixture-yulia\",\"status\":\"EVIDENCE_INSUFFICIENT\",\"reasons\":[{\"code\":\"REQUIRED_EVIDENCE_MISSING\",\"traveler_id\":null,\"actual_minutes\":null,\"limit_minutes\":null,\"input_fact_ids\":[],\"input_missing_ids\":[\"missing:cafe:r1:1001\"]}],\"rule_version\":\"feasibility-v1\"}]"
+      },
+      {
+        "agent": "writer",
+        "round": 2,
+        "name": "write_evidence_report",
+        "args": {
+          "research_id": "research:session-123:1",
+          "claim_count": 3,
+          "unknown_count": 1
+        },
+        "result": "{\"recommended_cafe_id\":null,\"response\":\"## Result\\n\\n- Do not recommend Fixture Cafe (`cafe:gplaces:fixture-yulia`): status is EVIDENCE_INSUFFICIENT; supported blocker(s): REQUIRED_EVIDENCE_MISSING. [facts=fact:cafe:r1:1004; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; missing=missing:cafe:r1:1001; derived=feasibility-v1:cafe:gplaces:fixture-yulia]\\n\\n## What the targeted follow-up added\\n\\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:fixture-yulia`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1006; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1006; sources=source:google-places:060dc1b393f0deac8217-00,source:google-places:090eaf4a4c0f3b0a968f-00; derived=lead-policy:places-before-routes]\\n\\n## Unknowns\\n\\n- Unknown `open_at_meeting_time` for `cafe:gplaces:fixture-yulia`: Places did not provide usable open_at_meeting_time evidence. Next action: Verify meeting-time opening directly with the venue; keep it unknown. [missing=missing:cafe:r1:1001]\"}"
+      }
+    ]
+  },
+  "captured_at": "2026-11-10T05:31:28.937796+00:00",
+  "build": {
+    "kind": "fixed-data vertical slice"
+  }
+}

@@ -37,7 +37,18 @@ the server environment and never enter source records or traces.
 
 ## Google Places — Wenyu/Yulia
 
-The existing Project 1 Places and opening-hours layers remain authoritative. Project 2's
-Cafe adapter will normalize place identity, address, coordinates, rating, price,
-business status, and meeting-time regular-hours evidence. Future hours are provisional;
-missing fields remain explicit gaps. API credentials stay in the server environment.
+The existing Project 1 Places and opening-hours layers remain authoritative.
+`run_cafe_task` reuses the request boundary and normalizes identity, exact venue fields,
+all matched parent areas, rating, price, business status and meeting-time hours.
+Regular hours remain provisional and missing fields become explicit gaps.
+
+The one-area live smoke passed in Cloud Shell at `2026-11-10T07:07:28.941671+00:00`.
+The saved `evals/examples/yulia/live_places_smoke.json` contains ten cafes, 81 cited
+Facts, eleven Sources and all six passing checks. It records the 800-meter/ten-result
+request bound and does not claim live Transit or model evidence. It includes no API
+key. The separate missing-hours grading case remains synthetic.
+
+Use `python -m evals.yulia_delivery places-smoke --live --meeting-time <future-ISO-time>`
+for a new bounded capture; credentials stay in the execution environment. Model
+baseline/rubric capture still requires frozen production-model configuration and an
+actual matching model-backed agent output. See `YULIA_ACCEPTANCE.md`.

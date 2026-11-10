@@ -43,8 +43,50 @@ def test_normalizes_real_fields_and_leaves_future_hours_unknown(post):
 
 
 def test_deduplicates_overlapping_areas(post):
-    assert len(call(areas=[AREA,dict(AREA,area='Other hub')])['cafes'])==1
+    cafes = call(areas=[AREA,dict(AREA,area='Other hub')])['cafes']
+    assert len(cafes)==1
+    assert cafes[0]['area'] == 'Union Square'
+    assert cafes[0]['searched_areas'] == ['Union Square', 'Other hub']
     assert post.call_count==2
+
+
+def test_repeated_place_and_area_do_not_duplicate_membership(post):
+    post.return_value.json.return_value = {'places': [PLACE, PLACE]}
+    cafes = call(areas=[AREA, AREA])['cafes']
+    assert len(cafes) == 1
+    assert cafes[0]['searched_areas'] == ['Union Square']
+
+
+def test_preserves_address_coordinates_and_business_status(post):
+    post.return_value.json.return_value = {'places': [dict(
+        PLACE, formattedAddress='123 Fixture Street', businessStatus='OPERATIONAL')]}
+    cafe = call()['cafes'][0]
+    assert cafe['address'] == '123 Fixture Street'
+    assert (cafe['lat'], cafe['lng']) == (40.736, -73.991)
+    assert cafe['business_status'] == 'OPERATIONAL'
+
+
+def test_missing_provider_fields_remain_unknown(post):
+    post.return_value.json.return_value = {'places': [{
+        'id': 'missing-fields', 'displayName': {'text': 'Fixture cafe'},
+        'location': {'latitude': 40.736, 'longitude': -73.991}}]}
+    cafe = call()['cafes'][0]
+    for field in ('address', 'rating', 'price_level', 'business_status',
+                  'regular_opening_hours', 'open_at_meeting_time'):
+        assert cafe[field] is None
+    assert cafe['opening_status_source'] == 'unavailable'
+    assert cafe['opening_status_provisional'] is False
+
+
+def test_partial_failure_keeps_deduplicated_successes(post):
+    good = post.return_value
+    post.side_effect = [good, requests.Timeout('fixture-secret'), good]
+    result = call(areas=[AREA, dict(AREA, area='Failed hub'), dict(AREA, area='Other hub')])
+    assert result['partial'] is True
+    assert len(result['cafes']) == 1
+    assert result['cafes'][0]['searched_areas'] == ['Union Square', 'Other hub']
+    assert result['area_errors'][0]['area'] == 'Failed hub'
+    assert 'fixture-secret' not in json.dumps(result)
 
 
 def test_filters_rating_and_price(post):
@@ -60,7 +102,10 @@ def test_unknown_price_does_not_pass_budget(post):
 
 def test_known_closed_business(post):
     post.return_value.json.return_value={'places':[dict(PLACE,businessStatus='CLOSED_PERMANENTLY')]}
-    assert call()['cafes'][0]['open_at_meeting_time'] is False
+    cafe = call()['cafes'][0]
+    assert cafe['open_at_meeting_time'] is False
+    assert cafe['business_status'] == 'CLOSED_PERMANENTLY'
+    assert cafe['opening_status_provisional'] is False
 
 
 def test_empty_provider_results(post):
@@ -102,8 +147,17 @@ def test_search_evaluates_weekly_hours(post):
     result = call()
     assert result['cafes'][0]['open_at_meeting_time'] is True
     assert result['cafes'][0]['opening_status_source'] == 'regular_schedule'
+    assert result['cafes'][0]['opening_status_provisional'] is True
     assert result['meeting_time_nyc'] == TIME
     assert call(meeting_time='2026-10-03T21:00:00Z')['cafes'][0]['open_at_meeting_time'] is False
+
+
+def test_closed_regular_schedule_is_also_provisional(post):
+    post.return_value.json.return_value = {'places': [dict(PLACE, regularOpeningHours={
+        'periods': [{'open': {'day': 6, 'hour': 9}, 'close': {'day': 6, 'hour': 12}}]})]}
+    cafe = call()['cafes'][0]
+    assert cafe['open_at_meeting_time'] is False
+    assert cafe['opening_status_provisional'] is True
 
 
 def test_ambiguous_meeting_time_never_requests(post):

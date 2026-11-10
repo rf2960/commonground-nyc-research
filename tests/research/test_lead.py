@@ -75,6 +75,11 @@ def test_exact_cafe_transit_task_waits_for_cafe_coordinates():
 
     async def executor(context, brief_value, task_value):
         completion_order.append(task_value.task_id)
+        if task_value.round == 2:
+            available = {fact.fact_id: fact for result in context.dependency_results for fact in result.facts}
+            assert all(dependency in available for dependency in task_value.dependencies)
+            assert any(fact.predicate == 'coordinates' and fact.candidate_id in task_value.candidate_ids
+                       for fact in available.values())
         return results[task_value.task_id]
 
     outcome = asyncio.run(

@@ -62,13 +62,12 @@ class LeadOrchestrator:
                 dependencies=decision.dependencies,
             )
             round_two_tasks.append(cafe_task)
-            cafe_result = await self._runner.run_task(brief, cafe_task)
+            cafe_result = await self._runner.run_task(
+                brief, cafe_task, dependency_results=round_one
+            )
             round_two_results.append(cafe_result)
 
-            exact_cafe_ids = self._promising_cafes(
-                brief,
-                cafe_result.facts,
-            )[:MAX_FOLLOW_UP_TARGETS]
+            exact_cafe_ids = self._routeable_cafes(brief, cafe_result)[:MAX_FOLLOW_UP_TARGETS]
             coordinate_dependencies = self._coordinate_fact_ids(
                 cafe_result.facts,
                 exact_cafe_ids,
@@ -87,7 +86,9 @@ class LeadOrchestrator:
                 )
                 round_two_tasks.append(transit_task)
                 round_two_results.append(
-                    await self._runner.run_task(brief, transit_task)
+                    await self._runner.run_task(
+                        brief, transit_task, dependency_results=(cafe_result,)
+                    )
                 )
 
         elif decision is not None and decision.reason_code == "EXACT_DESTINATION_REQUIRED":
@@ -104,7 +105,9 @@ class LeadOrchestrator:
                 dependencies=decision.dependencies,
             )
             round_two_tasks.append(transit_task)
-            round_two_results.append(await self._runner.run_task(brief, transit_task))
+            round_two_results.append(await self._runner.run_task(
+                brief, transit_task, dependency_results=round_one
+            ))
 
         facts = tuple(
             fact
@@ -183,9 +186,8 @@ class LeadOrchestrator:
         cafe_result = next(
             result for result in records if result.agent == "cafe_researcher"
         )
-        promising_initial = LeadOrchestrator._promising_cafes(
-            brief,
-            cafe_result.facts,
+        promising_initial = LeadOrchestrator._routeable_cafes(
+            brief, cafe_result
         )[:MAX_FOLLOW_UP_TARGETS]
         coordinate_dependencies = LeadOrchestrator._coordinate_fact_ids(
             cafe_result.facts,
@@ -204,8 +206,8 @@ class LeadOrchestrator:
                     "for hard commute-limit decisions."
                 ),
                 omitted_candidate_reason=(
-                    "Only cafes with complete coordinates and known passing cafe "
-                    "constraints are routed, capped at three."
+                    "Route at most three cafes with coordinates and passing known "
+                    "constraints; an explicit missing-hours gap remains unknown."
                 ),
             )
 
@@ -282,9 +284,28 @@ class LeadOrchestrator:
         )
 
     @staticmethod
+    def _routeable_cafes(brief: ResearchBrief, result: ResearchResult) -> tuple[str, ...]:
+        passing = LeadOrchestrator._promising_cafes(brief, result.facts)
+        missing_hours_ids = {
+            gap.candidate_id for gap in result.missing
+            if gap.field == "open_at_meeting_time"
+        }
+        pending_hours = LeadOrchestrator._promising_cafes(
+            brief, result.facts, allow_missing_hours=True
+        )
+        # Complete cafe evidence gets priority. Unknown hours must not be upgraded to
+        # open, but can still receive exact routing for an honest insufficient result.
+        return passing + tuple(
+            cafe_id for cafe_id in pending_hours
+            if cafe_id not in passing and cafe_id in missing_hours_ids
+        )
+
+    @staticmethod
     def _promising_cafes(
         brief: ResearchBrief,
         facts: Iterable[Fact],
+        *,
+        allow_missing_hours: bool = False,
     ) -> tuple[str, ...]:
         by_cafe: dict[str, dict[str, Fact]] = {}
         for fact in facts:
@@ -294,7 +315,7 @@ class LeadOrchestrator:
         selected = []
         for cafe_id, predicates in sorted(by_cafe.items()):
             required = {"coordinates", "business_status"}
-            if brief.cafe_constraints.require_open:
+            if brief.cafe_constraints.require_open and not allow_missing_hours:
                 required.add("open_at_meeting_time")
             if brief.cafe_constraints.min_rating > 0:
                 required.add("rating")
@@ -306,6 +327,7 @@ class LeadOrchestrator:
                 continue
             if (
                 brief.cafe_constraints.require_open
+                and "open_at_meeting_time" in predicates
                 and predicates["open_at_meeting_time"].value is not True
             ):
                 continue

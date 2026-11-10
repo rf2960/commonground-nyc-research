@@ -1,0 +1,7 @@
+{
+  "schema_version": "yulia-delivery-v1",
+  "kind": "model_evaluation",
+  "status": "blocked",
+  "captured_at": "2026-11-10T05:57:46.158910+00:00",
+  "reason_code": "FROZEN_MODEL_MANIFEST_REQUIRED"
+}

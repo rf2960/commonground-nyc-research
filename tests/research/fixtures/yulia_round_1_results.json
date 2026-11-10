@@ -1,0 +1,491 @@
+[
+  {
+    "task_id": "task:session-123:r1:transit:1",
+    "agent": "transit_researcher",
+    "round": 1,
+    "status": "complete",
+    "candidate_ids_considered": [
+      "area:initial:union-square",
+      "area:initial:downtown-brooklyn"
+    ],
+    "facts": [
+      {
+        "fact_id": "fact:transit:r1:001",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r1:002",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r1:003",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r1:004",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r1:005",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      },
+      {
+        "fact_id": "fact:transit:r1:006",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 20,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:00:00+00:00",
+        "source_ids": [
+          "source:google-routes:yulia-r1"
+        ],
+        "valid_for": {
+          "arrival_time": "2026-10-10T14:00:00-04:00",
+          "destination_kind": "area_center"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:yulia-r1",
+        "provider": "google_routes",
+        "title": "Synthetic Routes fixture",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-10-01T16:00:00+00:00",
+        "request_summary": {
+          "fixture": true,
+          "arrival_time": "2026-10-10T14:00:00-04:00"
+        },
+        "provider_record_ids": [],
+        "attribution": "Synthetic Google Routes shaped fixture"
+      }
+    ],
+    "missing": [],
+    "summary": "Synthetic evaluation evidence; no live provider observation."
+  },
+  {
+    "task_id": "task:session-123:r1:cafe:1",
+    "agent": "cafe_researcher",
+    "round": 1,
+    "status": "partial",
+    "facts": [
+      {
+        "fact_id": "fact:cafe:r1:1001",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "area:initial:union-square",
+        "predicate": "cafe_search_results",
+        "value": [
+          "cafe:gplaces:fixture-yulia"
+        ],
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "scope": "bounded_nearby_search",
+          "exhaustive": false
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1002",
+        "candidate_id": "area:initial:downtown-brooklyn",
+        "subject_id": "area:initial:downtown-brooklyn",
+        "predicate": "cafe_search_results",
+        "value": [
+          "cafe:gplaces:fixture-yulia"
+        ],
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "scope": "bounded_nearby_search",
+          "exhaustive": false
+        },
+        "source_ids": [
+          "source:google-places:060dc1b393f0deac8217"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1003",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:downtown-brooklyn",
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1004",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "name",
+        "value": "Fixture Cafe",
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1005",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "address",
+        "value": "123 Fixture Street, New York, NY",
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1006",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.736,
+          "lng": -73.991
+        },
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1007",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "rating",
+        "value": 4.5,
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1008",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "price_level",
+        "value": 2,
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1009",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": "cafe:gplaces:fixture-yulia",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-10-01T16:00:00Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:downtown-brooklyn",
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:090eaf4a4c0f3b0a968f-00",
+          "source:google-places:060dc1b393f0deac8217-00"
+        ],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-places:090eaf4a4c0f3b0a968f",
+        "provider": "google_places",
+        "title": "Places nearby cafe search",
+        "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+        "accessed_at": "2026-10-01T16:00:00Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-10-10T14:00:00-04:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility."
+        },
+        "provider_record_ids": [
+          "fixture-yulia"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:090eaf4a4c0f3b0a968f-00",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=123",
+        "accessed_at": "2026-10-01T16:00:00Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-10-10T14:00:00-04:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "fixture-yulia"
+        },
+        "provider_record_ids": [
+          "fixture-yulia"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:060dc1b393f0deac8217",
+        "provider": "google_places",
+        "title": "Places nearby cafe search",
+        "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+        "accessed_at": "2026-10-01T16:00:00Z",
+        "request_summary": {
+          "candidate_id": "area:initial:downtown-brooklyn",
+          "center": {
+            "lat": 40.6928,
+            "lng": -73.9903
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-10-10T14:00:00-04:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility."
+        },
+        "provider_record_ids": [
+          "fixture-yulia"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:060dc1b393f0deac8217-00",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=123",
+        "accessed_at": "2026-10-01T16:00:00Z",
+        "request_summary": {
+          "candidate_id": "area:initial:downtown-brooklyn",
+          "center": {
+            "lat": 40.6928,
+            "lng": -73.9903
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-10-10T14:00:00-04:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "fixture-yulia"
+        },
+        "provider_record_ids": [
+          "fixture-yulia"
+        ],
+        "attribution": "Google Maps"
+      }
+    ],
+    "missing": [
+      {
+        "missing_id": "missing:cafe:r1:1001",
+        "candidate_id": "cafe:gplaces:fixture-yulia",
+        "subject_id": null,
+        "field": "open_at_meeting_time",
+        "reason_code": "PROVIDER_FIELD_MISSING",
+        "detail": "Places did not provide usable open_at_meeting_time evidence.",
+        "retryable": false,
+        "next_action": "Verify meeting-time opening directly with the venue; keep it unknown."
+      }
+    ],
+    "candidate_ids_considered": [
+      "area:initial:union-square",
+      "area:initial:downtown-brooklyn"
+    ],
+    "summary": "Collected bounded Places evidence for 1 unique cafes; 1 explicit gaps."
+  },
+  {
+    "task_id": "task:session-123:r1:expansion:1",
+    "agent": "expansion_researcher",
+    "round": 1,
+    "status": "complete",
+    "candidate_ids_considered": [
+      "area:initial:union-square",
+      "area:initial:downtown-brooklyn"
+    ],
+    "facts": [],
+    "sources": [],
+    "missing": [],
+    "summary": "Synthetic evaluation evidence; no live provider observation."
+  }
+]

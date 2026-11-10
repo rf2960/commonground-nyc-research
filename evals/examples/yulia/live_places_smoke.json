@@ -1,0 +1,1960 @@
+{
+  "schema_version": "yulia-delivery-v1",
+  "kind": "places_smoke",
+  "status": "passed",
+  "captured_at": "2026-11-10T07:07:28.941671+00:00",
+  "live_provider_observation": true,
+  "checks": {
+    "one_area_only": true,
+    "provider_response_received": true,
+    "all_facts_cited": true,
+    "regular_hours_are_provisional": true,
+    "missing_hours_are_explicit": true,
+    "no_transit_claims": true
+  },
+  "scope": {
+    "area_id": "area:initial:union-square",
+    "max_requests": 1,
+    "radius_meters": 800,
+    "max_records": 10,
+    "transit_tested": false,
+    "traveler_records": "Brief controls only; no live route claim."
+  },
+  "result": {
+    "task_id": "task:session-123:r1:cafe:1",
+    "agent": "cafe_researcher",
+    "round": 1,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:cafe:r1:1001",
+        "candidate_id": "area:initial:union-square",
+        "subject_id": "area:initial:union-square",
+        "predicate": "cafe_search_results",
+        "value": [
+          "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+          "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+          "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+          "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+          "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+          "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+          "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+          "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+          "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+          "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk"
+        ],
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "scope": "bounded_nearby_search",
+          "exhaustive": false
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1002",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1003",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "name",
+        "value": "Irving Farm Coffee",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1004",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "address",
+        "value": "71 Irving Pl, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1005",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.736810299999995,
+          "lng": -73.9869409
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1006",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "rating",
+        "value": 4.1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1007",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1008",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1009",
+        "candidate_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "subject_id": "cafe:gplaces:ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-09"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1010",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1011",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "name",
+        "value": "Stumptown Coffee Roasters",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1012",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "address",
+        "value": "30 W 8th St, New York, NY 10011, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1013",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7328275,
+          "lng": -73.9979664
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1014",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "rating",
+        "value": 4.4,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1015",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1016",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1017",
+        "candidate_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "subject_id": "cafe:gplaces:ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-03"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1018",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1019",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "name",
+        "value": "Devoción",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1020",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "address",
+        "value": "25 E 20th St, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1021",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.739111,
+          "lng": -73.989113
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1022",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "rating",
+        "value": 4.5,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1023",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1024",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1025",
+        "candidate_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "subject_id": "cafe:gplaces:ChIJH1KZKilZwokRYwSxtHI3_N0",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-00"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1026",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1027",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "name",
+        "value": "Luckin Coffee",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1028",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "address",
+        "value": "755 Broadway, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1029",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.73056,
+          "lng": -73.9926765
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1030",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "rating",
+        "value": 4.1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1031",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1032",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1033",
+        "candidate_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "subject_id": "cafe:gplaces:ChIJIUJWNQBZwokRf2v8gy_dBLY",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-08"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1034",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1035",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "name",
+        "value": "Ariston Coffee Bar",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1036",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "address",
+        "value": "78 5th Ave, New York, NY 10011, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1037",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7358203,
+          "lng": -73.9941825
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1038",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "rating",
+        "value": 4.5,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1039",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1040",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1041",
+        "candidate_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "subject_id": "cafe:gplaces:ChIJK0FlVPNZwokR2waVBj-VHko",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-01"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1042",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1043",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "name",
+        "value": "maman",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1044",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "address",
+        "value": "3 W 18th St, New York, NY 10011, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1045",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7389513,
+          "lng": -73.9923453
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1046",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "rating",
+        "value": 4.7,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1047",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1048",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1049",
+        "candidate_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "subject_id": "cafe:gplaces:ChIJX_nIFyJZwokRILcZwoInWrM",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-07"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1050",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1051",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "name",
+        "value": "Hex and Company",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1052",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "address",
+        "value": "801 Broadway, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1053",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7326315,
+          "lng": -73.9914139
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1054",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "rating",
+        "value": 4,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1055",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1056",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1057",
+        "candidate_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "subject_id": "cafe:gplaces:ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-04"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1058",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1059",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "name",
+        "value": "Capital One Café",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1060",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "address",
+        "value": "853 Broadway, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1061",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7346905,
+          "lng": -73.9910744
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1062",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "rating",
+        "value": 3.6,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1063",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1064",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1065",
+        "candidate_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "subject_id": "cafe:gplaces:ChIJiZNr8JhZwokRqo_36CN_Etk",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-02"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1066",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1067",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "name",
+        "value": "outro nyc",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1068",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "address",
+        "value": "816 Broadway, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1069",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7327739,
+          "lng": -73.9909553
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1070",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "rating",
+        "value": 4.4,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1071",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "price_level",
+        "value": 2,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1072",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1073",
+        "candidate_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "subject_id": "cafe:gplaces:ChIJlQHSEplZwokRvhA5XFQlX_A",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-06"
+        ],
+        "provisional": true
+      },
+      {
+        "fact_id": "fact:cafe:r1:1074",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "parent_candidate_id",
+        "value": "area:initial:union-square",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1075",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "name",
+        "value": "maman",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1076",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "address",
+        "value": "67 University Pl, New York, NY 10003, USA",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1077",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "coordinates",
+        "value": {
+          "lat": 40.7329435,
+          "lng": -73.9934159
+        },
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1078",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "rating",
+        "value": 4.2,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1079",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "price_level",
+        "value": 1,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1080",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "business_status",
+        "value": "OPERATIONAL",
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ]
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:cafe:r1:1081",
+        "candidate_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "subject_id": "cafe:gplaces:ChIJr2CoI4NZwokR-BNUPN6kodk",
+        "predicate": "open_at_meeting_time",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-10T07:07:28.936126Z",
+        "valid_for": {
+          "parent_candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "basis": "regular_schedule"
+        },
+        "source_ids": [
+          "source:google-places:e25bd9e493ee4b278489-05"
+        ],
+        "provisional": true
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489",
+        "provider": "google_places",
+        "title": "Places nearby cafe search",
+        "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility."
+        },
+        "provider_record_ids": [
+          "ChIJ3wsoxKFZwokRRg8OvEjE0bc",
+          "ChIJ7c9s1JZZwokRs_zFHYCtNDA",
+          "ChIJH1KZKilZwokRYwSxtHI3_N0",
+          "ChIJIUJWNQBZwokRf2v8gy_dBLY",
+          "ChIJK0FlVPNZwokR2waVBj-VHko",
+          "ChIJX_nIFyJZwokRILcZwoInWrM",
+          "ChIJhf65m-9ZwokR4Y2x7-DwdmE",
+          "ChIJiZNr8JhZwokRqo_36CN_Etk",
+          "ChIJlQHSEplZwokRvhA5XFQlX_A",
+          "ChIJr2CoI4NZwokR-BNUPN6kodk"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-00",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=15995720942310458467&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJH1KZKilZwokRYwSxtHI3_N0"
+        },
+        "provider_record_ids": [
+          "ChIJH1KZKilZwokRYwSxtHI3_N0"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-01",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=5340870306033895131&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJK0FlVPNZwokR2waVBj-VHko"
+        },
+        "provider_record_ids": [
+          "ChIJK0FlVPNZwokR2waVBj-VHko"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-02",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=15641704248020275114&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJiZNr8JhZwokRqo_36CN_Etk"
+        },
+        "provider_record_ids": [
+          "ChIJiZNr8JhZwokRqo_36CN_Etk"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-03",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=3473591978376428723&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJ7c9s1JZZwokRs_zFHYCtNDA"
+        },
+        "provider_record_ids": [
+          "ChIJ7c9s1JZZwokRs_zFHYCtNDA"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-04",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=7023065517815598561&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJhf65m-9ZwokR4Y2x7-DwdmE"
+        },
+        "provider_record_ids": [
+          "ChIJhf65m-9ZwokR4Y2x7-DwdmE"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-05",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=15681996651882615800&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJr2CoI4NZwokR-BNUPN6kodk"
+        },
+        "provider_record_ids": [
+          "ChIJr2CoI4NZwokR-BNUPN6kodk"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-06",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=17320603736144941246&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJlQHSEplZwokRvhA5XFQlX_A"
+        },
+        "provider_record_ids": [
+          "ChIJlQHSEplZwokRvhA5XFQlX_A"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-07",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=12923685523248756512&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJX_nIFyJZwokRILcZwoInWrM"
+        },
+        "provider_record_ids": [
+          "ChIJX_nIFyJZwokRILcZwoInWrM"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-08",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=13115851210957286271&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJIUJWNQBZwokRf2v8gy_dBLY"
+        },
+        "provider_record_ids": [
+          "ChIJIUJWNQBZwokRf2v8gy_dBLY"
+        ],
+        "attribution": "Google Maps"
+      },
+      {
+        "source_id": "source:google-places:e25bd9e493ee4b278489-09",
+        "provider": "google_places",
+        "title": "Google Places cafe record",
+        "url": "https://maps.google.com/?cid=13245583795745066822&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+        "accessed_at": "2026-11-10T07:07:28.936126Z",
+        "request_summary": {
+          "candidate_id": "area:initial:union-square",
+          "center": {
+            "lat": 40.7359,
+            "lng": -73.9911
+          },
+          "radius_meters": 800,
+          "max_result_count": 10,
+          "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.priceLevel,places.regularOpeningHours,places.businessStatus,places.googleMapsUri,places.attributions",
+          "included_primary_types": [
+            "cafe",
+            "coffee_shop"
+          ],
+          "meeting_time": "2026-11-18T14:00:00-05:00",
+          "active_constraints": {
+            "min_rating": 4.3,
+            "price_levels": [
+              1,
+              2
+            ],
+            "require_open": true
+          },
+          "retrieval_note": "Collect bounded evidence; apply unchanged constraints in feasibility.",
+          "place_id": "ChIJ3wsoxKFZwokRRg8OvEjE0bc"
+        },
+        "provider_record_ids": [
+          "ChIJ3wsoxKFZwokRRg8OvEjE0bc"
+        ],
+        "attribution": "Google Maps"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": [
+      "area:initial:union-square"
+    ],
+    "summary": "Collected bounded Places evidence for 10 unique cafes; 0 explicit gaps."
+  }
+}

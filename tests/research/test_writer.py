@@ -138,3 +138,30 @@ def test_writer_validator_rejects_a_reference_not_present_in_lead_evidence():
 def test_claim_without_any_evidence_is_rejected_at_construction():
     with pytest.raises(ValueError, match="must cite"):
         CitedClaim(text="Uncited prose")
+
+
+def test_unknown_derived_reference_does_not_bypass_citation_validation():
+    run = execute_lead(fixture_result_map())
+    claim = CitedClaim(text='Unsupported derived assertion.', derived_ref='invented-rule:anything')
+    invalid = WriterReport(response='Unsupported [derived=invented-rule:anything]',
+                           claims=(claim,), unknowns=(), recommended_cafe_id=None)
+    with pytest.raises(ValueError, match='unknown derived'):
+        validate_writer_report(invalid, run)
+
+
+def test_recommendation_id_must_have_feasible_evidence():
+    from dataclasses import replace
+    run = execute_lead(fixture_result_map())
+    report = replace(EvidenceWriter().write(run), recommended_cafe_id='cafe:gplaces:invented')
+    with pytest.raises(ValueError, match='FEASIBLE'):
+        validate_writer_report(report, run)
+
+
+def test_empty_bounded_search_has_explicit_result_not_blank_answer():
+    from dataclasses import replace
+    run = execute_lead(fixture_result_map())
+    empty = replace(run, feasibility_results=())
+    report = EvidenceWriter().write(empty)
+    assert 'No supported cafe recommendation' in report.response
+    assert 'does not prove' in report.response
+    assert report.recommended_cafe_id is None
