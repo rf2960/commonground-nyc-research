@@ -49,6 +49,7 @@ def test_missing_hours_card_shows_status_gaps_routes_and_auditable_sources():
     result = render(calls())
     assert 'Evidence insufficient' in result['text']
     assert 'Opening at meeting time: unknown' in result['text']
+    assert 'Cafe Researcher · Round 1 / Transit Researcher · Round 2' in result['text']
     assert 'verify' in result['text'].lower()
     assert 'Exact cafe commute · Columbia University: 20 min / 35 min limit' in result['text']
     assert 'Area-center estimates — not exact cafe routes' in result['text']

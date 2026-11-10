@@ -481,7 +481,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
           const records=facts.filter(item=>item.candidate_id===cafeId),ownGaps=gaps.filter(item=>item.candidate_id===cafeId),get=predicate=>current(records.filter(item=>item.predicate===predicate)),card=node('article','evidence-card');
           const state=statuses.get(cafeId)||'NOT_EVALUATED',badge=node('span','evidence-status',labels[state]||'Not yet evaluated');badge.dataset.status=state;
           card.append(badge,node('h4','',String(get('name')?.value||'Cafe name unavailable')),node('p','',String(get('address')?.value||'Address unavailable')));
-          const rounds=[...new Set([...records,...ownGaps].map(item=>item.round))].sort();card.append(node('p','',`Cafe Researcher · Round ${rounds.join(', ')}`));
+          const roleLabels={cafe_researcher:'Cafe Researcher',transit_researcher:'Transit Researcher'};
+          const agents=[...new Set([...records,...ownGaps].map(item=>item.agent))];
+          const contributions=agents.map(agent=>`${roleLabels[agent]||agent} · Round ${[...new Set([...records,...ownGaps].filter(item=>item.agent===agent).map(item=>item.round))].sort().join(', ')}`);
+          card.append(node('p','',contributions.join(' / ')));
           const info=node('ul');
           const rating=get('rating'),price=get('price_level'),business=get('business_status');
           info.append(node('li','',`Rating: ${rating?String(rating.value):'unknown'} · Price level: ${price?String(price.value):'unknown'}`));
@@ -503,9 +506,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
           const centers=facts.filter(item=>parents.has(item.candidate_id)&&item.predicate==='transit_duration_minutes'&&item.valid_for?.destination_kind==='area_center'&&sameTime(item.valid_for?.arrival_time));
           if(centers.length){const details=node('details');details.append(node('summary','','Area-center estimates — not exact cafe routes'));for(const route of centers){const traveler=brief?.travelers?.find(item=>item.traveler_id===route.subject_id);details.append(node('p','',`${traveler?.input_location||route.subject_id} · ${areaName(route.candidate_id)}: ${minutes(route.value)||'unknown'}`));}card.append(details);}
           card.append(info);
-          for(const gap of ownGaps)card.append(node('p','evidence-gap',`Unknown ${gap.field}: ${gap.detail} Next action: ${gap.next_action} [${gap.missing_id}]`));
+          for(const gap of ownGaps)card.append(node('p','evidence-gap',`Unknown ${String(gap.field).replaceAll('_',' ')}. ${gap.next_action}`));
           const provenance=node('details');provenance.append(node('summary','','Evidence and sources'));
           for(const record of records){const line=node('div','evidence-source');line.append(node('span','',`${record.predicate} · ${record.fact_id} · Round ${record.round}`));for(const sourceId of record.source_ids||[]){const source=sources.get(sourceId),href=source?safeLink(source.url):null;if(href){const link=node('a','evidence-source',`${source.title||source.provider} · ${sourceId}`);link.href=href;link.target='_blank';link.rel='noopener noreferrer';line.append(link);}else line.append(node('span','evidence-source',`Source unavailable: ${sourceId}`));}provenance.append(line);}
+          for(const gap of ownGaps)provenance.append(node('p','evidence-source',`${gap.missing_id} · ${gap.field}: ${gap.detail} Next action: ${gap.next_action}`));
           card.append(provenance);grid.append(card);
         }
         for(const gap of areaGaps){const card=node('article','evidence-card');card.append(node('h4','','Area search evidence missing'),node('p','evidence-gap',`${gap.candidate_id} · Round ${gap.round}: ${gap.detail} Next action: ${gap.next_action} [${gap.missing_id}]`));grid.append(card);}

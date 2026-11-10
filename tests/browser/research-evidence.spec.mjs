@@ -32,12 +32,26 @@ test('missing hours, exact routes, citations and responsive layout', async ({ pa
   await expect(evidence).toContainText('Opening at meeting time: unknown');
   await expect(evidence).toContainText('Exact cafe commute · Columbia University: 20 min / 35 min limit');
   await expect(evidence).toContainText('Verify meeting-time opening directly with the venue');
+  await expect(evidence).toContainText('Cafe Researcher · Round 1 / Transit Researcher · Round 2');
   await expect(evidence.locator('img')).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(await evidence.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
-  const screenshot = testInfo.outputPath(`missing-hours-${testInfo.project.name}.png`);
-  await evidence.screenshot({ path: screenshot });
-  await testInfo.attach('Synthetic missing-hours card', { path: screenshot, contentType: 'image/png' });
+  const topScreenshot = testInfo.outputPath(`missing-hours-${testInfo.project.name}-top.png`);
+  await evidence.getByText('Evidence insufficient', { exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: topScreenshot });
+  await testInfo.attach('Synthetic evidence viewport, top', { path: topScreenshot, contentType: 'image/png' });
+  const gap = evidence.locator('.evidence-gap').first();
+  await gap.scrollIntoViewIfNeeded();
+  // A textContent assertion alone cannot prove a mobile user can scroll to a gap.
+  const visible = await gap.evaluate(el => {
+    const row=el.getBoundingClientRect(), log=document.querySelector('#messages').getBoundingClientRect();
+    const composer=document.querySelector('.composer').getBoundingClientRect();
+    return row.top>=log.top-1 && row.bottom<=log.bottom+1 && row.bottom<=composer.top+1;
+  });
+  expect(visible).toBe(true);
+  const bottomScreenshot = testInfo.outputPath(`missing-hours-${testInfo.project.name}-verification.png`);
+  await page.screenshot({ path: bottomScreenshot });
+  await testInfo.attach('Synthetic evidence viewport, verification', { path: bottomScreenshot, contentType: 'image/png' });
   await evidence.getByText('Evidence and sources', { exact: true }).click();
   const links = await evidence.locator('a').evaluateAll(items => items.map(link => ({ href: link.href, rel: link.rel })));
   expect(links.length).toBeGreaterThan(0);
