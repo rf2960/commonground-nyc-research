@@ -17,7 +17,7 @@ from urllib.parse import parse_qs, urlparse
 
 from commonground import places as provider
 from commonground.opening_hours import opening_status
-from .models import Coordinates, Fact, MissingEvidence, ResearchBrief, ResearchResult, ResearchTask, Source
+from .models import Coordinates, Fact, MissingEvidence, ResearchBrief, ResearchResult, ResearchTask, Source, SENSITIVE_KEYS
 from .runner import ResearchContext
 
 MAX_AREAS = 6
@@ -56,11 +56,10 @@ def _source_url(value, place_id: str) -> str:
         except ValueError:
             return _source_url(None, place_id)
         host = url.hostname or ''
-        sensitive = {'key', 'api_key', 'apikey', 'token', 'access_token', 'authorization'}
         if (url.scheme == 'https' and not url.username and not url.password
                 and (host == 'google.com' or host.endswith('.google.com')
                      or host == 'maps.app.goo.gl')
-                and not (set(k.lower() for k in parse_qs(url.query)) & sensitive)):
+                and not (set(k.lower() for k in parse_qs(url.query)) & SENSITIVE_KEYS)):
             return value
     return f'https://www.google.com/maps/search/?api=1&query=place&query_place_id={place_id}'
 

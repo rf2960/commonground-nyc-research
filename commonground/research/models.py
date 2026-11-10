@@ -15,6 +15,10 @@ from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field, field_validator, 
 
 
 CONTRACT_VERSION = "research-contract-v1"
+SENSITIVE_KEYS = frozenset({
+    "key", "api_key", "apikey", "authorization", "password", "secret", "token",
+    "access_token", "client_secret", "x-goog-api-key",
+})
 
 NonEmptyStr = Annotated[str, Field(min_length=1)]
 TravelerId = Annotated[str, Field(pattern=r"^traveler:[a-z0-9][a-z0-9-]*$")]
@@ -76,10 +80,9 @@ def _require_aware(value: datetime, label: str) -> datetime:
 
 
 def _contains_sensitive_key(value: Any) -> bool:
-    sensitive = {"key", "api_key", "apikey", "authorization", "password", "secret", "token", "access_token", "client_secret", "x-goog-api-key"}
     if isinstance(value, dict):
         return any(
-            str(key).casefold() in sensitive or _contains_sensitive_key(item)
+            str(key).casefold() in SENSITIVE_KEYS or _contains_sensitive_key(item)
             for key, item in value.items()
         )
     if isinstance(value, (list, tuple)):
@@ -237,8 +240,7 @@ class Source(ContractModel):
     def url_has_no_credentials(cls, value: AnyHttpUrl) -> AnyHttpUrl:
         query_keys = {key.casefold() for key in parse_qs(urlparse(str(value)).query)}
         parsed = urlparse(str(value))
-        sensitive = {"key", "api_key", "apikey", "authorization", "password", "secret", "token", "access_token", "client_secret", "x-goog-api-key"}
-        if query_keys & sensitive or parsed.username is not None or parsed.password is not None:
+        if query_keys & SENSITIVE_KEYS or parsed.username is not None or parsed.password is not None:
             raise ValueError("source URL must not contain credentials or access tokens")
         return value
 
