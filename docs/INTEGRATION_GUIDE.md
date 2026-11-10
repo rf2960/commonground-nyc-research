@@ -7,11 +7,12 @@ your owner section in `TEAM_PLAN.md`, and your prompt in `AI_HANDOFF.md` first.
 ## Before editing
 
 1. Accept the GitHub collaborator invitation for this repository.
-2. Wait until Ruochen's stacked contract/orchestration PRs are merged to `main` in
-   dependency order.
-3. Clone or fetch this repository and create only your documented branch:
+2. Fetch and fast-forward from latest `main`; Ruochen's required contracts and
+   orchestration are already merged, so no further wait is required.
+3. Create or update only your documented branch:
    `andrew/transit-researcher` or `yulia/cafe-researcher`.
-4. Run `uv sync` and `uv run pytest -q` before making changes.
+4. Run `uv sync`, `uv run pytest -q`, `uv run python -m evals.runner`, and
+   `uv run python -m evals.contract_corpus` before making changes.
 
 Do not copy Project 1 into another folder, create competing evidence models, or add a
 second Google client. The existing request functions remain the provider boundary.
@@ -87,8 +88,10 @@ trace entries add `agent` and `round` while preserving `name`, `args`, and strin
 `result`. Trace order is Lead brief, three round-1 Researchers, optional FollowUpDecision,
 ordered round-2 tasks, deterministic feasibility, then Writer.
 
-Until live adapters are wired, research mode explicitly says it is unavailable. Fixture
-evidence may appear only in tests and must never be presented as a live API result.
+Until both live teammate adapters are wired, a complete research request explicitly
+says live research is unavailable. Natural-language clarification and the Project 1
+brief bridge already run. Fixture evidence may appear only in tests and must never be
+presented as a live API result.
 
 Before a complete brief exists, clients may send `research_intake` instead. The partial
 shape contains `meeting_time`, traveler IDs/origins/individual limits, and optional cafe
@@ -101,6 +104,7 @@ validated builder. Adapters must not resolve user text or construct briefs indep
 
 - Changed files stay inside the documented owner boundary.
 - Full command and result for `uv run pytest -q` are in the PR body.
+- Both eval commands pass; GitHub Actions enforces all three gates on team branches.
 - Fixture evidence and live smoke evidence are labeled separately.
 - Provider errors are short and credential-free.
 - Shared contract assumptions and any requested schema changes are explicit.
