@@ -47,6 +47,16 @@
       .tool-list details { margin-top:10px; }
       .tool-list pre { max-height:260px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.74rem; background:white; border-radius:8px; padding:12px; }
       .tool-list h4 { margin:12px 0 4px; font-size:.75rem; }
+      .research-trace { padding:18px; border:1px solid #cfe0dc; border-radius:18px; background:#f7fbfa; }
+      .research-trace h3 { margin:4px 0 5px; font-size:1.05rem; }
+      .research-trace > p { margin:0 0 15px; color:#657185; font-size:.78rem; line-height:1.45; }
+      .research-round { margin-top:14px; }
+      .research-round h4 { margin:0 0 8px; color:#52706d; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; }
+      .research-events { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+      .research-event { min-width:0; padding:11px; border:1px solid #dbe7e4; border-radius:12px; background:white; }
+      .research-agent { display:inline-block; margin-bottom:7px; padding:3px 6px; border-radius:999px; background:#e1f2ee; color:#176c62; font-size:.62rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+      .research-event strong { display:block; font-size:.78rem; overflow-wrap:anywhere; }
+      .research-event p { margin:6px 0 0; color:#657185; font-size:.7rem; line-height:1.4; overflow-wrap:anywhere; }
       .decision-summary { padding:18px; border:1px solid #d8e4e8; border-radius:18px; background:linear-gradient(145deg,#fff,#f3f8f7); box-shadow:0 10px 24px rgba(20,37,61,.06); }
       .decision-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
       .decision-heading h3 { margin:3px 0 0; font-size:1.08rem; }
@@ -184,6 +194,7 @@
         .compose-help { font-size:.65rem; }
         .msg { max-width:95%; }
         .new-reply { bottom:120px; font-size:.8rem; }
+        .research-events { grid-template-columns:1fr; }
       }
       @media(max-width:380px), (max-height:620px) and (max-width:760px) { .mode-description,.eyebrow { display:none; } .modes .mode { padding:7px; } h1 { margin:0 0 7px; } header p { display:none; } aside { padding:10px 12px; } }
       @media(prefers-reduced-motion:reduce) { .loading::before { animation:none; } .modes .mode { transition:none; } }
@@ -192,9 +203,9 @@
   <body>
     <div class="shell">
       <aside>
-        <div class="eyebrow">Agentic AI · Project 1</div>
+        <div class="eyebrow">Agentic AI · Project 2</div>
         <h1>CommonGround NYC</h1>
-        <p>Find the meeting spot that is fair to people, not just central on a map.</p>
+        <p>Research a feasible NYC cafe, expand beyond the first shortlist when needed, and show the evidence behind every conclusion.</p>
         <div class="modes" role="group" aria-label="Meeting priority">
           <button type="button" class="mode" data-priority="fairest" aria-pressed="false"><strong>Fairest</strong><span class="mode-description">Protect the worst commute.</span></button>
           <button type="button" class="mode" data-priority="fastest" aria-pressed="false"><strong>Fastest</strong><span class="mode-description">Save total group time.</span></button>
@@ -202,10 +213,10 @@
         </div>
         <p class="mode-help" id="priority-label" aria-live="polite">No single priority selected.</p>
         <button type="button" class="compare-button" id="compare-btn">Compare all three</button>
-        <p class="mode-help">Seven transparent tools · live Google transit and cafe data.</p>
+        <p class="mode-help">Deep Research trace · Lead, parallel Researchers, targeted follow-up, and cited Writer.</p>
       </aside>
       <main>
-        <header><button id="reset-btn" class="reset">New meetup</button><h2>Plan a meetup</h2><p>Tell me each origin, meeting time, budget, and what your group values.</p></header>
+        <header><button id="reset-btn" class="reset">New meetup</button><h2>Research a feasible meetup</h2><p>Tell me each origin, arrival time, individual commute limit, cafe constraints, and what your group values.</p></header>
         <div id="messages" role="log" aria-live="polite" aria-label="Conversation"></div>
         <button type="button" id="new-reply" class="new-reply" hidden>View new reply ↓</button>
         <div class="composer">
@@ -427,6 +438,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         ['Compare cafe quality','Compare these example cafes: A has rating 4.9 with 2 reviews; B has rating 4.6 with 500 reviews. Both are price level 2 and open at our meeting time. Use the cafe scoring tool.']
       ]){const b=node('button','',label);b.addEventListener('click',()=>{input.value=text;resizeInput();input.focus();});choices.append(b);}el.append(choices);messages.append(el);}
       function toolLog(calls){const group=node('details','tool-list');group.append(node('summary','',`${calls.length} tool call${calls.length===1?'':'s'} · inspect inputs and results`));for(const call of calls){const d=node('details');d.append(node('summary','',call.name||'Tool'),node('h4','','Arguments'),node('pre','',pretty(call.args)),node('h4','','Result'),node('pre','',pretty(call.result)));group.append(d);}return group;}
+      function researchTrace(calls){const records=calls.filter(call=>typeof call.agent==='string'&&Number.isInteger(call.round));if(!records.length)return null;const labels={lead:'Lead',transit_researcher:'Transit Researcher',cafe_researcher:'Cafe Researcher',expansion_researcher:'Expansion Researcher',writer:'Writer'},section=node('section','research-trace');section.append(node('div','decision-kicker','Deep Research evidence path'),node('h3','','How the answer was researched'),node('p','','Round 1 fans out in fresh contexts. Round 2 appears only when Lead records a bounded evidence gap.'));const rounds=[...new Set(records.map(call=>call.round))].sort((a,b)=>a-b);for(const round of rounds){const block=node('div','research-round'),grid=node('div','research-events');block.append(node('h4','',`Round ${round}`));for(const call of records.filter(item=>item.round===round)){const result=parsed(call.result),card=node('article','research-event'),name=String(call.name||'task').replaceAll('_',' ');let detail='Completed with a traceable result.';if(result?.summary)detail=result.summary;else if(result?.reason_code)detail=`${result.reason_code}${Array.isArray(result.selected_ids)?` · ${result.selected_ids.join(', ')}`:''}`;else if(Array.isArray(result)&&result.length)detail=result.map(item=>`${item.cafe_id}: ${item.status}`).join(' · ');else if(result?.recommended_cafe_id)detail=`Recommendation: ${result.recommended_cafe_id}`;else if(result?.question)detail=result.question;card.append(node('span','research-agent',labels[call.agent]||call.agent),node('strong','',name),node('p','',detail));grid.append(card);}block.append(grid);section.append(block);}return section;}
       function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'?u.href:null;}catch{return null;}}
       function finite(value){return typeof value==='number'&&Number.isFinite(value);}
       function minutes(value){return finite(value)?`${Number.isInteger(value)?value:value.toFixed(1)} min`:null;}
@@ -505,13 +517,13 @@ if(__exports != exports)module.exports = exports;return module.exports}));
           sessionId=data.session_id;comparePending=false;
           const follow=messages.scrollHeight-messages.scrollTop-messages.clientHeight<100;
           stopLoading();loading.classList.remove('loading');
-          const calls=Array.isArray(data.tool_calls)?data.tool_calls:[], summary=decisionSummary(calls), cards=resultCards(calls);
-          if(summary)messages.insertBefore(summary,loading);if(cards)messages.insertBefore(cards,loading);
+          const calls=Array.isArray(data.tool_calls)?data.tool_calls:[], research=researchTrace(calls), summary=decisionSummary(calls), cards=resultCards(calls);
+          if(research)messages.insertBefore(research,loading);if(summary)messages.insertBefore(summary,loading);if(cards)messages.insertBefore(cards,loading);
           renderAssistant(loading.querySelector('.content'),data.response);
           const failed=/^(Model call failed:|Sorry, I hit my tool-call limit)/.test(data.response.trim());
-          const explanation=(summary||cards)&&!failed?fullResponse(loading):loading;
+          const explanation=(research||summary||cards)&&!failed?fullResponse(loading):loading;
           if(calls.length)messages.insertBefore(toolLog(calls),explanation.nextSibling);
-          latestResult=summary||cards||explanation;
+          latestResult=research||summary||cards||explanation;
           if(follow)scrollToResult(latestResult);else newReply.hidden=false;
         }catch(error){
           stopLoading();loading.classList.remove('loading');loading.querySelector('.content').textContent=error.message||'Unable to connect. Please try again.';
@@ -539,7 +551,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         const fair={selected_area:'Union Square',hard_limit_minutes:60,ranking:[{area:'Union Square',max_commute_minutes:31,commute_spread_minutes:8,hard_limit_violations:0},{area:'SoHo',max_commute_minutes:39,commute_spread_minutes:17,hard_limit_violations:0}]};
         const fast={selected_area:'SoHo',ranking:[{area:'SoHo',total_commute_minutes:62,average_commute_minutes:20.7,max_commute_minutes:39},{area:'Union Square',total_commute_minutes:67,average_commute_minutes:22.3,max_commute_minutes:31}]};
         const transit={traveler_ids:['Alex','Blair','Casey'],areas:[{area:'Union Square',commute_minutes:[18,27,31],commute_options:[{selected_mode:'transit'},{selected_mode:'transit'},{selected_mode:'transit'}]},{area:'SoHo',commute_minutes:[14,20,28]}]};
-        const calls=[{name:'get_transit_matrix',args:{},result:JSON.stringify(transit)},{name:'score_fairest_option',args:{},result:JSON.stringify(fair)},{name:'score_fastest_option',args:{},result:JSON.stringify(fast)},{name:'score_best_cafe_option',args:{price_levels:[1,2]},result:JSON.stringify(example)}];messages.append(decisionSummary(calls),resultCards(calls),toolLog(calls));
+        const calls=[{agent:'lead',round:1,name:'prepare_research_brief',args:{},result:JSON.stringify({question:'Can bounded expansion find a feasible cafe?'})},{agent:'transit_researcher',round:1,name:'get_transit_matrix',args:{},result:JSON.stringify({summary:'Checked each traveler against the initial area centers.'})},{agent:'cafe_researcher',round:1,name:'search_cafes_in_areas',args:{},result:JSON.stringify({summary:'The initial cafe did not satisfy the meeting-time condition.'})},{agent:'expansion_researcher',round:1,name:'search_mta_expansion_candidates',args:{},result:JSON.stringify({summary:'Found a bounded, MTA-backed expansion candidate.'})},{agent:'lead',round:2,name:'choose_follow_up',args:{},result:JSON.stringify({reason_code:'NO_FEASIBLE_INITIAL_CAFE',selected_ids:['area:mta:sample-station']})},{agent:'writer',round:2,name:'write_evidence_report',args:{},result:JSON.stringify({recommended_cafe_id:'cafe:gplaces:sample'})},{name:'get_transit_matrix',args:{},result:JSON.stringify(transit)},{name:'score_fairest_option',args:{},result:JSON.stringify(fair)},{name:'score_fastest_option',args:{},result:JSON.stringify(fast)},{name:'score_best_cafe_option',args:{price_levels:[1,2]},result:JSON.stringify(example)}];messages.append(researchTrace(calls),decisionSummary(calls),resultCards(calls),toolLog(calls));
         const preview=addMessage('CommonGround','');
         fullResponse(preview);
         renderAssistant(preview.querySelector('.content'),'### Example recommendation\n**Example Cafe A** is our sample choice.\n\n- Rating: **4.6**\n- Price: $$\n- Hours: check before going.\n\n---\nThis is fictional preview data, not a live recommendation.');

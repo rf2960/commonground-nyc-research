@@ -95,6 +95,9 @@ suite, and Cloud Run deployment remain later checkpoints.
 - `commonground/research/dispatch.py` is the single production composition boundary:
   it routes each task to exactly one owner adapter, provides the real bounded MTA task,
   and constructs the service while preserving runner timeout/turn limits.
+- `index.html` identifies the Project 2 research purpose and renders an accessible,
+  round-grouped Lead/Researcher/Writer evidence path whenever `/chat` returns Project 2
+  `agent` and `round` trace entries; legacy Project 1 result cards remain compatible.
 
 ## Deep Research design
 
