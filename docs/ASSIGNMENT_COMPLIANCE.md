@@ -64,8 +64,9 @@ or deployment link.
 
 - Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
   concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
-  Writer and fixed-data `/chat` trace are implemented. Cafe adapter and one-area live
-  Places smoke are complete; Routes adapter and live service injection are not yet done.
+  Writer and fixed-data `/chat` trace are implemented. Cafe adapter, one-area live
+  Places smoke and desktop/mobile browser checks are complete; Routes adapter and live
+  service injection are not yet done.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - Credentialed rubric-judge scores, same-model no-tools baselines, and the final
   hill-climbing table remain pending the frozen production model.

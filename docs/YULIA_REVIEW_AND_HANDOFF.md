@@ -48,7 +48,7 @@ The singular parent Fact keeps a deterministic primary parent for existing consu
 | --- | --- | --- |
 | Real provider data | Live Places capture passed: ten cafes, 81 cited facts, eleven sources from one Union Square request; MTA loader exists | Routes live proof and injection of both adapters remain team integration work |
 | Usable deployed application | Project 2 `/chat` boundary and research timeline exist | Production service injection and a new live Cloud Run URL / Ruochen |
-| Complete readable evidence UI | Existing timeline and raw trace exist | Venue cards with citations, gaps, and exact-vs-center distinctions / Yulia follow-up |
+| Complete readable evidence UI | Venue cards, badges, citations, gaps, provisional hours and exact/center distinctions; six renderer cases plus four real desktop/mobile Chromium checks pass | CI run `42765954735` also proves a mobile user can scroll to the missing-evidence notice above the composer; live deployed-service QA remains a team integration step |
 | Three grading examples | Ruochen and Yulia synthetic cases now run | Andrew example and live/model captures / each owner |
 | 50+ evals | 50 synthetic contract cases pass | Provider and full-pipeline coverage; synthetic contract count alone is not evidence of 50 real research successes / team |
 | Two scoring approaches | Deterministic scores executed; rubric judge code exists | Run credentialed rubric scores after freezing the model / Ruochen |
