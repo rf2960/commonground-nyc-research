@@ -7,17 +7,25 @@ from evidence still needed for submission.
 
 ## Current rubric position
 
-| Graded area | Current evidence | Full-score risk | Next proof |
-| --- | --- | --- | --- |
-| Basics (1) | Root `README.md`, `submission.json`, `app.py`, `pyproject.toml`, and `uv.lock`; valid `path=research` and all three UNIs | Low | Keep the deploy URL current after the final release |
-| Functionality (9) | Public Cloud Run app, healthy `/health`, real two-round `/chat` smoke, 349 tests | Medium | Run and save all three README sample queries against the final production revision, including a controlled unknown/failure path |
-| Data (4) | MTA Stations, Google Places, and Google Routes adapters; normalized sources, facts, and gaps; live Places and full-service smokes | Low–medium | Preserve a bounded raw Routes smoke and document the precise request/load policy for every source |
-| Deep Research path (7) | Lead, three parallel fresh-context Researchers, one evidence-driven follow-up, Writer, clarification, and citation validation | Low | Keep one concise trace screenshot/capture that makes the fan-out and dependency-aware follow-up obvious to a grader |
-| Creativity (4) | Expansion after shortlist failure, blocker diagnosis, exact-address correction, evidence UI, and explicit unknowns | Medium | Make the initial-vs-follow-up information gain visually prominent and polish the three guided grader examples |
+**Evidence-backed self-score: 21.5–23 / 25.** The range reflects one genuine grading
+ambiguity: the repository implements Lead/Researcher/Writer as bounded, role-specific
+execution shapes, but only intake extraction currently invokes the production model.
+A grader who requires every named shape to be an LLM invocation may score the Deep
+Research path more strictly. This is not represented as full credit until the ambiguity
+is resolved or a validated model-backed presentation/planning step is shipped.
+
+| Graded area | Working estimate | Current evidence | Full-score risk | Next proof |
+| --- | ---: | --- | --- | --- |
+| Basics (1) | 1.0 | Root `README.md`, `submission.json`, `app.py`, `pyproject.toml`, and `uv.lock`; valid `path=research` and all three UNIs | Low | Keep the deploy URL current after the final release |
+| Functionality (9) | 7.5–8.5 | Public Cloud Run app, healthy `/health`, real two-round `/chat` smoke, 349 tests | Medium | Save all three final live queries, including clarification and unknown/failure behavior |
+| Data (4) | 3.5–4.0 | MTA Stations, Google Places, and Google Routes adapters; normalized sources, facts, and gaps; live Places and full-service smokes | Low–medium | Preserve a bounded raw Routes smoke and document exact request/load policy for every source |
+| Deep Research path (7) | 6.0–6.5 | Lead, three parallel fresh-context Researchers, one evidence-driven follow-up, Writer, clarification, and citation validation | Medium | Resolve the model-backed-role ambiguity and retain a concise fan-out/follow-up capture |
+| Creativity (4) | 3.5–4.0 | Expansion after shortlist failure, blocker diagnosis, exact-address correction, evidence UI, and explicit unknowns | Low–medium | Make initial → follow-up → final information gain visually immediate in every result |
 
 The public application is functional and demonstrates the core idea. The largest
-remaining score risk is not deployment or researcher code; it is incomplete evaluation
-evidence required verbatim by the assignment.
+remaining score risk is incomplete evaluation evidence required verbatim by the
+assignment, followed by the model-backed-role ambiguity above. Adding more providers
+or an unbounded third research round would not address either risk.
 
 ## Mandatory gaps before submission
 

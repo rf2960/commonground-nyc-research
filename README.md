@@ -250,20 +250,39 @@ The Maps credential is referenced from Secret Manager at runtime and never appea
 the repository, browser trace, or `/chat` response. See the
 [deployment runbook](docs/DEPLOYMENT.md) for configuration and release checks.
 
-## Planned grading examples
+## Three grader-ready live queries
+
+These prompts are complete, future-dated, and available as one-click examples in the
+public UI. Provider results can change, so the expected answer is an invariant rather
+than a preselected cafe name. The agent must preserve the limits and cite the actual
+MTA, Places, and Routes records returned during that run.
+
+| Query | Expected supported answer | Required sources |
+| --- | --- | --- |
+| “Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet December 5, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3 that is expected to be open. Do not relax any limit; if no option is supported, explain whether commute, cafe conditions, or missing evidence is the blocker.” | Recommend only a cafe whose exact-address routes and cafe evidence pass every active constraint; otherwise name the supported blocker and any unknowns. | MTA station record when expansion is used, Google Places cafe record, Google Routes exact-destination result, `feasibility-v1` record |
+| “Alex starts at Columbia University and Blair starts in Astoria. Find us a cafe, but do not guess the meeting time or either person's commute limit.” | Ask only for the missing future arrival time and the two commute limits; do not call Routes, Places, or MTA before the brief is complete. | Quote-validated intake and clarification-gap records; no provider source should exist yet |
+| “Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet December 5, 2026 at 6:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3, but recommend it only if the evidence supports that it is expected to be open; otherwise identify the missing hours evidence and next action.” | Treat regular hours as provisional; if hours are absent, report `EVIDENCE_INSUFFICIENT` rather than guessing open or closed. | Google Places record/request, explicit MissingEvidence when needed, exact-cafe Google Routes result |
+
+## Fixed grading examples
 
 Each teammate owns one example end to end. The complete expected claims, evidence
 sources, agent-output capture, and no-tools/no-system-prompt baseline format are in
 [docs/EVALUATION_PLAN.md](docs/EVALUATION_PLAN.md).
 
-| Owner | Grader query | Expected supported answer | Required sources |
+These cases use a shared **synthetic fixture timestamp** so their golden outputs remain
+reproducible. They are not live queries and are never presented as current provider
+observations.
+
+| Owner | Fixed-data question | Expected supported answer | Required sources |
 | --- | --- | --- | --- |
 | Ruochen | “Our initial CommonGround areas have no feasible cafe for October 10, 2026 at 2:00 PM Eastern Time. Expand to a few additional MTA stations without changing our commute, rating, price, or opening constraints. Did expansion find a feasible option, and what new evidence changed the answer?” | Name why initial candidates failed, justify the bounded expansion, and recommend an expansion cafe only if exact-address routes and cafe evidence pass all hard constraints. | MTA station record, Google Places cafe record, Google Routes exact-destination result |
 | Andrew | “The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?” | Request the dependency-aware exact-address route check; report actual versus limit for any failing traveler and do not treat a center ETA as cafe ETA. | Google Routes center and exact-cafe requests, Google Places address, clarified traveler limits |
 | Wenyu/Yulia | “This cafe has a good rating and acceptable commutes, but can you prove it will be open at our meeting time?” | If regular hours are missing, return `EVIDENCE_INSUFFICIENT`, identify the missing field, and recommend venue verification rather than claiming open/closed. | Google Places record/request, MissingEvidence record, exact-cafe Routes result |
 
-Ruochen's fixed-data agent answer and full trace are now captured under `evals/examples/`.
-The same-model baseline must be recorded only after the production model is frozen.
+All three fixed-data agent answers and full traces are captured under `evals/examples/`.
+The production model is frozen as `vertex_ai/gemini-3.5-flash-lite`; authenticated
+same-model/no-tools/no-system and rubric-judge captures remain pending and must not be
+replaced with hand-written answers.
 
 Run the current provenance-recorded case registry with:
 
@@ -280,9 +299,9 @@ uv run python -m evals.contract_corpus
 See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
 handoff.
 
-The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
-Routes, Places-hours, expected-answer, and baseline comparison refers to the same
-unambiguous arrival time.
+The fixed-data cases intentionally retain **October 10, 2026 at 2:00 PM Eastern Time**
+as an immutable synthetic timestamp. Live UI examples use December 5, 2026 instead;
+changing fixture dates would invalidate the recorded golden evidence.
 
 ## Course requirements tracked here
 
