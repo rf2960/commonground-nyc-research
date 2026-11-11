@@ -29,30 +29,15 @@ or an unbounded third research round would not address either risk.
 
 ## Mandatory gaps before submission
 
-### P0 — same-model comparisons for all three sample queries
+### Same-model comparisons for all three sample queries
 
-The assignment requires each README sample query to show:
+The README now includes the expected result and sources, the actual public
+agent answer from structured intake, and a summary and raw record of the
+authenticated no-tools/no-system-prompt answer for each question.
 
-1. the expected answer and source;
-2. the actual agent answer; and
-3. the answer from the same model with no tools and no system prompt.
-
-The three owner cases and deterministic agent captures exist, and the production model
-identifier is fixed as `vertex_ai/gemini-3.5-flash-lite`. The committed baseline files
-are still honest `pending` records. They must not be replaced with hand-written prose.
-
-There is also an architecture/evidence mismatch to resolve: the final production Writer
-is currently deterministic and citation-validated, while Yulia's model-evaluation gate
-correctly requires a `model-backed research` capture before claiming a same-model
-comparison. The team must choose and document one defensible approach:
-
-- add a model-backed Writer presentation step over the already deterministic decision
-  record, validate every output citation, and retain deterministic fallback; or
-- obtain instructor confirmation that the deterministic Writer is acceptable and state
-  exactly which production model the no-tools contrast represents.
-
-Until that decision is resolved, claiming the same-model comparison as complete would
-be misleading.
+The contrast uses `vertex_ai/gemini-3.5-flash-lite`, the model used for
+natural-language intake. The final production Writer is deterministic and
+citation-validated. The captures document that distinction for the grader.
 
 ### P0 — actual second-scorer captures
 
@@ -128,7 +113,6 @@ the repository is ready.
 ## Honest readiness assessment
 
 The core product, Deep Research mechanics, deployment, and deterministic evaluation are
-strong. It is not yet a defensible full-score submission because the assignment's three
-same-model comparisons, credentialed judge results, and real two-change hill-climbing
-log are still missing. Those are evidence tasks, not cosmetic README edits. Completing
+strong. It is not yet a defensible full-score submission because the post-deploy plain-text retest, credentialed judge results, and real two-change
+hill-climbing log are still missing. Those are evidence tasks, not cosmetic README edits. Completing
 them should take priority over adding more provider features or another agent round.

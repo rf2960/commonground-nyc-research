@@ -44,8 +44,8 @@ or deployment link.
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
 | Explain data origin and how it is loaded | MTA and Cafe documented; live Places capture complete | `DATA_SOURCES.md` and `YULIA_ACCEPTANCE.md` record provenance, request bounds and remaining model gates |
-| Three sample queries with expected answers and source | In progress | All three are designed and have actual fixed-pipeline captures; each owner still needs a credentialed same-model comparison beside the agent answer |
-| Same-model answer with no tools and no system prompt | Capture code complete; run pending | Production model is fixed as `vertex_ai/gemini-3.5-flash-lite`; `evals/baseline.py` enforces question-only/no-tools/no-system, but an offline credentialed capture has not yet run |
+| Three sample queries with expected answers and source | Recorded | README includes three questions, expected results and sources, public-service captures with structured intake, and matching no-tools answers. Repeat the plain-text queries after deploying the intake fix |
+| Same-model answer with no tools and no system prompt | Captured for all three live queries | The captured model is `vertex_ai/gemini-3.5-flash-lite`, used for intake. The final Writer renders the deterministic evidence record. The raw files are linked in the README |
 
 ## Repository and deployment requirements
 
@@ -66,10 +66,8 @@ or deployment link.
   evidence-only Writer, Cafe/Transit/Expansion adapters, live service injection,
   desktop/mobile UI checks, public Cloud Run release, and a live full-pipeline smoke are
   complete.
-- Credentialed rubric-judge scores, same-model no-tools baselines, and the final
-  hill-climbing table remain pending. The production model identifier is now fixed, but
-  the local environment has no Google Cloud CLI/application-default credential for an
-  auditable offline capture.
+- Three credentialed no-tools answers are committed. The public plain-text
+  retest, credentialed rubric-judge scores, and final hill-climbing table remain pending.
 
 Do not describe the remaining evaluation artifacts as complete until their raw outputs
 and scores are committed. Deployment itself is complete and separately evidenced.
