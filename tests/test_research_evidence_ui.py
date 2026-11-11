@@ -12,13 +12,13 @@ import subprocess
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-HTML = (ROOT / 'index.html').read_text()
+HTML = (ROOT / 'index.html').read_text(encoding="utf-8")
 NODE = shutil.which('node')
 pytestmark = pytest.mark.skipif(NODE is None, reason='Node is needed to execute the browser renderer')
 
 
 def calls():
-    return json.loads((ROOT / 'evals/examples/yulia/actual_agent.json').read_text())['actual']['tool_calls']
+    return json.loads((ROOT / 'evals/examples/yulia/actual_agent.json').read_text(encoding="utf-8"))['actual']['tool_calls']
 
 
 def render(events):
@@ -40,7 +40,7 @@ function visit(el){if(!el)return;text.push(el.textContent);classes.push(el.class
 visit(result);console.log(JSON.stringify({text:text.join('\n'),links,classes,present:!!result}));
 '''
     process = subprocess.run([NODE, '-e', harness + implementation + suffix],
-                             input=json.dumps(events), text=True, capture_output=True)
+                             input=json.dumps(events), encoding="utf-8", capture_output=True)
     assert process.returncode == 0, process.stderr
     return json.loads(process.stdout)
 

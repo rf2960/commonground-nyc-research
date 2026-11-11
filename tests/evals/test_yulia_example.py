@@ -20,12 +20,12 @@ def test_yulia_actual_pipeline_capture_passes_golden_checks():
 
 
 def test_golden_places_evidence_is_reproducible_from_raw_synthetic_response():
-    raw = json.loads((FIXTURES / 'yulia_places_missing_hours.json').read_text())
-    brief = ResearchBrief.model_validate_json((FIXTURES / 'yulia_research_brief.json').read_text())
+    raw = json.loads((FIXTURES / 'yulia_places_missing_hours.json').read_text(encoding="utf-8"))
+    brief = ResearchBrief.model_validate_json((FIXTURES / 'yulia_research_brief.json').read_text(encoding="utf-8"))
     observations = tuple(AreaObservation(area.candidate_id, Coordinates(lat=area.lat, lng=area.lng),
                                         datetime.fromisoformat(raw['accessed_at']), tuple(raw['places']))
                          for area in brief.initial_candidates)
     generated = build_cafe_result(brief, LeadOrchestrator.build_initial_tasks(brief)[1], observations)
-    stored = json.loads((FIXTURES / 'yulia_round_1_results.json').read_text())[1]
+    stored = json.loads((FIXTURES / 'yulia_round_1_results.json').read_text(encoding="utf-8"))[1]
     assert generated == ResearchResult.model_validate(stored)
     assert raw['synthetic'] is True and raw['live_provider_observation'] is False

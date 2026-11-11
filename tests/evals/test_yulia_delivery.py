@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def brief():
-    raw = json.loads((ROOT/'tests/research/fixtures/yulia_research_brief.json').read_text())
+    raw = json.loads((ROOT/'tests/research/fixtures/yulia_research_brief.json').read_text(encoding="utf-8"))
     raw['meeting_time'] = (datetime.now(timezone.utc) + timedelta(days=7)).isoformat()
     return ResearchBrief.model_validate(raw)
 
@@ -30,7 +30,7 @@ def test_places_capture_is_one_area_normalized_and_credential_free(monkeypatch):
     async def execute(context, b, task):
         calls.append(task)
         area = b.initial_candidates[0]
-        place = json.loads((ROOT/'tests/research/fixtures/yulia_places_missing_hours.json').read_text())['places'][0]
+        place = json.loads((ROOT/'tests/research/fixtures/yulia_places_missing_hours.json').read_text(encoding="utf-8"))['places'][0]
         return build_cafe_result(b, task, (AreaObservation(area.candidate_id,
             Coordinates(lat=area.lat, lng=area.lng), datetime.now(timezone.utc), (place,)),))
     record = capture_places_smoke(brief(), live=True, executor=execute)
@@ -51,8 +51,8 @@ def test_places_raw_provider_exceptions_are_never_recorded(monkeypatch):
 
 
 def test_fixture_writer_output_cannot_be_claimed_as_a_same_model_capture():
-    case = json.loads((ROOT/'evals/cases/yulia_missing_hours.json').read_text())
-    capture = json.loads((ROOT/'evals/examples/yulia/actual_agent.json').read_text())
+    case = json.loads((ROOT/'evals/cases/yulia_missing_hours.json').read_text(encoding="utf-8"))
+    capture = json.loads((ROOT/'evals/examples/yulia/actual_agent.json').read_text(encoding="utf-8"))
     assert capture_model_evaluation(manifest=None, agent_capture=capture, case=case)['status'] == 'blocked'
     record = capture_model_evaluation(manifest={'frozen': True, 'model': 'test-model'}, agent_capture=capture, case=case)
     assert record['reason_code'] == 'MATCHING_MODEL_AGENT_CAPTURE_REQUIRED'
@@ -86,5 +86,5 @@ def test_failed_attempt_does_not_destroy_successful_capture(tmp_path):
     path = tmp_path/'capture.json'
     write_record(path, {'status': 'passed', 'value': 'saved evidence'})
     write_record(path, {'status': 'blocked', 'reason_code': 'MISSING_CONFIG'})
-    assert json.loads(path.read_text())['status'] == 'passed'
-    assert json.loads((tmp_path/'capture.latest_attempt.json').read_text())['status'] == 'blocked'
+    assert json.loads(path.read_text(encoding="utf-8"))['status'] == 'passed'
+    assert json.loads((tmp_path/'capture.latest_attempt.json').read_text(encoding="utf-8"))['status'] == 'blocked'
