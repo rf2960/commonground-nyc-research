@@ -22,10 +22,9 @@ natural-language clarification, `/chat` trace compatibility, the Project 2 UI, a
 50-case deterministic contract corpus. The Transit, Cafe, and Expansion adapters are
 composed through the production dispatcher. A public Cloud Run smoke on November 11,
 2026 returned HTTP 200, all five agent instances across rounds 1–2, live Places and
-Routes evidence, and exact-cafe commute values versus each person's limit. Frozen-model
-no-tools baselines, credentialed rubric-judge captures, and the aggregate hill-climbing
-table remain explicit pre-submission evaluation work; they are not represented by the
-live service smoke.
+Routes evidence, and exact-cafe commute values versus each person's limit. The three
+live grader queries now have captured no-tools baselines. Credentialed rubric-judge
+captures and the aggregate hill-climbing table remain pending.
 
 | Document | Purpose |
 | --- | --- |
@@ -114,7 +113,7 @@ live service smoke.
   cafe, missing-evidence, and clarification slices. The current result is 50/50.
 - `evals/rubric_judge.py` supplies the second scoring method with a strict 0–4 reference
   rubric, while `evals/baseline.py` enforces the same-model question-only comparison
-  with no tools and no system prompt. Credentialed captures remain pending model freeze.
+  with no tools and no system prompt. Credentialed judge scores remain pending.
 - `commonground/research/dispatch.py` is the single production composition boundary:
   it routes each task to exactly one owner adapter, provides the real bounded MTA task,
   and constructs the service while preserving runner timeout/turn limits.
@@ -136,8 +135,8 @@ missing-hours record plus the successful exact-route evidence. See the
 The deterministic result is 8/8 checks. This is simulated provider evidence, not a
 live Google request or model run. The
 [same-model baseline](evals/examples/yulia/no_tools_baseline.json) remains explicitly
-pending model freeze; the credentialed rubric score and hill-climbing table are also
-pending.
+pending for that synthetic fixture. The three live grader queries have separate recorded
+no-tools answers.
 
 The research evidence UI now presents each cafe's status, known attributes, provisional
 opening estimate or explicit gap, and per-person exact-cafe commute versus limit.
@@ -250,20 +249,56 @@ The Maps credential is referenced from Secret Manager at runtime and never appea
 the repository, browser trace, or `/chat` response. See the
 [deployment runbook](docs/DEPLOYMENT.md) for configuration and release checks.
 
-## Planned grading examples
+## Three grader-ready live queries
 
-Each teammate owns one example end to end. The complete expected claims, evidence
-sources, agent-output capture, and no-tools/no-system-prompt baseline format are in
-[docs/EVALUATION_PLAN.md](docs/EVALUATION_PLAN.md).
+Choose **Deep Research** and start a new meetup for each query. The examples use
+December 4, 2026. For later grading, substitute a future Friday at the same
+local time. Transit schedules and available venue evidence may change.
 
-| Owner | Grader query | Expected supported answer | Required sources |
-| --- | --- | --- | --- |
-| Ruochen | “Our initial CommonGround areas have no feasible cafe for October 10, 2026 at 2:00 PM Eastern Time. Expand to a few additional MTA stations without changing our commute, rating, price, or opening constraints. Did expansion find a feasible option, and what new evidence changed the answer?” | Name why initial candidates failed, justify the bounded expansion, and recommend an expansion cafe only if exact-address routes and cafe evidence pass all hard constraints. | MTA station record, Google Places cafe record, Google Routes exact-destination result |
-| Andrew | “The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?” | Request the dependency-aware exact-address route check; report actual versus limit for any failing traveler and do not treat a center ETA as cafe ETA. | Google Routes center and exact-cafe requests, Google Places address, clarified traveler limits |
-| Wenyu/Yulia | “This cafe has a good rating and acceptable commutes, but can you prove it will be open at our meeting time?” | If regular hours are missing, return `EVIDENCE_INSUFFICIENT`, identify the missing field, and recommend venue verification rather than claiming open/closed. | Google Places record/request, MissingEvidence record, exact-cafe Routes result |
+The [public-service captures](evals/examples/live_grader_queries.json) contain
+the actual Writer answers, source IDs and trace. They used the live `/chat`
+endpoint with explicit structured intake to hold the stated constraints fixed.
+The intake fix in this release preserves those same rating and price constraints
+when they are entered as text. Gemini 3.5 Flash-Lite extracts the natural-language
+intake. The cited Writer renders the deterministic evidence and feasibility result.
 
-Ruochen's fixed-data agent answer and full trace are now captured under `evals/examples/`.
-The same-model baseline must be recorded only after the production model is frozen.
+### Expand a failed shortlist
+
+> Alex starts at Columbia University with a 22-minute transit limit, Blair starts in Astoria with a 20-minute transit limit, and Casey starts at Bedford Ave Station with a 24-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a cafe with a minimum rating of 5 stars and a moderate price. Do not relax the 5-star minimum. If the initial areas fail, check whether expanding to more MTA stations can help without relaxing any limit. Explain what the evidence supports.
+
+| Expected result and sources | Actual agent answer (summary) | Same-model no-tools answer |
+| --- | --- | --- |
+| Keep the constraints fixed, search a bounded set of additional MTA stations, and report whether the expanded search supports a recommendation. MTA Subway Stations (Socrata dataset `39hk-dx4f`), Google Places Nearby Search, and Google Routes Compute Route Matrix. | The follow-up checked three MTA areas. The Writer reported no supported recommendation and flagged missing price evidence. | Claims that expansion yielded zero matches and that the rating constraint is “mathematically impossible.” It provides no source-backed search results. [Full captured answer](evals/examples/expansion_baseline.json) |
+
+### Check exact cafe routes
+
+> Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3. Check each commute to the exact cafe address and report the actual times versus the individual limits.
+
+| Expected result and sources | Actual agent answer (summary) | Same-model no-tools answer |
+| --- | --- | --- |
+| Verify each traveler’s transit duration to the actual cafe before deciding whether it meets their individual limit. Google Places Nearby Search for venue coordinates and Google Routes Compute Route Matrix for exact transit times. | Little Collins qualified. Exact commutes were 29.9/35, 28.6/30, and 22/40 minutes. | Recommends Culture Espresso and gives 30, 24, and 22 minutes as actual commutes. It provides no route-matrix evidence. [Full captured answer](evals/examples/exact_route_baseline.json) |
+
+### Qualify opening-hour evidence
+
+> Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3 that is open at the meeting time. What can the available hours evidence establish, and what should we verify with the cafe?
+
+| Expected result and sources | Actual agent answer (summary) | Same-model no-tools answer |
+| --- | --- | --- |
+| Report what the available regular hours suggest and explain what the group should verify with the venue. Google Places Nearby Search regular opening hours and venue coordinates, plus Google Routes Compute Route Matrix. | Little Collins qualified on the available evidence. The Writer identified opening as a future regular-schedule estimate and advised venue verification. | Explains what regular hours can establish and suggests calling the cafe, but supplies no named cafe or verified hours. [Full captured answer](evals/examples/cafe_hours_baseline.json) |
+
+The three no-tools answers were captured on November 11, 2026 with
+`vertex_ai/gemini-3.5-flash-lite`, the model used for natural-language intake.
+Each call used only the exact question. The raw files record the model, timestamp,
+and disabled tools and system prompt. To reproduce these calls from a
+Vertex-authenticated checkout, run:
+
+```bash
+uv run python -m evals.capture_grader_baselines
+```
+
+The [fixed-data regression suite](docs/EVALUATION_PLAN.md) separately covers
+successful MTA expansion, a cafe-specific route that exceeds a limit, and
+missing opening hours. Those fixture outputs are reproducible offline.
 
 Run the current provenance-recorded case registry with:
 
@@ -280,9 +315,9 @@ uv run python -m evals.contract_corpus
 See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
 handoff.
 
-The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
-Routes, Places-hours, expected-answer, and baseline comparison refers to the same
-unambiguous arrival time.
+The fixed-data fixture time is **October 10, 2026 at 2:00 PM Eastern Time**, an
+immutable synthetic timestamp. Use the future-dated questions above for the
+public Cloud Run service.
 
 ## Course requirements tracked here
 

@@ -62,6 +62,22 @@ def test_payload_rejects_a_quote_not_present_in_user_text():
         intake_from_extraction_payload(payload, MESSAGES)
 
 
+@pytest.mark.parametrize(
+    ("cafe_request", "rating", "price"),
+    [
+        ("Find a moderate-price cafe rated at least 4.3.", 4.3, 2),
+        ("Find a cafe with a minimum rating of 5 stars and price level 1.", 5, 1),
+    ],
+)
+def test_cafe_constraints_are_preserved_when_model_extracts_only_travelers_and_time(
+    cafe_request, rating, price
+):
+    intake = intake_from_extraction_payload(complete_payload(), [*MESSAGES, cafe_request])
+
+    assert intake.cafe_constraints.min_rating == rating
+    assert intake.cafe_constraints.price_levels == (price,)
+
+
 def test_payload_keeps_ambiguous_time_missing_for_deterministic_clarification():
     payload = complete_payload()
     payload["meeting_time"] = None
