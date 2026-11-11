@@ -114,10 +114,10 @@ trace entries add `agent` and `round` while preserving `name`, `args`, and strin
 `result`. Trace order is Lead brief, three round-1 Researchers, optional FollowUpDecision,
 ordered round-2 tasks, deterministic feasibility, then Writer.
 
-Until both live teammate adapters are wired, a complete research request explicitly
-says live research is unavailable. Natural-language clarification and the Project 1
-brief bridge already run. Fixture evidence may appear only in tests and must never be
-presented as a live API result.
+Both live teammate adapters are now wired through the production dispatcher. A complete
+validated brief can run Transit, Cafe, and MTA research; missing credentials or provider
+failures become explicit gaps rather than fixture results. Fixture evidence may appear
+only in tests and must never be presented as a live API result.
 
 Before a complete brief exists, clients may send `research_intake` instead. The partial
 shape contains `meeting_time`, traveler IDs/origins/individual limits, and optional cafe

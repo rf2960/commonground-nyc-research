@@ -20,8 +20,9 @@ follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intak
 natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
 50-case deterministic contract corpus. The Cafe Researcher adapter now exists and is
 fixture-tested, including the complete missing-hours path. A separate live Places smoke
-passed with ten cafes from one Union Square request. The Transit adapter/live Routes
-proof, credentialed model eval captures, final integration, and Cloud Run remain.
+passed with ten cafes from one Union Square request. The Transit adapter, Cafe adapter,
+and production dispatcher are integrated. Credentialed live Routes proof, frozen-model
+eval captures, and the Project 2 Cloud Run release remain.
 
 | Document | Purpose |
 | --- | --- |
@@ -79,11 +80,11 @@ proof, credentialed model eval captures, final integration, and Cloud Run remain
 - `commonground/research/service.py` joins Lead, deterministic evaluation, and Writer,
   then emits the ordered Project 2 trace while preserving legacy tool-call fields.
 - Root `app.py` now accepts an optional structured `research` mode without changing the
-  default Project 1 route. It clarifies a missing brief and refuses to claim fixture or
-  live results until real Routes/Places adapters are injected.
-- `tests/research/test_service.py` proves the full nine-entry fixture trace and the
-  unchanged `/chat` response keys, session identity, clarification, and safe unconfigured
-  behavior.
+  default Project 1 route. It clarifies a missing brief and composes the real bounded
+  Transit, Cafe, and MTA adapters without making provider requests at import time.
+- `tests/research/test_service.py` proves the full nine-entry fixture trace, production
+  service construction, unchanged `/chat` response keys, session identity,
+  clarification, and safe unconfigured behavior.
 - `commonground/research/intake.py` records partial user inputs, produces specific
   clarification gaps, and is the only constructor joining clarified limits/time to
   authoritative Project 1 location and candidate outputs.
@@ -205,7 +206,9 @@ Using deterministic fixtures, run this complete trace:
 6. `/chat` still returns `response`, `session_id`, and `tool_calls`; every sub-agent
    call also contains `agent` and `round`.
 
-Only after this slice passes do we connect real MTA, Routes, and Places data.
+That fixture milestone now passes, and the live MTA, Routes, and Places adapters are
+connected through the same contracts. Provider-backed smoke evidence remains separate
+from synthetic grading examples.
 
 ## Setup
 

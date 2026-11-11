@@ -16,6 +16,7 @@ from commonground.recommendations import (
     infer_preferred_objective,
 )
 from commonground.research import (
+    build_research_service,
     DeepResearchService,
     ResearchBrief,
     ResearchIntake,
@@ -23,6 +24,8 @@ from commonground.research import (
     extract_research_intake,
     IntakeExtractionError,
     prepare_research_brief,
+    run_cafe_task,
+    run_transit_task,
 )
 from tools import TOOLS, run_tool
 
@@ -32,6 +35,11 @@ VERTEX_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "global")
 MAX_TOOL_ROUNDS = 8
 SESSION_TTL_SECONDS = max(60, int(os.getenv("SESSION_TTL_SECONDS", "7200")))
 MAX_SESSIONS = max(1, int(os.getenv("MAX_SESSIONS", "500")))
+RESEARCH_TASK_TIMEOUT_SECONDS = min(
+    120.0,
+    max(1.0, float(os.getenv("RESEARCH_TASK_TIMEOUT_SECONDS", "45"))),
+)
+RESEARCH_MAX_TURNS = min(12, max(1, int(os.getenv("RESEARCH_MAX_TURNS", "6"))))
 
 SYSTEM_PROMPT = """You are CommonGround, an NYC group meeting-planning agent.
 Your job is to make the trade-off between fairness, total travel time, and cafe
@@ -212,10 +220,15 @@ class ChatResponse(BaseModel):
     tool_calls: list[dict]
 
 
-# Live Project 2 provider adapters are injected during deployment integration. Keeping
-# this unset preserves Project 1 behavior and prevents fixture evidence from being
-# presented as a live provider result.
-research_service: DeepResearchService | None = None
+# Constructing the service is side-effect free: provider calls happen only after a
+# complete, validated research brief reaches /chat. Production requests therefore use
+# the real bounded Routes, Places, and MTA adapters without making paid calls at import.
+research_service: DeepResearchService | None = build_research_service(
+    transit=run_transit_task,
+    cafe=run_cafe_task,
+    task_timeout_seconds=RESEARCH_TASK_TIMEOUT_SECONDS,
+    max_turns=RESEARCH_MAX_TURNS,
+)
 
 
 @app.get("/")
@@ -226,7 +239,12 @@ def index():
 @app.get("/health")
 def health():
     prune_sessions()
-    return {"status": "ok", "model": MODEL, "active_sessions": len(sessions)}
+    return {
+        "status": "ok",
+        "model": MODEL,
+        "active_sessions": len(sessions),
+        "research_ready": research_service is not None,
+    }
 
 
 @app.post("/chat", response_model=ChatResponse)
