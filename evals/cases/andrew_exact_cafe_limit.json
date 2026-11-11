@@ -1,0 +1,52 @@
+{
+  "schema_version": "eval-case-v1",
+  "case_id": "andrew-exact-cafe-limit-001",
+  "owner": "andrew",
+  "provenance": {
+    "kind": "gold",
+    "description": "Synthetic provider-shaped area-center, Places and exact-cafe Routes evidence; no live-provider or model evidence.",
+    "source_paths": [
+      "tests/research/fixtures/andrew_research_brief.json",
+      "tests/research/fixtures/andrew_round_1_results.json",
+      "tests/research/fixtures/andrew_round_2_results.json",
+      "commonground/research/transit_agent.py"
+    ],
+    "prompt_reuse_prohibited": true,
+    "live_provider_observation": false
+  },
+  "question": "The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?",
+  "fixtures": {
+    "brief_path": "tests/research/fixtures/andrew_research_brief.json",
+    "result_paths": [
+      "tests/research/fixtures/andrew_round_1_results.json",
+      "tests/research/fixtures/andrew_round_2_results.json"
+    ]
+  },
+  "expected": {
+    "recommended_cafe_id": null,
+    "feasibility_statuses": {
+      "cafe:gplaces:andrew-leading-cafe": "COMMUTE_LIMIT_EXCEEDED"
+    },
+    "follow_up_reason_code": "EXACT_DESTINATION_REQUIRED",
+    "follow_up_selected_ids": [
+      "cafe:gplaces:andrew-leading-cafe"
+    ],
+    "required_source_ids": [
+      "source:google-routes:andrew-center",
+      "source:google-places:andrew-cafe",
+      "source:google-routes:andrew-exact"
+    ],
+    "required_response_fragments": [
+      "COMMUTE_LIMIT_EXCEEDED",
+      "TRAVELER_LIMIT_EXCEEDED",
+      "Exact-address Transit"
+    ],
+    "rubric_reference_claims": [
+      "All three area-center estimates are within the individual limits, so they do not prove the exact cafe is feasible.",
+      "The exact-cafe durations are 30 minutes for Alice, 34 for Bob and 35 for Carol.",
+      "Bob's exact-cafe duration is 34 minutes against a 30-minute hard limit, while Alice and Carol remain within their limits.",
+      "The supported status is COMMUTE_LIMIT_EXCEEDED and the cafe must not be recommended.",
+      "Distinguish area-center estimates from exact-address evidence and cite the Routes and Places sources."
+    ]
+  }
+}

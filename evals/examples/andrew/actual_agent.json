@@ -1,0 +1,194 @@
+{
+  "schema_version": "eval-capture-v1",
+  "case_id": "andrew-exact-cafe-limit-001",
+  "owner": "andrew",
+  "passed": true,
+  "deterministic_score": 1.0,
+  "checks": [
+    {
+      "name": "recommended cafe",
+      "passed": true,
+      "expected": null,
+      "actual": null
+    },
+    {
+      "name": "feasibility statuses",
+      "passed": true,
+      "expected": {
+        "cafe:gplaces:andrew-leading-cafe": "COMMUTE_LIMIT_EXCEEDED"
+      },
+      "actual": {
+        "cafe:gplaces:andrew-leading-cafe": "COMMUTE_LIMIT_EXCEEDED"
+      }
+    },
+    {
+      "name": "follow-up reason",
+      "passed": true,
+      "expected": "EXACT_DESTINATION_REQUIRED",
+      "actual": "EXACT_DESTINATION_REQUIRED"
+    },
+    {
+      "name": "follow-up targets",
+      "passed": true,
+      "expected": [
+        "cafe:gplaces:andrew-leading-cafe"
+      ],
+      "actual": [
+        "cafe:gplaces:andrew-leading-cafe"
+      ]
+    },
+    {
+      "name": "required source coverage",
+      "passed": true,
+      "expected": [
+        "source:google-places:andrew-cafe",
+        "source:google-routes:andrew-center",
+        "source:google-routes:andrew-exact"
+      ],
+      "actual": [
+        "source:google-places:andrew-cafe",
+        "source:google-routes:andrew-center",
+        "source:google-routes:andrew-exact"
+      ]
+    },
+    {
+      "name": "required answer fragments",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "bounded follow-up",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "trace agent and round fields",
+      "passed": true,
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "actual": {
+    "recommended_cafe_id": null,
+    "feasibility_statuses": {
+      "cafe:gplaces:andrew-leading-cafe": "COMMUTE_LIMIT_EXCEEDED"
+    },
+    "follow_up_reason_code": "EXACT_DESTINATION_REQUIRED",
+    "follow_up_selected_ids": [
+      "cafe:gplaces:andrew-leading-cafe"
+    ],
+    "source_ids": [
+      "source:google-places:andrew-cafe",
+      "source:google-routes:andrew-center",
+      "source:google-routes:andrew-exact"
+    ],
+    "response": "## Result\n\n- Do not recommend Andrew Fixture Cafe (`cafe:gplaces:andrew-leading-cafe`): status is COMMUTE_LIMIT_EXCEEDED; supported blocker(s): TRAVELER_LIMIT_EXCEEDED. [facts=fact:cafe:r1:102,fact:transit:r2:102; sources=source:google-places:andrew-cafe,source:google-routes:andrew-exact; derived=feasibility-v1:cafe:gplaces:andrew-leading-cafe]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:andrew-leading-cafe`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:104; sources=source:google-places:andrew-cafe; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:104; sources=source:google-places:andrew-cafe; derived=lead-policy:places-before-routes]",
+    "tool_calls": [
+      {
+        "agent": "lead",
+        "round": 1,
+        "name": "prepare_research_brief",
+        "args": {
+          "research_id": "research:session-andrew:1",
+          "session_id": "session-andrew"
+        },
+        "result": "{\"research_id\":\"research:session-andrew:1\",\"session_id\":\"session-andrew\",\"question\":\"The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?\",\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"travelers\":[{\"traveler_id\":\"traveler:alice\",\"input_location\":\"Columbia University\",\"resolved_location\":{\"lat\":40.8075,\"lng\":-73.9626},\"max_commute_minutes\":35.0},{\"traveler_id\":\"traveler:bob\",\"input_location\":\"Astoria\",\"resolved_location\":{\"lat\":40.7644,\"lng\":-73.9235},\"max_commute_minutes\":30.0},{\"traveler_id\":\"traveler:carol\",\"input_location\":\"Bedford Avenue\",\"resolved_location\":{\"lat\":40.7177,\"lng\":-73.9576},\"max_commute_minutes\":40.0}],\"cafe_constraints\":{\"min_rating\":4.3,\"price_levels\":[1,2],\"require_open\":true},\"initial_candidates\":[{\"candidate_id\":\"area:initial:union-square\",\"name\":\"Union Square\",\"kind\":\"initial_area\",\"lat\":40.7359,\"lng\":-73.9911}],\"max_follow_up_rounds\":1}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 1,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-andrew:r1:transit:1",
+          "research_id": "research:session-andrew:1",
+          "candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-andrew:r1:transit:1\",\"agent\":\"transit_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r1:101\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":25,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:andrew-center\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:102\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":27,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:andrew-center\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r1:103\",\"candidate_id\":\"area:initial:union-square\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":22,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:00:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"area_center\"},\"source_ids\":[\"source:google-routes:andrew-center\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:andrew-center\",\"provider\":\"google_routes\",\"title\":\"Synthetic Routes area-center matrix\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:00:00Z\",\"request_summary\":{\"fixture\":true,\"origin_count\":3,\"destination_count\":1,\"destination_kind\":\"area_center\",\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic fixture shaped like Google Routes output\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\"],\"summary\":\"Every area-center ETA is within the corresponding traveler limit.\"}"
+      },
+      {
+        "agent": "cafe_researcher",
+        "round": 1,
+        "name": "search_cafes_in_areas",
+        "args": {
+          "task_id": "task:session-andrew:r1:cafe:1",
+          "research_id": "research:session-andrew:1",
+          "candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-andrew:r1:cafe:1\",\"agent\":\"cafe_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:cafe:r1:101\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"parent_candidate_id\",\"value\":\"area:initial:union-square\",\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{\"parent_candidate_ids\":[\"area:initial:union-square\"]},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:102\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"name\",\"value\":\"Andrew Fixture Cafe\",\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:103\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"address\",\"value\":\"Fixture exact address near Union Square\",\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{\"fixture\":true},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:104\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"coordinates\",\"value\":{\"lat\":40.7348,\"lng\":-73.9896},\"unit\":\"WGS84\",\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{\"fixture\":true},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:105\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"rating\",\"value\":4.6,\"unit\":\"stars\",\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:106\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"price_level\",\"value\":2,\"unit\":\"google_price_level\",\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:107\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"business_status\",\"value\":\"OPERATIONAL\",\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":false},{\"fact_id\":\"fact:cafe:r1:108\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"cafe:gplaces:andrew-leading-cafe\",\"predicate\":\"open_at_meeting_time\",\"value\":true,\"unit\":null,\"observed_at\":\"2026-10-01T16:01:00Z\",\"valid_for\":{\"meeting_time\":\"2026-10-10T14:00:00-04:00\",\"basis\":\"regular_schedule\"},\"source_ids\":[\"source:google-places:andrew-cafe\"],\"provisional\":true}],\"sources\":[{\"source_id\":\"source:google-places:andrew-cafe\",\"provider\":\"google_places\",\"title\":\"Synthetic Places cafe record\",\"url\":\"https://developers.google.com/maps/documentation/places/web-service/nearby-search\",\"accessed_at\":\"2026-10-01T16:01:00Z\",\"request_summary\":{\"fixture\":true,\"candidate_id\":\"area:initial:union-square\",\"meeting_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[\"andrew-leading-cafe\"],\"attribution\":\"Synthetic fixture shaped like Google Places output\"}],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\"],\"summary\":\"One fixture cafe passes the known cafe constraints and has exact coordinates.\"}"
+      },
+      {
+        "agent": "expansion_researcher",
+        "round": 1,
+        "name": "search_mta_expansion_candidates",
+        "args": {
+          "task_id": "task:session-andrew:r1:expansion:1",
+          "research_id": "research:session-andrew:1",
+          "candidate_ids": [
+            "area:initial:union-square"
+          ],
+          "dependencies": []
+        },
+        "result": "{\"task_id\":\"task:session-andrew:r1:expansion:1\",\"agent\":\"expansion_researcher\",\"round\":1,\"status\":\"complete\",\"facts\":[],\"sources\":[],\"missing\":[],\"candidate_ids_considered\":[\"area:initial:union-square\"],\"summary\":\"No expansion evidence is needed for the exact-cafe verification case.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "choose_follow_up",
+        "args": {
+          "research_id": "research:session-andrew:1",
+          "max_follow_up_rounds": 1
+        },
+        "result": "{\"round\":2,\"reason_code\":\"EXACT_DESTINATION_REQUIRED\",\"unresolved_predicate\":\"Exact-cafe transit duration for every traveler\",\"selected_ids\":[\"cafe:gplaces:andrew-leading-cafe\"],\"task_agents\":[\"transit_researcher\"],\"dependencies\":[\"fact:cafe:r1:104\"],\"expected_information_gain\":\"Replace area-center estimates with the route evidence required for hard commute-limit decisions.\",\"omitted_candidate_reason\":\"Route at most three cafes with coordinates and passing known constraints; an explicit missing-hours gap remains unknown.\"}"
+      },
+      {
+        "agent": "transit_researcher",
+        "round": 2,
+        "name": "get_transit_matrix",
+        "args": {
+          "task_id": "task:session-andrew:r2:transit:1",
+          "research_id": "research:session-andrew:1",
+          "candidate_ids": [
+            "cafe:gplaces:andrew-leading-cafe"
+          ],
+          "dependencies": [
+            "fact:cafe:r1:104"
+          ]
+        },
+        "result": "{\"task_id\":\"task:session-andrew:r2:transit:1\",\"agent\":\"transit_researcher\",\"round\":2,\"status\":\"complete\",\"facts\":[{\"fact_id\":\"fact:transit:r2:101\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"traveler:alice\",\"predicate\":\"transit_duration_minutes\",\"value\":30,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:andrew-exact\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:102\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"traveler:bob\",\"predicate\":\"transit_duration_minutes\",\"value\":34,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:andrew-exact\"],\"provisional\":false},{\"fact_id\":\"fact:transit:r2:103\",\"candidate_id\":\"cafe:gplaces:andrew-leading-cafe\",\"subject_id\":\"traveler:carol\",\"predicate\":\"transit_duration_minutes\",\"value\":35,\"unit\":\"minutes\",\"observed_at\":\"2026-10-01T16:10:00Z\",\"valid_for\":{\"arrival_time\":\"2026-10-10T14:00:00-04:00\",\"destination_kind\":\"exact_cafe\"},\"source_ids\":[\"source:google-routes:andrew-exact\"],\"provisional\":false}],\"sources\":[{\"source_id\":\"source:google-routes:andrew-exact\",\"provider\":\"google_routes\",\"title\":\"Synthetic Routes exact-cafe matrix\",\"url\":\"https://developers.google.com/maps/documentation/routes\",\"accessed_at\":\"2026-10-01T16:10:00Z\",\"request_summary\":{\"fixture\":true,\"origin_count\":3,\"destination_count\":1,\"destination_kind\":\"exact_cafe\",\"arrival_time\":\"2026-10-10T14:00:00-04:00\"},\"provider_record_ids\":[],\"attribution\":\"Synthetic fixture shaped like Google Routes output\"}],\"missing\":[],\"candidate_ids_considered\":[\"cafe:gplaces:andrew-leading-cafe\"],\"summary\":\"Exact-cafe routing exceeds Bob's 30-minute hard limit while the others remain within their limits.\"}"
+      },
+      {
+        "agent": "lead",
+        "round": 2,
+        "name": "evaluate_feasibility",
+        "args": {
+          "research_id": "research:session-andrew:1",
+          "rule_version": "feasibility-v1"
+        },
+        "result": "[{\"cafe_id\":\"cafe:gplaces:andrew-leading-cafe\",\"status\":\"COMMUTE_LIMIT_EXCEEDED\",\"reasons\":[{\"code\":\"TRAVELER_LIMIT_EXCEEDED\",\"traveler_id\":\"traveler:bob\",\"actual_minutes\":34.0,\"limit_minutes\":30.0,\"input_fact_ids\":[\"fact:transit:r2:102\"],\"input_missing_ids\":[]}],\"rule_version\":\"feasibility-v1\"}]"
+      },
+      {
+        "agent": "writer",
+        "round": 2,
+        "name": "write_evidence_report",
+        "args": {
+          "research_id": "research:session-andrew:1",
+          "claim_count": 3,
+          "unknown_count": 0
+        },
+        "result": "{\"recommended_cafe_id\":null,\"response\":\"## Result\\n\\n- Do not recommend Andrew Fixture Cafe (`cafe:gplaces:andrew-leading-cafe`): status is COMMUTE_LIMIT_EXCEEDED; supported blocker(s): TRAVELER_LIMIT_EXCEEDED. [facts=fact:cafe:r1:102,fact:transit:r2:102; sources=source:google-places:andrew-cafe,source:google-routes:andrew-exact; derived=feasibility-v1:cafe:gplaces:andrew-leading-cafe]\\n\\n## What the targeted follow-up added\\n\\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:andrew-leading-cafe`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:104; sources=source:google-places:andrew-cafe; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:104; sources=source:google-places:andrew-cafe; derived=lead-policy:places-before-routes]\"}"
+      }
+    ]
+  },
+  "captured_at": "2026-11-11T06:13:45.406404+00:00",
+  "build": {
+    "kind": "fixed-data vertical slice"
+  }
+}

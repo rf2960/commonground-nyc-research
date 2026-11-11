@@ -1,14 +1,17 @@
 import asyncio
 import json
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
+import requests
 
 from commonground.research import (
     LeadOrchestrator,
     ResearchBrief,
     ResearchContext,
     ResearchResult,
+    build_research_service,
     run_transit_task,
 )
 
@@ -302,6 +305,104 @@ def test_unavailable_and_missing_pairs_preserve_successful_siblings(monkeypatch)
     }
 
 
+def test_real_provider_parser_preserves_partial_routes_with_top_level_error(
+    monkeypatch,
+):
+    b = brief()
+    task = LeadOrchestrator._research_task(
+        b,
+        round_number=1,
+        agent="transit_researcher",
+        objective="One-area provider-shaped partial-route regression",
+        candidate_ids=("area:initial:union-square",),
+    )
+    monkeypatch.setenv("GOOGLE_MAPS_API_KEY", "fixture-server-key")
+    response = Mock(spec=requests.Response)
+    response.status_code = 200
+    # Carol's matrix element is absent. The inherited parser therefore returns two
+    # successful route_pairs, one unavailable pair, and a top-level incomplete error.
+    response.json.return_value = [
+        {"condition": "ROUTE_EXISTS", "duration": "1500s"},
+        {
+            "originIndex": 1,
+            "condition": "ROUTE_EXISTS",
+            "duration": "1680s",
+        },
+    ]
+    monkeypatch.setattr(
+        "commonground.transit.requests.post",
+        lambda *args, **kwargs: response,
+    )
+
+    result = asyncio.run(run_transit_task(context(), b, task))
+    by_key = facts(result)
+
+    assert result.status == "partial"
+    assert by_key[
+        ("area:initial:union-square", "traveler:alice", "transit_duration_minutes")
+    ].value == 25.0
+    assert by_key[
+        ("area:initial:union-square", "traveler:bob", "transit_duration_minutes")
+    ].value == 28.0
+    assert by_key[
+        ("area:initial:union-square", "traveler:carol", "route_available")
+    ].value is False
+    assert [
+        (gap.subject_id, gap.reason_code) for gap in result.missing
+    ] == [("traveler:carol", "ROUTE_UNAVAILABLE")]
+    assert result.sources[0].request_summary["provider_reported_partial"] is True
+    assert "fixture-server-key" not in result.model_dump_json()
+
+
+def test_declared_coordinate_dependency_must_be_present(monkeypatch):
+    b = brief()
+    _, cafe_result = exact_cafe_task(b)
+    task = LeadOrchestrator._research_task(
+        b,
+        round_number=2,
+        agent="transit_researcher",
+        objective="Reject an undeclared coordinate substitution",
+        candidate_ids=("cafe:gplaces:fixture-expansion-cafe",),
+        dependencies=("fact:cafe:r2:999",),
+    )
+    monkeypatch.setattr(
+        "commonground.research.transit_agent.provider.get_transit_matrix",
+        lambda **kwargs: pytest.fail("undeclared coordinates must not reach Routes"),
+    )
+
+    result = asyncio.run(
+        run_transit_task(
+            context(dependency_results=(cafe_result,)),
+            b,
+            task,
+        )
+    )
+
+    assert result.status == "failed"
+    assert {gap.reason_code for gap in result.missing} == {"DEPENDENCY_NOT_READY"}
+
+
+def test_provider_arrival_time_must_match_brief_instant(monkeypatch):
+    b = brief()
+    task = initial_task()
+    payload = json.loads(provider_payload(b, task.candidate_ids))
+    payload["arrival_time"] = "2026-10-10T19:00:00Z"
+    monkeypatch.setattr(
+        "commonground.research.transit_agent.provider.get_transit_matrix",
+        lambda **kwargs: json.dumps(payload),
+    )
+
+    result = asyncio.run(run_transit_task(context(), b, task))
+
+    assert result.status == "failed"
+    assert not result.facts
+    assert len(result.missing) == len(b.travelers) * len(task.candidate_ids)
+    assert {gap.reason_code for gap in result.missing} == {"STALE_EVIDENCE"}
+    assert result.sources[0].request_summary["provider_arrival_time"] == (
+        "2026-10-10T19:00:00Z"
+    )
+
+
 def test_provider_error_is_pair_complete_and_redacted(monkeypatch):
     b = brief()
     task = initial_task()
@@ -331,3 +432,47 @@ def test_no_cross_role_tool_calls(monkeypatch):
     )
     with pytest.raises(ValueError, match="Invalid or unbounded"):
         asyncio.run(run_transit_task(invalid_context, brief(), initial_task()))
+
+
+def test_callable_composes_with_unified_research_service(monkeypatch):
+    b = ResearchBrief.model_validate(fixture("andrew_research_brief.json"))
+    stored = {
+        item["task_id"]: ResearchResult.model_validate(item)
+        for filename in ("andrew_round_1_results.json",)
+        for item in fixture(filename)
+    }
+
+    def fake_matrix(**kwargs):
+        candidate_ids = tuple(area["area"] for area in kwargs["candidate_areas"])
+        durations = {}
+        if candidate_ids[0].startswith("cafe:gplaces:"):
+            durations = {
+                (candidate_ids[0], "traveler:alice"): 30,
+                (candidate_ids[0], "traveler:bob"): 34,
+                (candidate_ids[0], "traveler:carol"): 35,
+            }
+        return provider_payload(b, candidate_ids, durations)
+
+    async def fixture_role(_context, _brief, task):
+        return stored[task.task_id]
+
+    monkeypatch.setattr(
+        "commonground.research.transit_agent.provider.get_transit_matrix",
+        fake_matrix,
+    )
+    service = build_research_service(
+        transit=run_transit_task,
+        cafe=fixture_role,
+        expansion=fixture_role,
+    )
+
+    output = service.run_sync(b)
+
+    assert output.run.feasibility_results[0].status == "COMMUTE_LIMIT_EXCEEDED"
+    assert output.report.recommended_cafe_id is None
+    transit_events = [
+        event
+        for event in output.tool_calls
+        if event["agent"] == "transit_researcher"
+    ]
+    assert [event["round"] for event in transit_events] == [1, 2]

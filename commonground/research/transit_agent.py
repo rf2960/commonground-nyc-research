@@ -60,6 +60,20 @@ def _destination_kind(candidate_id: str) -> str:
     return "exact_cafe" if candidate_id.startswith("cafe:gplaces:") else "area_center"
 
 
+def _same_instant(raw: Any, expected: datetime) -> bool:
+    if not isinstance(raw, str):
+        return False
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return (
+        parsed.tzinfo is not None
+        and parsed.utcoffset() is not None
+        and parsed == expected
+    )
+
+
 def _expected_pairs(
     brief: ResearchBrief,
     task: ResearchTask,
@@ -167,6 +181,11 @@ def build_transit_result(
                 True,
                 "Retry only within the single bounded follow-up if this route is decision-critical.",
             ),
+            "STALE_EVIDENCE": (
+                "Google Routes returned evidence for a different or ambiguous arrival time.",
+                False,
+                "Request the routes again for the brief's exact timezone-aware arrival time.",
+            ),
         }[reason_code]
         missing.append(
             MissingEvidence(
@@ -231,6 +250,7 @@ def _dependency_coordinates(
     task: ResearchTask,
 ) -> dict[str, Coordinates]:
     values: dict[str, list[Coordinates]] = {}
+    declared_dependencies = set(task.dependencies)
     for result in context.dependency_results:
         if (
             not result.task_id.startswith(f"task:{brief.session_id}:")
@@ -238,7 +258,11 @@ def _dependency_coordinates(
         ):
             continue
         for fact in result.facts:
-            if fact.predicate != "coordinates" or fact.candidate_id not in task.candidate_ids:
+            if (
+                fact.fact_id not in declared_dependencies
+                or fact.predicate != "coordinates"
+                or fact.candidate_id not in task.candidate_ids
+            ):
                 continue
             expected_agent = (
                 "cafe_researcher"
@@ -326,7 +350,9 @@ async def run_transit_task(
             payload = {"error": "redacted"}
         source_accessed_at = datetime.now(timezone.utc)
 
-        if isinstance(payload, dict) and not payload.get("error"):
+        raw_pairs = payload.get("route_pairs") if isinstance(payload, dict) else None
+        if isinstance(payload, dict) and isinstance(raw_pairs, list):
+            provider_arrival_time = payload.get("arrival_time")
             request_summary = {
                 "origin_count": len(origins),
                 "destination_count": len(destinations),
@@ -336,14 +362,14 @@ async def run_transit_task(
                     for destination in destinations
                 ],
                 "arrival_time": brief.meeting_time.isoformat(),
-                "provider_arrival_time": payload.get("arrival_time"),
+                "provider_arrival_time": provider_arrival_time,
+                "provider_reported_partial": bool(payload.get("error")),
                 "travel_mode": "TRANSIT",
                 "include_driving": False,
             }
-            raw_pairs = payload.get("route_pairs")
             indexed: dict[tuple[str, str], dict[str, Any]] = {}
             duplicates: set[tuple[str, str]] = set()
-            if isinstance(raw_pairs, list):
+            if _same_instant(provider_arrival_time, brief.meeting_time):
                 for raw_pair in raw_pairs:
                     if not isinstance(raw_pair, dict):
                         continue
@@ -368,7 +394,12 @@ async def run_transit_task(
                         "destination_kind": _destination_kind(candidate_id),
                         "observed_at": source_accessed_at,
                     }
-                    if key in duplicates or raw_pair is None:
+                    if not _same_instant(provider_arrival_time, brief.meeting_time):
+                        observations_by_pair[key] = TransitPairObservation(
+                            **common,
+                            error_code="STALE_EVIDENCE",
+                        )
+                    elif key in duplicates or raw_pair is None:
                         observations_by_pair[key] = TransitPairObservation(
                             **common,
                             error_code="PROVIDER_ERROR",

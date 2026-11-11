@@ -1,0 +1,41 @@
+{
+  "research_id": "research:session-andrew:1",
+  "session_id": "session-andrew",
+  "question": "The area-center ETAs are within everyone's limits. Recheck the leading cafe at its exact address for October 10, 2026 at 2:00 PM Eastern Time. Does it still satisfy each person's limit?",
+  "meeting_time": "2026-10-10T14:00:00-04:00",
+  "travelers": [
+    {
+      "traveler_id": "traveler:alice",
+      "input_location": "Columbia University",
+      "resolved_location": {"lat": 40.8075, "lng": -73.9626},
+      "max_commute_minutes": 35
+    },
+    {
+      "traveler_id": "traveler:bob",
+      "input_location": "Astoria",
+      "resolved_location": {"lat": 40.7644, "lng": -73.9235},
+      "max_commute_minutes": 30
+    },
+    {
+      "traveler_id": "traveler:carol",
+      "input_location": "Bedford Avenue",
+      "resolved_location": {"lat": 40.7177, "lng": -73.9576},
+      "max_commute_minutes": 40
+    }
+  ],
+  "cafe_constraints": {
+    "min_rating": 4.3,
+    "price_levels": [1, 2],
+    "require_open": true
+  },
+  "initial_candidates": [
+    {
+      "candidate_id": "area:initial:union-square",
+      "name": "Union Square",
+      "kind": "initial_area",
+      "lat": 40.7359,
+      "lng": -73.9911
+    }
+  ],
+  "max_follow_up_rounds": 1
+}
