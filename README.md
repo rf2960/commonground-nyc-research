@@ -250,7 +250,7 @@ The Maps credential is referenced from Secret Manager at runtime and never appea
 the repository, browser trace, or `/chat` response. See the
 [deployment runbook](docs/DEPLOYMENT.md) for configuration and release checks.
 
-## Grader queries
+## Three grader-ready live queries
 
 Choose **Deep Research** and start a new meetup for each query. The examples use
 December 4, 2026. For later grading, substitute a future Friday at the same
@@ -314,9 +314,9 @@ uv run python -m evals.contract_corpus
 See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
 handoff.
 
-The shared fixture meeting time is **October 10, 2026 at 2:00 PM Eastern Time** so every
-Routes, Places-hours, expected-answer, and baseline comparison refers to the same
-unambiguous arrival time.
+The fixed-data fixture time is **October 10, 2026 at 2:00 PM Eastern Time**, an
+immutable synthetic timestamp. Use the future-dated questions above for the
+public Cloud Run service.
 
 ## Course requirements tracked here
 

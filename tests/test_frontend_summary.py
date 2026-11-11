@@ -61,8 +61,25 @@ def test_mobile_composer_and_explanation_stay_readable():
     assert "Why this recommendation" in HTML
 
 
-def test_readme_queries_use_an_explicit_meeting_date_and_timezone():
+def test_readme_separates_future_live_queries_from_fixed_fixture_time():
     readme = (Path(__file__).parents[1] / "README.md").read_text(encoding="utf-8")
 
+    assert "Three grader-ready live queries" in readme
+    assert "December 4, 2026 at 2:00 PM Eastern Time" in readme
     assert "October 10, 2026 at 2:00 PM Eastern Time" in readme
+    assert "immutable synthetic timestamp" in readme
     assert "coffee Saturday at 2pm" not in readme
+
+
+def test_intro_offers_complete_clarification_and_hours_research_prompts():
+    start = HTML.index("function intro")
+    end = HTML.index("function toolLog", start)
+    implementation = HTML[start:end]
+
+    assert "Try a complete research request" in implementation
+    assert "Test clarification" in implementation
+    assert "Audit opening-hours evidence" in implementation
+    assert "Date.now() + 7 * 86400000" in implementation
+    assert implementation.count("${exampleDate}") == 2
+    assert "October 10, 2026" not in implementation
+    assert "do not guess the meeting time" in implementation
