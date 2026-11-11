@@ -76,3 +76,31 @@ production judge model and credentials are frozen.
 
 Provider-specific full-pipeline cases remain inside each Researcher owner's module;
 aggregate discovery and scoring stay here so all owners receive the same semantics.
+
+## Andrew Transit delivery
+
+Run Andrew's synthetic exact-address grading case and refresh its fixed-data capture:
+
+```bash
+uv run python -m evals.runner \
+  --case evals/cases/andrew_exact_cafe_limit.json \
+  --write-capture
+```
+
+This case proves that area-center ETAs cannot substitute for exact-cafe Routes evidence:
+the center estimates pass, while the exact address puts one traveler over their hard
+limit. The committed capture is synthetic and does not claim a live Google result.
+
+Run the bounded live Routes smoke only with explicit opt-in, a server-side
+`GOOGLE_MAPS_API_KEY`, and a future timezone-aware arrival time:
+
+```bash
+uv run python -m evals.andrew_delivery \
+  --live \
+  --meeting-time 2026-11-18T14:00:00-05:00
+```
+
+The command makes at most one pure-transit matrix request to one area center, records
+source/access time and pair-level results, and rejects output containing the key. Change
+the example time when it is no longer in the future. A blocked or failed attempt exits
+nonzero and never overwrites a previous successful capture.

@@ -1,0 +1,61 @@
+[
+  {
+    "task_id": "task:session-andrew:r2:transit:1",
+    "agent": "transit_researcher",
+    "round": 2,
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:transit:r2:101",
+        "candidate_id": "cafe:gplaces:andrew-leading-cafe",
+        "subject_id": "traveler:alice",
+        "predicate": "transit_duration_minutes",
+        "value": 30,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:andrew-exact"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:102",
+        "candidate_id": "cafe:gplaces:andrew-leading-cafe",
+        "subject_id": "traveler:bob",
+        "predicate": "transit_duration_minutes",
+        "value": 34,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:andrew-exact"],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:103",
+        "candidate_id": "cafe:gplaces:andrew-leading-cafe",
+        "subject_id": "traveler:carol",
+        "predicate": "transit_duration_minutes",
+        "value": 35,
+        "unit": "minutes",
+        "observed_at": "2026-10-01T16:10:00Z",
+        "valid_for": {"arrival_time": "2026-10-10T14:00:00-04:00", "destination_kind": "exact_cafe"},
+        "source_ids": ["source:google-routes:andrew-exact"],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:andrew-exact",
+        "provider": "google_routes",
+        "title": "Synthetic Routes exact-cafe matrix",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-10-01T16:10:00Z",
+        "request_summary": {"fixture": true, "origin_count": 3, "destination_count": 1, "destination_kind": "exact_cafe", "arrival_time": "2026-10-10T14:00:00-04:00"},
+        "provider_record_ids": [],
+        "attribution": "Synthetic fixture shaped like Google Routes output"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": ["cafe:gplaces:andrew-leading-cafe"],
+    "summary": "Exact-cafe routing exceeds Bob's 30-minute hard limit while the others remain within their limits."
+  }
+]

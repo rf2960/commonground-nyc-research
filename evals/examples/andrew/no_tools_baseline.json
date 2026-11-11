@@ -1,0 +1,15 @@
+{
+  "schema_version": "baseline-capture-v1",
+  "case_id": "andrew-exact-cafe-limit-001",
+  "owner": "andrew",
+  "status": "pending",
+  "model": null,
+  "captured_at": null,
+  "conditions": {
+    "tools": false,
+    "system_prompt": false,
+    "input": "question_only"
+  },
+  "output": null,
+  "reason": "Production model is not frozen; no authenticated same-model run has been performed."
+}
