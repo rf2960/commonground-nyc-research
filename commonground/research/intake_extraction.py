@@ -11,6 +11,20 @@ import litellm
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .intake import ResearchIntake, TravelerIntake
+from .models import CafeConstraints
+
+
+_MIN_RATING = re.compile(
+    r"\b(?:rated\s+at\s+least\s+|rating\s+at\s+least\s+|minimum\s+rating\s+(?:of\s+)?)"
+    r"(\d+(?:\.\d+)?)(?=\s|[.,!?](?!\d)|$)",
+    re.IGNORECASE,
+)
+_PRICE_LEVEL = re.compile(
+    r"\bprice\s+level\s+([0-4])\b|\b(very expensive|inexpensive|moderate|expensive|free)"
+    r"(?:[-\s]priced?\b|\s+price\b)",
+    re.IGNORECASE,
+)
+_PRICE_NAMES = {"free": 0, "inexpensive": 1, "moderate": 2, "expensive": 3, "very expensive": 4}
 
 
 EXTRACTION_SYSTEM_PROMPT = """You extract only explicit meeting-research inputs.
@@ -74,6 +88,21 @@ def _traveler_id(identity_quote: str) -> str:
     return f"traveler:{slug}"
 
 
+def _cafe_constraints(corpus: str) -> CafeConstraints:
+    """Read explicit rating and price phrases even when the extractor omits them."""
+    ratings = [float(match[1]) for match in _MIN_RATING.finditer(corpus)]
+    prices = [
+        int(match[1]) if match[1] is not None else _PRICE_NAMES[match[2].casefold()]
+        for match in _PRICE_LEVEL.finditer(corpus)
+    ]
+    if ratings and ratings[-1] > 5:
+        raise IntakeExtractionError("minimum cafe rating must be at most five")
+    return CafeConstraints(
+        min_rating=ratings[-1] if ratings else 0,
+        price_levels=(prices[-1],) if prices else (),
+    )
+
+
 def intake_from_extraction_payload(
     payload: dict[str, Any],
     user_messages: list[str] | tuple[str, ...],
@@ -131,6 +160,7 @@ def intake_from_extraction_payload(
         question=user_messages[-1].strip(),
         meeting_time=meeting_time,
         travelers=tuple(travelers),
+        cafe_constraints=_cafe_constraints(corpus),
     )
 
 

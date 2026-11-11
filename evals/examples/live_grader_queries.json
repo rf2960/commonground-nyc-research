@@ -1,0 +1,387 @@
+{
+  "captured_at": "2026-11-11T20:56:12.491670+00:00",
+  "deployment": "https://commonground-nyc-research-1053619589756.us-east1.run.app",
+  "request_mode": "research with explicit research_intake",
+  "writer": "deterministic evidence writer",
+  "cases": [
+    {
+      "case_id": "expansion",
+      "question": "Alex starts at Columbia University with a 22-minute transit limit, Blair starts in Astoria with a 20-minute transit limit, and Casey starts at Bedford Ave Station with a 24-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a cafe with a minimum rating of 5 stars and a moderate price. Do not relax the 5-star minimum. If the initial areas fail, check whether expanding to more MTA stations can help without relaxing any limit. Explain what the evidence supports.",
+      "cafe_constraints": {
+        "min_rating": 5.0,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "follow_up": {
+        "reason_code": "NO_FEASIBLE_INITIAL_CAFE",
+        "selected_ids": [
+          "area:mta:222",
+          "area:mta:276",
+          "area:mta:400"
+        ]
+      },
+      "response": "## Result\n\n- No supported cafe recommendation is available from this bounded search. This does not prove that no feasible cafe exists elsewhere; inspect the evidence and unknowns below. [facts=fact:cafe:r1:1001,fact:cafe:r1:1002,fact:cafe:r1:1003,fact:cafe:r1:1004,fact:cafe:r2:1001,fact:cafe:r2:1002,fact:cafe:r2:1003; sources=source:google-places:8087690ecf04fee76533,source:google-places:89a95fc0df10e0a05b8a,source:google-places:8edd6a51f9095afa0cc4,source:google-places:b5670ddc958f9a6206bf,source:google-places:c4447caacbaad407cff1,source:google-places:ce1f9c4bc9e660a45478,source:google-places:fbf4be3a6b86f6a8b708; derived=lead-policy:no-supported-recommendation]\n\n## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 22 minutes, Bedford Ave Station 28.8 > 24 minutes. [facts=fact:transit:r1:1002,fact:transit:r1:1006; sources=source:google-routes:5673af027a210a33fe40]\n- Times Square failed at the area-center stage: Columbia University 24.6 > 22 minutes, Astoria 25 > 20 minutes. [facts=fact:transit:r1:1008,fact:transit:r1:1010; sources=source:google-routes:5673af027a210a33fe40]\n- Court Square failed at the area-center stage: Columbia University 33.6 > 22 minutes. [facts=fact:transit:r1:1014; sources=source:google-routes:5673af027a210a33fe40]\n- Grand Central failed at the area-center stage: Columbia University 28.8 > 22 minutes, Astoria 26.4 > 20 minutes. [facts=fact:transit:r1:1020,fact:transit:r1:1022; sources=source:google-routes:5673af027a210a33fe40]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `NO_FEASIBLE_INITIAL_CAFE` and selected `area:mta:222`, `area:mta:276`, `area:mta:400`. Expected information gain: Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check. [facts=fact:expansion:r1:012,fact:expansion:r1:008,fact:expansion:r1:004; sources=source:mta-stations:222,source:mta-stations:276,source:mta-stations:400; derived=follow-up:r2:NO_FEASIBLE_INITIAL_CAFE]\n\n## Unknowns\n\n- Unknown `price_level` for `cafe:gplaces:ChIJV5rmlrhZwokR9SSmZ0-tEis`: Places did not provide usable price_level evidence. Next action: Obtain the missing provider evidence before making a supported recommendation. [missing=missing:cafe:r2:1001]",
+      "sources": [
+        {
+          "source_id": "source:google-routes:5673af027a210a33fe40",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-11T20:54:43.027669Z"
+        },
+        {
+          "source_id": "source:google-places:ce1f9c4bc9e660a45478",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:42.848569Z"
+        },
+        {
+          "source_id": "source:google-places:c4447caacbaad407cff1",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:42.803991Z"
+        },
+        {
+          "source_id": "source:google-places:b5670ddc958f9a6206bf",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:42.797872Z"
+        },
+        {
+          "source_id": "source:google-places:89a95fc0df10e0a05b8a",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:42.918128Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:43.356128Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:43.356128Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:43.356128Z"
+        },
+        {
+          "source_id": "source:google-places:8edd6a51f9095afa0cc4",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:43.649300Z"
+        },
+        {
+          "source_id": "source:google-places:8087690ecf04fee76533",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:43.683611Z"
+        },
+        {
+          "source_id": "source:google-places:fbf4be3a6b86f6a8b708",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-11T20:54:43.707204Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 2,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ]
+    },
+    {
+      "case_id": "exact_route",
+      "question": "Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3. Check each commute to the exact cafe address and report the actual times versus the individual limits.",
+      "cafe_constraints": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "follow_up": {
+        "reason_code": "EXACT_DESTINATION_REQUIRED",
+        "selected_ids": [
+          "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+        ]
+      },
+      "response": "## Result\n\n- Recommend Little Collins (`cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r1:1206,fact:cafe:r1:1207,fact:cafe:r1:1208,fact:cafe:r1:1209,fact:cafe:r1:1210,fact:cafe:r1:1211,fact:cafe:r1:1212,fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-places:b732f85809277b610f0e-00,source:google-routes:aeddd5ce21c3f416a77b; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Exact-cafe commute checks all pass: traveler:alex 29.9/35 minutes, traveler:blair 28.6/30 minutes, traveler:casey 22/40 minutes. [facts=fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-routes:aeddd5ce21c3f416a77b; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r1:1212; sources=source:google-places:b732f85809277b610f0e-00]\n\n## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 35 minutes. [facts=fact:transit:r1:1002; sources=source:google-routes:3d482862cd0677647e79]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1208; sources=source:google-places:b732f85809277b610f0e-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1208; sources=source:google-places:b732f85809277b610f0e-00; derived=lead-policy:places-before-routes]",
+      "sources": [
+        {
+          "source_id": "source:google-routes:3d482862cd0677647e79",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-11T20:54:41.454904Z"
+        },
+        {
+          "source_id": "source:google-places:b732f85809277b610f0e-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13162006981142862678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-11T20:54:41.529743Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:41.510483Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:41.510483Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:54:41.510483Z"
+        },
+        {
+          "source_id": "source:google-routes:aeddd5ce21c3f416a77b",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-11T20:54:41.999418Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 2,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ]
+    },
+    {
+      "case_id": "cafe_hours",
+      "question": "Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3 that is open at the meeting time. What can the available hours evidence establish, and what should we verify with the cafe?",
+      "cafe_constraints": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "follow_up": {
+        "reason_code": "EXACT_DESTINATION_REQUIRED",
+        "selected_ids": [
+          "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+        ]
+      },
+      "response": "## Result\n\n- Recommend Little Collins (`cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r1:1206,fact:cafe:r1:1207,fact:cafe:r1:1208,fact:cafe:r1:1209,fact:cafe:r1:1210,fact:cafe:r1:1211,fact:cafe:r1:1212,fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-places:61fca7bdf85c12d157bb-00,source:google-routes:5488827540baded9ed8a; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Exact-cafe commute checks all pass: traveler:alex 29.9/35 minutes, traveler:blair 28.6/30 minutes, traveler:casey 22/40 minutes. [facts=fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-routes:5488827540baded9ed8a; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r1:1212; sources=source:google-places:61fca7bdf85c12d157bb-00]\n\n## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 35 minutes. [facts=fact:transit:r1:1002; sources=source:google-routes:70028975ab178e0061c5]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1208; sources=source:google-places:61fca7bdf85c12d157bb-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1208; sources=source:google-places:61fca7bdf85c12d157bb-00; derived=lead-policy:places-before-routes]",
+      "sources": [
+        {
+          "source_id": "source:google-routes:70028975ab178e0061c5",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-11T20:55:07.474357Z"
+        },
+        {
+          "source_id": "source:google-places:61fca7bdf85c12d157bb-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13162006981142862678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-11T20:55:07.299919Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:55:17.049530Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:55:17.049530Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-11T20:55:17.049530Z"
+        },
+        {
+          "source_id": "source:google-routes:5488827540baded9ed8a",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-11T20:55:17.511060Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 2,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ]
+    }
+  ]
+}

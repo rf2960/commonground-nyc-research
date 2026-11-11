@@ -447,8 +447,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         }
       }
       function addMessage(role,text,loading=false){const el=node('div',`msg ${role==='you'?'user':'assistant'}${loading?' loading':''}`);el.append(node('div','role',role),node('div','content',text));messages.append(el);return el;}
-      function intro(){const el=node('section','intro');el.append(node('h3','', 'A better place to meet.'),node('p','','Share 2–6 starting locations, a date and time, your budget, and whether you care most about fairness, speed, or the cafe.'));const choices=node('div','suggestions');for(const [label,text] of [
-        ['Plan a group meetup','Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet October 10, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3.'],
+      function intro(){const el=node('section','intro');el.append(node('h3','', 'A better place to meet.'),node('p','','Share 2–6 starting locations, a date and time, your budget, and whether you care most about fairness, speed, or the cafe.'));const choices=node('div','suggestions');
+        const exampleDate = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/New_York', month: 'long', day: 'numeric', year: 'numeric'
+        }).format(new Date(Date.now() + 7 * 86400000));
+        for(const [label,text] of [
+        ['Plan a group meetup',`Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet ${exampleDate} at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3.`],
         ['Compare cafe quality','Compare these example cafes: A has rating 4.9 with 2 reviews; B has rating 4.6 with 500 reviews. Both are price level 2 and open at our meeting time. Use the cafe scoring tool.']
       ]){const b=node('button','',label);b.addEventListener('click',()=>{input.value=text;resizeInput();input.focus();});choices.append(b);}el.append(choices);messages.append(el);}
       function toolLog(calls){const group=node('details','tool-list');group.append(node('summary','',`${calls.length} tool call${calls.length===1?'':'s'} · inspect inputs and results`));for(const call of calls){const d=node('details');d.append(node('summary','',call.name||'Tool'),node('h4','','Arguments'),node('pre','',pretty(call.args)),node('h4','','Result'),node('pre','',pretty(call.result)));group.append(d);}return group;}
