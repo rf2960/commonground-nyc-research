@@ -56,8 +56,10 @@ raw output, and the two disabled conditions in
 `evals/baseline.py` enforces exactly one user message, no tools, and no system prompt,
 and records model, timestamp, conditions, question, and raw output. The committed
 Ruochen baseline file remains deliberately `pending`: no credentialed production-model
-run has yet been performed, so it contains no fabricated answer. Freeze the production
-model before capturing it. Only the question—not the evidence bundle—is allowed.
+run has yet been performed, so it contains no fabricated answer. The production model
+selection is frozen in `evals/model_manifest.json`. That manifest contains no
+credential and does not turn the deterministic Writer capture into a model-backed
+capture. Only the question—not the evidence bundle—is allowed in a baseline call.
 
 ## Second scorer
 

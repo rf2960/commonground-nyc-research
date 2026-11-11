@@ -11,5 +11,5 @@
     "input": "question_only"
   },
   "output": null,
-  "reason": "A same-model authenticated run has not been selected or executed. This placeholder prevents a hand-authored answer from being mistaken for the required raw baseline capture."
+  "reason": "The production model is fixed as vertex_ai/gemini-3.5-flash-lite, but an authenticated no-tools/no-system capture has not been executed. This placeholder prevents a hand-authored answer from being mistaken for the required raw baseline capture."
 }

@@ -11,5 +11,5 @@
     "input": "question_only"
   },
   "output": null,
-  "reason": "Production model is not frozen; no authenticated same-model run has been performed."
+  "reason": "The production model is fixed as vertex_ai/gemini-3.5-flash-lite, but no authenticated no-tools/no-system capture has been performed."
 }

@@ -1,0 +1,54 @@
+{
+  "schema_version": "live-cloud-run-smoke-v1",
+  "kind": "bounded_production_smoke",
+  "status": "passed",
+  "captured_at": "2026-11-11T18:34:36.6514097Z",
+  "deploy_url": "https://commonground-nyc-research-1053619589756.us-east1.run.app",
+  "request": {
+    "mode": "research",
+    "message": "Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet November 13, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3."
+  },
+  "health": {
+    "status": "ok",
+    "model": "vertex_ai/gemini-3.5-flash-lite",
+    "research_ready": true
+  },
+  "observed": {
+    "http_status": 200,
+    "tool_call_count": 11,
+    "agents": [
+      "lead",
+      "transit_researcher",
+      "cafe_researcher",
+      "expansion_researcher",
+      "writer"
+    ],
+    "rounds": [1, 2],
+    "follow_up_reason_code": "EXACT_DESTINATION_REQUIRED",
+    "feasible_examples": [
+      {
+        "name": "The Clock Coffee Shop",
+        "traveler_minutes_vs_limits": ["27.2/35", "26.6/30", "20.1/40"]
+      },
+      {
+        "name": "Coffee Near Me",
+        "traveler_minutes_vs_limits": ["26.5/35", "29.2/30", "21.6/40"]
+      }
+    ],
+    "blocked_example": {
+      "name": "Starbucks",
+      "status": "COMMUTE_LIMIT_EXCEEDED",
+      "traveler": "traveler:alex",
+      "minutes": 36.6,
+      "limit_minutes": 35
+    },
+    "opening_hours_qualified_as_provisional": true,
+    "normalized_google_places_source_ids_present": true,
+    "normalized_google_routes_source_ids_present": true
+  },
+  "notes": [
+    "This record summarizes a real public Cloud Run request, not a fixture.",
+    "It intentionally stores no API key, service-account credential, or session identifier.",
+    "It is an operational smoke and does not replace same-model baselines, rubric-judge captures, or the 50-case hill-climbing report."
+  ]
+}

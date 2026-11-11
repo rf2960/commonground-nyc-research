@@ -8,13 +8,13 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| Use data the model does not already know deeply | All three provider adapters implemented; live Places smoke complete | Places capture records ten cafes, 81 facts and eleven sources; live Routes capture remains |
-| Access data through tools/API/files/search | Complete at adapter/integration boundary | MTA Socrata, Google Places, and Google Routes tasks are composed in the production service; credentialed deployment smoke remains |
-| Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
-| State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
-| Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
-| Frontend explains purpose, audience, and use | Complete for fixed-data boundary | Project 2 copy, guided sample, and round-grouped Lead/Researcher/Writer evidence timeline are in `index.html` |
-| Deploy to Google Cloud Run | Project 1 baseline only | Create Project 2 deployment and replace `submission.json` URL |
+| Use data the model does not already know deeply | Complete | Live Cloud Run smoke uses current Google Places and Routes results plus the MTA expansion task; the saved Places smoke separately records ten cafes, 81 facts, and eleven sources |
+| Access data through tools/API/files/search | Complete | The deployed production dispatcher calls MTA Socrata, Google Places, and Google Routes through role-scoped adapters |
+| Combine evidence into a supported claim | Complete | The public service completed two rounds, `feasibility-v1` applied hard constraints, and Writer returned cited recommendations and blockers |
+| State when data cannot answer | Complete | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
+| Show work and preserve `/chat` shape | Complete | Tests and the public smoke preserve `response`, `session_id`, and `tool_calls`; eleven live trace entries include `agent` and `round` |
+| Frontend explains purpose, audience, and use | Complete | The deployed UI explains the research question and renders round-grouped Lead/Researcher/Writer evidence, venue cards, gaps, and citations |
+| Deploy to Google Cloud Run | Complete | Public Project 2 URL is in `submission.json`; `/health` reports `status=ok` and `research_ready=true` |
 
 ## Deep Research path
 
@@ -33,7 +33,7 @@ or deployment link.
 | --- | --- | --- |
 | At least 50 gold/silver samples with provenance | Complete for contract corpus | `evals.contract_corpus` runs 50 provenance-recorded synthetic gold boundary cases across five slices; provider/full-pipeline cases continue to grow |
 | Eval cases not reused as few-shot prompt examples | Enforced in corpus metadata | Every case records `prompt_reuse_prohibited=true`; no eval case is embedded in an agent prompt |
-| At least two scorer types | Implemented; live judge run pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
+| At least two scorer types | Implemented; credentialed judge capture pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
 | Documented command to run evals | Complete | `uv run python -m evals.runner` and `uv run python -m evals.contract_corpus` |
 | README hill-climbing log with baseline and 2+ changes | Pending frozen-model runs | Harness, 50-case score, judge schema, and no-tools capture boundary exist |
 | Identify gains larger than `±1/sqrt(n)` | Planned | Compute in final hill-climbing table |
@@ -44,33 +44,32 @@ or deployment link.
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
 | Explain data origin and how it is loaded | MTA and Cafe documented; live Places capture complete | `DATA_SOURCES.md` and `YULIA_ACCEPTANCE.md` record provenance, request bounds and remaining model gates |
-| Three sample queries with expected answers and source | In progress | All three are designed; Ruochen golden case and raw actual capture are committed |
-| Same-model answer with no tools and no system prompt | Capture code complete; run pending | `evals/baseline.py` enforces question-only/no-tools/no-system; capture after production model freeze |
+| Three sample queries with expected answers and source | In progress | All three are designed and have actual fixed-pipeline captures; each owner still needs a credentialed same-model comparison beside the agent answer |
+| Same-model answer with no tools and no system prompt | Capture code complete; run pending | Production model is fixed as `vertex_ai/gemini-3.5-flash-lite`; `evals/baseline.py` enforces question-only/no-tools/no-system, but an offline credentialed capture has not yet run |
 
 ## Repository and deployment requirements
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
 | Root `app.py`, `pyproject.toml`, `uv.lock` | Complete | Preserved from Project 1 |
-| Root `README.md` and valid `submission.json` | Complete for planning | `path` is `research`; replace inherited deploy URL before submission |
+| Root `README.md` and valid `submission.json` | Complete | `path` is `research`; all three UNIs and the public Project 2 deploy URL are current |
 | `submission.json` contains every UNI | Complete | `rf2960`, `wd2422`, `yc4745` |
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
-| At least one data source per team member | Adapter requirement complete; one live proof pending | MTA and Routes adapters plus Wenyu's saved one-area live Places smoke exist; save a credentialed Routes smoke before submission |
-| Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
-| Request may take up to 5 minutes; cap max turns | Application bounds complete; deployment pending | Defaults are 45 seconds per task and six turns, clamped to 1–120 seconds and 1–12 turns; verify the Cloud Run request timeout after deployment |
-| Keep service live until grades released | Planned | Operational checklist for final deployment |
+| At least one data source per team member | Complete at production-smoke boundary | Public smoke exercised MTA Expansion, Google Routes Transit, and Google Places Cafe roles; separate live Places capture remains committed |
+| Data ships with deploy or loads from provider | Complete for API-backed design | No static dataset exceeds GitHub limits; MTA, Routes, and Places are bounded authoritative API requests with fixture copies for offline tests |
+| Request may take up to 5 minutes; cap max turns | Complete | Cloud Run timeout is 300 seconds; Researcher tasks default to 45 seconds and six turns, clamped to 1–120 seconds and 1–12 turns |
+| Keep service live until grades released | Operational commitment recorded | `docs/DEPLOYMENT.md` records the public service, continuous deployment, bounds, health checks, and keep-live requirement |
 
 ## Final pre-submission blockers
 
-- Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
-  concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
-  Writer and fixed-data `/chat` trace are implemented. Cafe and Transit adapters, live
-  service injection, one-area live Places smoke, and desktop/mobile browser checks are
-  complete; a credentialed live Routes smoke is not yet saved.
-- The current `deploy_url` still points to the inherited Project 1 service.
+- Shared contracts, fixed evidence, the concurrent isolated runner, bounded Lead,
+  evidence-only Writer, Cafe/Transit/Expansion adapters, live service injection,
+  desktop/mobile UI checks, public Cloud Run release, and a live full-pipeline smoke are
+  complete.
 - Credentialed rubric-judge scores, same-model no-tools baselines, and the final
-  hill-climbing table remain pending the frozen production model.
-- Project 2 frontend changes exist; the new Cloud Run deployment does not yet.
+  hill-climbing table remain pending. The production model identifier is now fixed, but
+  the local environment has no Google Cloud CLI/application-default credential for an
+  auditable offline capture.
 
-These are expected at the planning milestone; none should be described as complete in a
-submission until the linked evidence exists.
+Do not describe the remaining evaluation artifacts as complete until their raw outputs
+and scores are committed. Deployment itself is complete and separately evidenced.
