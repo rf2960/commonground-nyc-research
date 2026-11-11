@@ -14,15 +14,18 @@ This repository preserves the complete Project 1 history and starts from
 
 ## Project 2 status
 
-The repository-preparation and fixed-data vertical-slice milestones are complete. The
-current build includes strict contracts, bounded concurrent research, one justified
+The complete Project 2 application is now deployed and publicly reachable at
+[commonground-nyc-research-1053619589756.us-east1.run.app](https://commonground-nyc-research-1053619589756.us-east1.run.app).
+The build includes strict contracts, bounded concurrent research, one justified
 follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
-natural-language clarification, `/chat` trace compatibility, Project 2 UI, and a
-50-case deterministic contract corpus. The Cafe Researcher adapter now exists and is
-fixture-tested, including the complete missing-hours path. A separate live Places smoke
-passed with ten cafes from one Union Square request. The Transit adapter, Cafe adapter,
-and production dispatcher are integrated. Credentialed live Routes proof, frozen-model
-eval captures, and the Project 2 Cloud Run release remain.
+natural-language clarification, `/chat` trace compatibility, the Project 2 UI, and a
+50-case deterministic contract corpus. The Transit, Cafe, and Expansion adapters are
+composed through the production dispatcher. A public Cloud Run smoke on November 11,
+2026 returned HTTP 200, all five agent instances across rounds 1–2, live Places and
+Routes evidence, and exact-cafe commute values versus each person's limit. Frozen-model
+no-tools baselines, credentialed rubric-judge captures, and the aggregate hill-climbing
+table remain explicit pre-submission evaluation work; they are not represented by the
+live service smoke.
 
 | Document | Purpose |
 | --- | --- |
@@ -36,6 +39,8 @@ eval captures, and the Project 2 Cloud Run release remain.
 | [Cafe review and handoff](docs/YULIA_REVIEW_AND_HANDOFF.md) | Confirmed integration fixes, Cafe delivery, contract assumptions, and remaining grading work |
 | [Evaluation plan](docs/EVALUATION_PLAN.md) | Three owner-specific examples and the 50+ case eval strategy |
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
+| [Deployment runbook](docs/DEPLOYMENT.md) | Cloud Run configuration, release verification, and operations checklist |
+| [Full-score gap audit](docs/FULL_SCORE_GAP_AUDIT.md) | Rubric-aligned evidence, remaining risks, and prioritized submission work |
 
 ### Implemented in the current checkpoint
 
@@ -117,6 +122,8 @@ eval captures, and the Project 2 Cloud Run release remain.
   round-grouped Lead/Researcher/Writer evidence path whenever `/chat` returns Project 2
   `agent` and `round` trace entries. Its requests now use Project 2 research mode, while
   legacy Project 1 API behavior and result cards remain compatible.
+- `submission.json` points to the independent public Project 2 Cloud Run service. The
+  deployed `/health` endpoint reports `status=ok` and `research_ready=true`.
 
 ## Deep Research design
 
@@ -149,6 +156,15 @@ all six smoke checks on `2026-11-10T07:07:28.941671+00:00`: ten cafes, 81 cited 
 and eleven Sources from one bounded request. Its ten meeting-time opening estimates
 are provisional; it contains no Routes or production-model claims. This live success
 is separate from the synthetic missing-hours grading example above.
+
+The [public Cloud Run smoke](evals/examples/ruochen/live_cloud_run_smoke.json) exercises
+the deployed `/chat` boundary rather than a fixture. It returned eleven trace entries
+covering Lead, Transit, Cafe, Expansion, and Writer across rounds 1–2. The response
+recommended two feasible cafes with exact-address Routes evidence, diagnosed one
+commute-limit failure with the actual value and limit, qualified future opening hours,
+and cited normalized Google Places and Routes source IDs. This is a bounded operational
+smoke, not a substitute for the required same-model baseline or 50-case hill-climbing
+experiment.
 
 The first turn uses five agent instances across three role shapes:
 
@@ -221,6 +237,18 @@ uv run app.py
 ```
 
 Never commit API keys, service-account JSON, `.env`, or generated credentials.
+
+## Live deployment
+
+- App: [CommonGround NYC Research](https://commonground-nyc-research-1053619589756.us-east1.run.app)
+- Health: [`/health`](https://commonground-nyc-research-1053619589756.us-east1.run.app/health)
+- Platform: Google Cloud Run, `us-east1`, continuous deployment from `main`
+- Runtime bounds: 300-second Cloud Run request timeout, 45 seconds per Researcher task,
+  six turns per task, concurrency 10, and at most three service instances
+
+The Maps credential is referenced from Secret Manager at runtime and never appears in
+the repository, browser trace, or `/chat` response. See the
+[deployment runbook](docs/DEPLOYMENT.md) for configuration and release checks.
 
 ## Planned grading examples
 

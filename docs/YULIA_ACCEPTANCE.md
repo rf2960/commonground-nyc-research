@@ -114,7 +114,9 @@ hidden DOM text.
 
 The live Places capture is complete using the existing key in Cloud Shell. Its
 credential is not included in the imported JSON or committed files. The assistant
-runtime still has no GCP model authentication or frozen production model manifest.
+local runtime still has no GCP application-default credential. The deployed model is
+fixed as `vertex_ai/gemini-3.5-flash-lite`, but a model-backed Writer capture and local
+manifest-backed baseline/judge run have not been recorded.
 The repository's Actions secret list was empty at the configuration check, and the
 connected collaborator has write access but no repository-admin access. Actual
 model-backed grading output, same-model baseline and rubric scores remain pending

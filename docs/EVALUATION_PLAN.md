@@ -75,8 +75,10 @@ no-tools/no-system baseline, deterministic score, rubric score, and a short comp
 
 **Current capture status.** Golden bundle, actual response/trace, and deterministic
 score are committed under `evals/`; the score is `1.0` (8/8 checks). The production
-model is not frozen, so the no-tools baseline and rubric/reference-judge score remain
-explicitly pending rather than hand-authored.
+production model is now fixed as `vertex_ai/gemini-3.5-flash-lite`, but an authenticated
+model-backed agent capture and no-tools baseline have not been recorded. The rubric/
+reference-judge score therefore remains explicitly pending rather than hand-authored.
+The non-secret frozen configuration is committed as `evals/model_manifest.json`.
 
 ### Example 2 — Andrew: exact cafe invalidates center estimate
 

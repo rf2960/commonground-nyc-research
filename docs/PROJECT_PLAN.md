@@ -61,7 +61,7 @@ editing one another's primary files.
 **Gate:** an integration test proves initial failure → justified follow-up → new evidence
 → supported final diagnosis, without network calls.
 
-**Current checkpoint (2026-11-09):**
+**Current checkpoint (2026-11-11):**
 
 - [x] Strict shared contract models and stable-ID validation.
 - [x] Synthetic round-1 failure, FollowUpDecision, round-2 evidence, and expected outcome.
@@ -82,8 +82,8 @@ editing one another's primary files.
   generator, traces both calls, and stops on unresolved/provider/validation failures.
 - [x] Quote-validated natural-language extraction over multi-turn user messages, with
   no tools, explicit-offset enforcement, and deterministic model/auth failure fallback.
-- [x] Single role dispatcher/service factory plus an async bounded MTA expansion task;
-  final app injection waits only for the Transit and Cafe adapter exports.
+- [x] Single role dispatcher/service factory plus bounded MTA, Transit, and Cafe tasks,
+  composed in the public Cloud Run service.
 
 The current tests prove the data story, contract boundaries, deterministic feasibility
 decision, concurrent isolated Researcher execution, and the bounded Lead/follow-up
@@ -128,20 +128,22 @@ startup cache and one opt-in smoke test remain integration work.
 
 **Gate:** the documented eval command is reproducible from a clean checkout.
 
-Current progress: the full-pipeline registry and first raw Ruochen trace are complete.
+Current progress: the full-pipeline registry and all three owner traces are complete.
 A separate 50-case contract corpus scores the actual hard-decision and intake functions
 at 50/50 across five balanced slices. The reference/rubric judge and no-tools capture
-code are implemented and tested. Credentialed judge/baseline captures and the hill-
-climbing table depend on final model selection; live end-to-end cases also depend on the
-teammate Researcher adapters.
+code are implemented and tested. The production model is fixed as
+`vertex_ai/gemini-3.5-flash-lite`; credentialed judge/baseline captures and the final
+hill-climbing table still require an auditable offline credentialed run.
 
 ### Phase 5 — Cloud Run and submission
 
-- Connect the new repository to continuous deployment.
-- Raise the request timeout as needed, cap agent turns, and keep provider use bounded.
-- Replace the inherited Project 1 `deploy_url` in `submission.json` with the Project 2
+- [x] Connect the new repository to continuous deployment.
+- [x] Raise the request timeout as needed, cap agent turns, and keep provider use bounded.
+- [x] Replace the inherited Project 1 `deploy_url` in `submission.json` with the Project 2
   Cloud Run URL.
-- Add graders as collaborators and keep the service live through grade release.
+- [x] Make the service publicly callable without grader authentication.
+- Keep the service live through grade release and submit the repository URL in
+  CourseWorks after the remaining eval evidence is committed.
 
 **Gate:** public URL works without grader setup and all repository submission fields are
 current.

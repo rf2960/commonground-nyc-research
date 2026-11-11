@@ -1,0 +1,10 @@
+{
+  "schema_version": "model-manifest-v1",
+  "frozen": true,
+  "model": "vertex_ai/gemini-3.5-flash-lite",
+  "judge_model": "vertex_ai/gemini-3.5-flash-lite",
+  "vertex_location": "global",
+  "frozen_at": "2026-11-11T18:34:36.6514097Z",
+  "deployment": "commonground-nyc-research",
+  "notes": "Contains model identifiers only; no credential or API key. A frozen manifest does not by itself satisfy the required model-backed agent, baseline, or rubric captures."
+}
