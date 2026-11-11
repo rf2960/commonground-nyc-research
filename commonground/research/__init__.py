@@ -53,11 +53,19 @@ from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
 from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
 from .cafe_agent import AreaObservation, build_cafe_result, run_cafe_task
+from .transit_agent import (
+    TransitPairObservation,
+    build_transit_result,
+    run_transit_task,
+)
 
 __all__ = [
     "AreaObservation",
     "build_cafe_result",
     "run_cafe_task",
+    "TransitPairObservation",
+    "build_transit_result",
+    "run_transit_task",
     "CONTRACT_VERSION",
     "DATASET_ID",
     "DeepResearchOutput",

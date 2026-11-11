@@ -156,6 +156,33 @@ def test_excludes_area_with_any_unavailable_route(monkeypatch):
             "reason": "No transit route found (ROUTE_NOT_FOUND)",
         }
     ]
+    assert matrix["route_pairs"] == [
+        {
+            "traveler_id": "alice",
+            "area": "Union Square",
+            "route_available": True,
+            "transit_minutes": 20.0,
+        },
+        {
+            "traveler_id": "alice",
+            "area": "Herald Square",
+            "route_available": True,
+            "transit_minutes": 21.0,
+        },
+        {
+            "traveler_id": "bob",
+            "area": "Union Square",
+            "route_available": False,
+            "transit_minutes": None,
+            "reason": "No transit route found (ROUTE_NOT_FOUND)",
+        },
+        {
+            "traveler_id": "bob",
+            "area": "Herald Square",
+            "route_available": True,
+            "transit_minutes": 22.0,
+        },
+    ]
 
 
 def test_missing_matrix_element_excludes_affected_area(monkeypatch):

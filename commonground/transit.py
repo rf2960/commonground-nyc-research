@@ -361,6 +361,28 @@ def get_transit_matrix(
         )
 
     if not include_driving:
+        route_pairs = [
+            {
+                "traveler_id": validated_origins[origin_index]["traveler_id"],
+                "area": validated_areas[destination_index]["area"],
+                "route_available": (origin_index, destination_index)
+                in transit_durations,
+                "transit_minutes": transit_durations.get(
+                    (origin_index, destination_index)
+                ),
+                **(
+                    {
+                        "reason": transit_failures[
+                            (origin_index, destination_index)
+                        ]
+                    }
+                    if (origin_index, destination_index) in transit_failures
+                    else {}
+                ),
+            }
+            for origin_index in range(len(validated_origins))
+            for destination_index in range(len(validated_areas))
+        ]
         unavailable_routes = [
             {
                 "traveler_id": validated_origins[origin_index]["traveler_id"],
@@ -394,6 +416,10 @@ def get_transit_matrix(
 
         result: dict[str, Any] = {
             "areas": complete_areas,
+            # Project 1 consumers continue using ``areas``.  Project 2 adapters use
+            # this additive pair-level view so one unavailable route does not erase
+            # successful evidence for the other travelers going to that destination.
+            "route_pairs": route_pairs,
             "traveler_ids": [
                 origin["traveler_id"] for origin in validated_origins
             ],
