@@ -198,7 +198,9 @@ tests/research/
 `commonground/research/service.py` is the only application-facing composition layer. It
 returns Writer text plus an ordered trace with legacy `name`, `args`, and string `result`
 fields and Project 2 `agent`/`round` metadata. Root `app.py` preserves Project 1 as the
-default mode and exposes structured research mode only through this injectable service.
-The global service stays unset until real Routes and Places adapters are present, so
-fixture evidence cannot be mistaken for a live response. See `INTEGRATION_GUIDE.md` for
-the teammate adapter callable and deployment dispatcher.
+default mode and exposes structured research mode only through this service. The
+production global is composed from the real Routes, Places, and MTA adapters with
+bounded task timeout and turn settings. Construction is side-effect free: provider
+calls occur only for a validated research request, and test fixtures are never loaded
+into the live service. See `INTEGRATION_GUIDE.md` for the adapter callable and
+deployment dispatcher.

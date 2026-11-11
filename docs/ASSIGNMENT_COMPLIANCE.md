@@ -8,8 +8,8 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| Use data the model does not already know deeply | MTA adapter implemented; live Places smoke complete; Routes pending | Places capture records ten cafes, 81 facts and eleven sources from one real request |
-| Access data through tools/API/files/search | MTA, Project 1 bridge and Cafe adapter implemented | Live Places capture and bounded Socrata loading exist; Routes adapter and live service injection remain |
+| Use data the model does not already know deeply | All three provider adapters implemented; live Places smoke complete | Places capture records ten cafes, 81 facts and eleven sources; live Routes capture remains |
+| Access data through tools/API/files/search | Complete at adapter/integration boundary | MTA Socrata, Google Places, and Google Routes tasks are composed in the production service; credentialed deployment smoke remains |
 | Combine evidence into a supported claim | Complete in fixed-data slice | Lead executes two rounds, `feasibility-v1` decides constraints, and Writer renders the supported result with IDs |
 | State when data cannot answer | Complete in fixed-data slice | Writer refuses recommendation on `EVIDENCE_INSUFFICIENT` and prints the MissingEvidence detail/next action |
 | Show work and preserve `/chat` shape | Complete in fixed-data slice | Service test preserves the three response keys and validates ordered `agent`/`round` trace entries |
@@ -20,7 +20,7 @@ or deployment link.
 
 | Requirement | Status | Evidence / next proof |
 | --- | --- | --- |
-| At least three agent shapes with different jobs | Designed | Lead, Researcher, Writer in `ARCHITECTURE.md` |
+| At least three agent shapes with different jobs | Complete | Lead, Researcher, Writer are implemented and exercised by the full-pipeline eval |
 | Lead fans out several Researchers in one turn | Complete in fixed-data slice | `LeadOrchestrator` creates all three tasks and `ResearchRunner.run_initial_round` executes them concurrently |
 | Researchers run in parallel in fresh contexts | Complete at runner boundary | `test_runner.py` proves overlap, distinct contexts/message lists, role tool scopes, and deterministic output ordering |
 | Lead loops back for more on a gap | Complete in fixed-data slice | Lead records one bounded FollowUpDecision, waits for Cafe coordinates, then dispatches exact-address Transit |
@@ -55,18 +55,18 @@ or deployment link.
 | Root `README.md` and valid `submission.json` | Complete for planning | `path` is `research`; replace inherited deploy URL before submission |
 | `submission.json` contains every UNI | Complete | `rf2960`, `wd2422`, `yc4745` |
 | GitHub repository submitted | Repository created | Public repo; submit URL when ready |
-| At least one data source per team member | MTA implemented, Places live-tested, Routes pending | Wenyu's one-area live Places smoke is saved; Andrew owns Routes evidence |
+| At least one data source per team member | Adapter requirement complete; one live proof pending | MTA and Routes adapters plus Wenyu's saved one-area live Places smoke exist; save a credentialed Routes smoke before submission |
 | Data ships with deploy or loads from GCS/startup | Planned | Decide after MTA cache size and refresh design |
-| Request may take up to 5 minutes; cap max turns | Runner bound complete; deployment planned | Runner enforces 1–12 turns and a positive per-task timeout; configure/test Cloud Run request limit later |
+| Request may take up to 5 minutes; cap max turns | Application bounds complete; deployment pending | Defaults are 45 seconds per task and six turns, clamped to 1–120 seconds and 1–12 turns; verify the Cloud Run request timeout after deployment |
 | Keep service live until grades released | Planned | Operational checklist for final deployment |
 
 ## Final pre-submission blockers
 
 - Shared Project 2 contracts, fixed evidence fixtures, deterministic feasibility, the
   concurrent isolated Researcher runner, bounded Lead execution, and evidence-only
-  Writer and fixed-data `/chat` trace are implemented. Cafe adapter, one-area live
-  Places smoke and desktop/mobile browser checks are complete; Routes adapter and live
-  service injection are not yet done.
+  Writer and fixed-data `/chat` trace are implemented. Cafe and Transit adapters, live
+  service injection, one-area live Places smoke, and desktop/mobile browser checks are
+  complete; a credentialed live Routes smoke is not yet saved.
 - The current `deploy_url` still points to the inherited Project 1 service.
 - Credentialed rubric-judge scores, same-model no-tools baselines, and the final
   hill-climbing table remain pending the frozen production model.

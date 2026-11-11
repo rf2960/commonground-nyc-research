@@ -38,6 +38,13 @@ def service() -> DeepResearchService:
     return DeepResearchService(ResearchRunner(executor))
 
 
+def test_app_constructs_side_effect_free_live_research_service():
+    assert isinstance(webapp.research_service, DeepResearchService)
+    assert webapp.research_service._lead._runner.task_timeout_seconds == 45
+    assert webapp.research_service._lead._runner.max_turns == 6
+    assert webapp.health()["research_ready"] is True
+
+
 def test_service_returns_writer_output_and_deterministic_full_trace():
     output = service().run_sync(brief())
 

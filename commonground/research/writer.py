@@ -319,11 +319,31 @@ class EvidenceWriter:
             reason_codes = ", ".join(
                 sorted({reason.code for reason in feasibility.reasons})
             )
+            traveler_labels = {
+                traveler.traveler_id: traveler.input_location
+                for traveler in run.brief.travelers
+            }
+            commute_details = ", ".join(
+                (
+                    f"{traveler_labels.get(reason.traveler_id, reason.traveler_id)} "
+                    f"(`{reason.traveler_id}`) {reason.actual_minutes:g} minutes "
+                    f"vs {reason.limit_minutes:g}-minute limit"
+                )
+                for reason in feasibility.reasons
+                if reason.code == "TRAVELER_LIMIT_EXCEEDED"
+                and reason.traveler_id is not None
+                and reason.actual_minutes is not None
+                and reason.limit_minutes is not None
+            )
+            detail_suffix = (
+                f" Commute evidence: {commute_details}." if commute_details else ""
+            )
             claims.append(
                 self._claim(
                     (
                         f"Do not recommend {label} (`{feasibility.cafe_id}`): status "
                         f"is {feasibility.status}; supported blocker(s): {reason_codes}."
+                        f"{detail_suffix}"
                     ),
                     facts=facts,
                     sources=sources,

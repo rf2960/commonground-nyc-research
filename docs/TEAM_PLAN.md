@@ -73,14 +73,14 @@ Contracts/fixtures, deterministic feasibility, concurrent runner, bounded Lead, 
 Writer, MTA expansion, natural-language intake, Project 1 bridge, and fixed-data
 `/chat`/trace integration are all on `main`. Ruochen's 50-case provenance-recorded
 contract corpus currently passes 50/50; the strict reference/rubric judge and the
-same-model no-tools/no-system capture boundary are implemented and tested. Remaining
-Ruochen work is live Transit/Cafe adapter injection after teammate delivery, frozen-
-model judge/baseline runs, hill-climbing reporting, and Cloud Run release.
+same-model no-tools/no-system capture boundary are implemented and tested. Transit,
+Cafe, and MTA production injection is complete. Remaining Ruochen work is the
+credentialed live-source smoke, frozen-model judge/baseline runs, hill-climbing
+reporting, and Cloud Run release.
 
-The dispatcher, service factory, and live MTA expansion task are also complete. Andrew
-and Wenyu should branch or rebase from the latest `main` now; they do not need to wait
-for more Ruochen contracts. They only need to export the documented async callables,
-which Ruochen will pass to `build_research_service` during final integration.
+The dispatcher, service factory, live MTA expansion task, and both teammate callables
+are complete and integrated through `build_research_service`. Future provider fixes
+must preserve this single composition boundary rather than adding parallel clients.
 
 The Project 1 bridge is complete too: a validated structured intake now calls the real
 location resolver, stops on only unresolved travelers, calls the inherited candidate
