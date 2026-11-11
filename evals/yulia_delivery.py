@@ -133,10 +133,10 @@ def write_record(path: Path, record: dict[str, Any]) -> None:
     """Keep successful captures intact if a later attempt is blocked or fails."""
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
-        previous = json.loads(path.read_text())
+        previous = json.loads(path.read_text(encoding="utf-8"))
         if previous.get('status') == 'passed' and record.get('status') != 'passed':
             path = path.with_name(path.stem + '.latest_attempt' + path.suffix)
-    path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n')
+    path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n', encoding="utf-8")
 
 
 def main() -> int:
@@ -154,15 +154,15 @@ def main() -> int:
     case = load_case(DEFAULT_CASE)
     try:
         if args.command == 'places-smoke':
-            raw = json.loads((ROOT/case['fixtures']['brief_path']).read_text())
+            raw = json.loads((ROOT/case['fixtures']['brief_path']).read_text(encoding="utf-8"))
             raw['question'] = 'One-area live Places smoke; collect cafe evidence only, without transit verification.'
             if args.meeting_time:
                 raw['meeting_time'] = args.meeting_time
             brief = ResearchBrief.model_validate(raw)
             record = capture_places_smoke(brief, live=args.live)
         else:
-            manifest = json.loads(args.manifest.read_text()) if args.manifest else None
-            capture = json.loads(args.agent_capture.read_text())
+            manifest = json.loads(args.manifest.read_text(encoding="utf-8")) if args.manifest else None
+            capture = json.loads(args.agent_capture.read_text(encoding="utf-8"))
             record = capture_model_evaluation(manifest=manifest, agent_capture=capture, case=case)
     except Exception:
         record = _record(args.command, 'blocked', reason_code='INVALID_INPUT_OR_CAPTURE')

@@ -30,7 +30,7 @@ CAFE = 'cafe:gplaces:fixture-yulia'
 
 
 def brief():
-    return ResearchBrief.model_validate_json((FIXTURES / 'research_brief.json').read_text())
+    return ResearchBrief.model_validate_json((FIXTURES / 'research_brief.json').read_text(encoding="utf-8"))
 
 
 def task():
@@ -210,7 +210,7 @@ def test_six_area_request_is_bounded_and_does_not_block_event_loop(no_live_reque
 
 
 def test_round_two_uses_cited_expansion_coordinates(no_live_requests):
-    results = [ResearchResult.model_validate(r) for r in json.loads((FIXTURES / 'round_1_results.json').read_text())]
+    results = [ResearchResult.model_validate(r) for r in json.loads((FIXTURES / 'round_1_results.json').read_text(encoding="utf-8"))]
     expansion = next(r for r in results if r.agent == 'expansion_researcher')
     followup = LeadOrchestrator._research_task(brief(), round_number=2, agent='cafe_researcher',
         objective='Fixture expansion search', candidate_ids=('area:mta:fixture-queensboro-plaza',),
