@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Iterable, Mapping
+from dataclasses import dataclass, replace
+import json
+from typing import Any, Callable, Iterable, Literal, Mapping
+
+import litellm
 
 from .lead import LeadRun
 from .models import Fact, MissingEvidence, Source
@@ -39,6 +42,8 @@ class WriterReport:
     claims: tuple[CitedClaim, ...]
     unknowns: tuple[CitedClaim, ...]
     recommended_cafe_id: str | None
+    writer_mode: Literal["deterministic", "model-backed-validated"] = "deterministic"
+    model: str | None = None
 
 
 class EvidenceWriter:
@@ -77,6 +82,7 @@ class EvidenceWriter:
         )
         validate_writer_report(report, run)
         return report
+
 
     def _initial_comparison(
         self,
@@ -388,6 +394,83 @@ class EvidenceWriter:
         )
 
 
+MODEL_WRITER_SYSTEM_PROMPT = """You are the Writer presentation planner for a cited
+research report. You may choose only the order of the supplied immutable report
+sections. Return one JSON object with `section_order`, containing every supplied title
+exactly once. Do not add prose, facts, recommendations, citations, or section titles.
+The deterministic evidence layer owns all factual wording and final validation.
+"""
+
+
+class ModelBackedEvidenceWriter(EvidenceWriter):
+    """Use the production model for structure without letting it invent facts.
+
+    The model sees only already-validated section titles and claim counts. Its sole
+    authority is presentation order. Claim text, citations, recommendation status, and
+    unknowns remain deterministic; invalid or failed model output falls back safely.
+    """
+
+    def __init__(
+        self,
+        *,
+        model: str,
+        vertex_location: str,
+        completion: Callable[..., Any] = litellm.completion,
+    ) -> None:
+        if not model.strip() or not vertex_location.strip():
+            raise ValueError("model and vertex_location are required")
+        self._model = model
+        self._vertex_location = vertex_location
+        self._completion = completion
+
+    def write(self, run: LeadRun) -> WriterReport:
+        deterministic = super().write(run)
+        sections = _report_sections(deterministic.response)
+        if len(sections) < 2:
+            return deterministic
+        payload = {
+            "sections": [
+                {"title": title, "claim_count": block.count("\n- ")}
+                for title, block in sections.items()
+            ]
+        }
+        try:
+            reply = self._completion(
+                model=self._model,
+                vertex_location=self._vertex_location,
+                messages=[
+                    {"role": "system", "content": MODEL_WRITER_SYSTEM_PROMPT},
+                    {
+                        "role": "user",
+                        "content": json.dumps(payload, ensure_ascii=False),
+                    },
+                ],
+                response_format={"type": "json_object"},
+                temperature=0,
+            )
+            raw = json.loads(reply.choices[0].message.content)
+            order = raw["section_order"]
+            if (
+                not isinstance(order, list)
+                or any(not isinstance(item, str) for item in order)
+                or len(order) != len(sections)
+                or len(set(order)) != len(order)
+                or set(order) != set(sections)
+            ):
+                raise ValueError("model returned an invalid section order")
+        except Exception:
+            return deterministic
+
+        report = replace(
+            deterministic,
+            response="\n\n".join(sections[title] for title in order),
+            writer_mode="model-backed-validated",
+            model=self._model,
+        )
+        validate_writer_report(report, run)
+        return report
+
+
 def _evidence_indexes(
     run: LeadRun,
 ) -> tuple[dict[str, Fact], dict[str, Source], dict[str, MissingEvidence]]:
@@ -435,6 +518,22 @@ def _section(title: str, claims: Iterable[CitedClaim]) -> str:
         return ""
     body = "\n".join(f"- {claim.text} {_citation(claim)}" for claim in records)
     return f"## {title}\n\n{body}"
+
+
+def _report_sections(response: str) -> dict[str, str]:
+    """Index deterministic Markdown sections without accepting model-authored text."""
+
+    sections: dict[str, str] = {}
+    for raw_block in response.split("\n\n## "):
+        block = raw_block if raw_block.startswith("## ") else "## " + raw_block
+        first_line = block.splitlines()[0]
+        if not first_line.startswith("## "):
+            raise ValueError("Writer response contains a malformed section")
+        title = first_line.removeprefix("## ").strip()
+        if not title or title in sections:
+            raise ValueError("Writer response contains an invalid section title")
+        sections[title] = block
+    return sections
 
 
 def validate_writer_report(report: WriterReport, run: LeadRun) -> None:

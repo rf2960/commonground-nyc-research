@@ -137,12 +137,15 @@ may summarize them but cannot change their meaning.
 
 ## Writer boundary
 
-`commonground/research/writer.py` implements the fixed-data Writer boundary. It renders
-only indexed facts, sources, missing-evidence records, follow-up decisions, and
-feasibility results. Its validator requires every referenced ID to exist, requires each
-claim's sources to match its cited facts, and requires every citation to appear in the
-user-visible response. Future regular-hours evidence is explicitly labeled as an
-estimate rather than a guarantee.
+`commonground/research/writer.py` implements the evidence-locked Writer boundary. It
+first renders only indexed facts, sources, missing-evidence records, follow-up
+decisions, and feasibility results. The production model then chooses only the order
+of those immutable sections from their titles and claim counts; it never receives
+authority to rewrite a fact, citation, recommendation, or unknown. The validator runs
+again after reordering, and any failed/invalid model call keeps the deterministic
+report. Every referenced ID must exist, every claim's sources must match its cited
+facts, and every citation must appear in the user-visible response. Future
+regular-hours evidence is explicitly labeled as an estimate rather than a guarantee.
 
 ## Project 1 reuse map
 

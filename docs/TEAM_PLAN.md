@@ -75,8 +75,9 @@ Writer, MTA expansion, natural-language intake, Project 1 bridge, and fixed-data
 contract corpus currently passes 50/50; the strict reference/rubric judge and the
 same-model no-tools/no-system capture boundary are implemented and tested. Transit,
 Cafe, and MTA production injection is complete. Remaining Ruochen work is the
-credentialed live-source smoke, frozen-model judge/baseline runs, hill-climbing
-reporting, and Cloud Run release.
+post-deploy model-backed Writer evidence, Ruochen's rubric-judge capture, and the final
+Cloud Run release. The three no-tools grader baselines and reproducible 50-case
+hill-climbing report are complete.
 
 The dispatcher, service factory, live MTA expansion task, and both teammate callables
 are complete and integrated through `build_research_service`. Future provider fixes
