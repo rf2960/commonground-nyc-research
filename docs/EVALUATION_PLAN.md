@@ -40,14 +40,16 @@ The final README must report:
 The chosen reproducible command is:
 
 ```bash
-uv run python -m evals.runner
+uv run python -m evals.hill_climb
 ```
 
-The first registered gold case executes the actual fixed-data application pipeline,
-scores eight deterministic properties, writes a raw agent/trace capture, and exits
-nonzero on regression. The separate contract corpus runs 50 cases at 50/50. The strict
-rubric/reference judge is implemented in `evals/rubric_judge.py`; credentialed scores
-remain pending the frozen model and must not be replaced by hand-authored numbers.
+The command freezes one 50-case expectation set and evaluates three preserved Git
+revisions. The contract-only baseline (`7b596c7`) scores 0/50; deterministic feasibility
+(`2bbad8b`) scores 40/50; and the clarification/intake gate (`96989b0`) reaches 50/50.
+The two gains, +0.80 and +0.20, both exceed `1/sqrt(50) = 0.1414`. Full case-level
+results, resolved commit hashes, and capability flags are committed in
+`evals/examples/hill_climb_results.json`. The strict rubric/reference judge remains the
+second scorer; credentialed judge scores must not be replaced by hand-authored numbers.
 
 ## Three owner-specific grading examples
 

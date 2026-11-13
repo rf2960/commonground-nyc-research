@@ -23,8 +23,8 @@ natural-language clarification, `/chat` trace compatibility, the Project 2 UI, a
 composed through the production dispatcher. A public Cloud Run smoke on November 11,
 2026 returned HTTP 200, all five agent instances across rounds 1–2, live Places and
 Routes evidence, and exact-cafe commute values versus each person's limit. The three
-live grader queries now have captured no-tools baselines. Credentialed rubric-judge
-captures and the aggregate hill-climbing table remain pending.
+live grader queries now have captured no-tools baselines. The reproducible 50-case
+hill-climbing report is complete; credentialed rubric-judge captures remain pending.
 
 | Document | Purpose |
 | --- | --- |
@@ -108,9 +108,9 @@ captures and the aggregate hill-climbing table remain pending.
   clarification without starting research prematurely.
 - `evals/runner.py` runs provenance-recorded cases through the real fixed-data pipeline
   and fails on recommendation, feasibility, follow-up, source, answer, bound, or trace
-  regressions. Ruochen's first raw capture scores `1.0` on eight golden checks; its
-  same-model/no-tools/no-system baseline remains explicitly pending rather than
-  fabricated.
+  regressions. Ruochen's first raw fixture capture scores `1.0` on eight golden checks;
+  the separate final live-query comparison uses the authenticated no-tools capture
+  linked below.
 - `evals/contract_corpus.py` runs 50 provenance-recorded synthetic gold boundary cases
   through the actual feasibility and intake functions: 10 each for feasible, commute,
   cafe, missing-evidence, and clarification slices. The current result is 50/50.
@@ -314,6 +314,30 @@ Run the 50-case contract corpus with:
 ```bash
 uv run python -m evals.contract_corpus
 ```
+
+### Reproducible hill-climbing log
+
+The hill-climbing experiment freezes the same 50 contract expectations and runs them
+against three preserved Git revisions. A missing capability counts as a failed case;
+expected values are never edited to fit an older implementation. The raw case-level
+record is committed in
+[`evals/examples/hill_climb_results.json`](evals/examples/hill_climb_results.json).
+
+| Stage | Preserved commit | Change | Score | Gain | Exceeds `1/sqrt(50)` = 0.1414? |
+| --- | --- | --- | ---: | ---: | --- |
+| Baseline | `7b596c7` | Evidence contracts existed, but deterministic feasibility and clarification gates did not | 0/50 = 0.00 | — | — |
+| Change 1 | `2bbad8b` | Added deterministic commute, cafe-condition, and missing-evidence evaluation | 40/50 = 0.80 | +0.80 | Yes |
+| Change 2 | `96989b0` | Added deterministic clarification for origins, limits, time, and timezone | 50/50 = 1.00 | +0.20 | Yes |
+
+Both improvements are larger than the assignment's comparison margin. The final row
+has no failing slice. Reproduce the detached historical worktree runs with:
+
+```bash
+uv run python -m evals.hill_climb
+```
+
+The command records full commit hashes, capability flags, all 50 case results, scores,
+and gains, then removes its temporary worktrees.
 
 See [evals/README.md](evals/README.md) for the case schema, capture procedure, and owner
 handoff.

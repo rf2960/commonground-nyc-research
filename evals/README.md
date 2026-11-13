@@ -19,6 +19,17 @@ that its boundary mutations are synthetic rather than live provider observations
 current result is 50/50. This complements the full-pipeline registry; it does not claim
 that 50 live Google/MTA requests occurred.
 
+Reproduce the hill-climbing experiment across three preserved implementation revisions:
+
+```bash
+uv run python -m evals.hill_climb
+```
+
+It evaluates the same 50 expectations at every stage, writes the raw report to
+`evals/examples/hill_climb_results.json`, and removes its temporary detached worktrees.
+The recorded progression is 0/50 → 40/50 → 50/50; gains of 0.80 and 0.20 both exceed
+`1/sqrt(50) = 0.1414`.
+
 Regenerate the raw capture for one owner case:
 
 ```bash
@@ -54,12 +65,11 @@ raw output, and the two disabled conditions in
 `evals/examples/<owner>/no_tools_baseline.json`.
 
 `evals/baseline.py` enforces exactly one user message, no tools, and no system prompt,
-and records model, timestamp, conditions, question, and raw output. The committed
-Ruochen baseline file remains deliberately `pending`: no credentialed production-model
-run has yet been performed, so it contains no fabricated answer. The production model
-selection is frozen in `evals/model_manifest.json`. That manifest contains no
-credential and does not turn the deterministic Writer capture into a model-backed
-capture. Only the question—not the evidence bundle—is allowed in a baseline call.
+and records model, timestamp, conditions, question, and raw output. The three final
+live grader questions have authenticated captures in `evals/examples/`. The older
+fixture-specific owner placeholder remains labeled `pending` and is not presented as a
+live capture. The production model selection is frozen in `evals/model_manifest.json`;
+only the question—not the evidence bundle—is allowed in a baseline call.
 
 ## Second scorer
 

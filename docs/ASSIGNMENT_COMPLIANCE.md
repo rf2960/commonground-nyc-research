@@ -35,8 +35,8 @@ or deployment link.
 | Eval cases not reused as few-shot prompt examples | Enforced in corpus metadata | Every case records `prompt_reuse_prohibited=true`; no eval case is embedded in an agent prompt |
 | At least two scorer types | Implemented; credentialed judge capture pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
 | Documented command to run evals | Complete | `uv run python -m evals.runner` and `uv run python -m evals.contract_corpus` |
-| README hill-climbing log with baseline and 2+ changes | Pending frozen-model runs | Harness, 50-case score, judge schema, and no-tools capture boundary exist |
-| Identify gains larger than `±1/sqrt(n)` | Planned | Compute in final hill-climbing table |
+| README hill-climbing log with baseline and 2+ changes | Complete | `evals.hill_climb` replays the same 50 held-out expectations against preserved commits `7b596c7`, `2bbad8b`, and `96989b0`; raw results and the README table are committed |
+| Identify gains larger than `±1/sqrt(n)` | Complete | Gains of `+0.80` and `+0.20` both exceed `1/sqrt(50) = 0.1414`; the final score is 50/50 |
 
 ## README and sample-query requirements
 
@@ -66,8 +66,9 @@ or deployment link.
   evidence-only Writer, Cafe/Transit/Expansion adapters, live service injection,
   desktop/mobile UI checks, public Cloud Run release, and a live full-pipeline smoke are
   complete.
-- Three credentialed no-tools answers are committed. The public plain-text
-  retest, credentialed rubric-judge scores, and final hill-climbing table remain pending.
+- Three credentialed no-tools answers and the reproducible hill-climbing report are
+  committed. The public plain-text retest and credentialed rubric-judge scores remain
+  pending.
 
 Do not describe the remaining evaluation artifacts as complete until their raw outputs
 and scores are committed. Deployment itself is complete and separately evidenced.
