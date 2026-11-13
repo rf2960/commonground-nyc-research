@@ -71,8 +71,11 @@ captures and the aggregate hill-climbing table remain pending.
 - `tests/research/test_lead.py` executes the fixed first-round failure through the
   second-round feasible result and rejects unjustified or invented follow-up targets.
 - `commonground/research/writer.py` renders comparison, recommendation/blockers, and
-  unknowns only from normalized facts, sources, feasibility records, and gaps. Every
-  visible claim carries auditable IDs and provisional future hours remain qualified.
+  unknowns only from normalized facts, sources, feasibility records, and gaps. In
+  production the frozen model may reorder the validated report sections, but cannot
+  change claim text, citations, recommendation status, or unknowns; invalid model output
+  falls back to the deterministic order. Every visible claim carries auditable IDs and
+  provisional future hours remain qualified.
 - `tests/research/test_writer.py` rejects uncited or unknown references and proves both
   the feasible recommendation and insufficient-evidence output paths.
 - `commonground/research/expansion.py` loads the official MTA Socrata schema through a
