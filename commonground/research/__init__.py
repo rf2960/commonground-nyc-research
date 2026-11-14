@@ -51,7 +51,13 @@ from .intake_extraction import (
 )
 from .runner import ROLE_TOOL_ALLOWLISTS, ResearchContext, ResearchRunner
 from .service import DeepResearchOutput, DeepResearchService, build_research_trace
-from .writer import CitedClaim, EvidenceWriter, WriterReport, validate_writer_report
+from .writer import (
+    CitedClaim,
+    EvidenceWriter,
+    ModelBackedEvidenceWriter,
+    WriterReport,
+    validate_writer_report,
+)
 from .cafe_agent import AreaObservation, build_cafe_result, run_cafe_task
 from .transit_agent import (
     TransitPairObservation,
@@ -82,6 +88,7 @@ __all__ = [
     "IntakeGap",
     "IntakeExtractionError",
     "EvidenceWriter",
+    "ModelBackedEvidenceWriter",
     "LeadOrchestrator",
     "LeadRun",
     "MTADataError",

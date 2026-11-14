@@ -1,6 +1,7 @@
 import asyncio
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -8,6 +9,7 @@ from commonground.research import (
     CitedClaim,
     EvidenceWriter,
     LeadOrchestrator,
+    ModelBackedEvidenceWriter,
     ResearchBrief,
     ResearchResult,
     ResearchRunner,
@@ -165,3 +167,64 @@ def test_empty_bounded_search_has_explicit_result_not_blank_answer():
     assert 'No supported cafe recommendation' in report.response
     assert 'does not prove' in report.response
     assert report.recommended_cafe_id is None
+
+
+def _completion_with(content, calls):
+    def complete(**kwargs):
+        calls.append(kwargs)
+        return SimpleNamespace(
+            choices=[SimpleNamespace(message=SimpleNamespace(content=content))]
+        )
+
+    return complete
+
+
+def test_model_backed_writer_can_reorder_only_validated_sections():
+    run = execute_lead(fixture_result_map())
+    calls = []
+    writer = ModelBackedEvidenceWriter(
+        model="test-model",
+        vertex_location="global",
+        completion=_completion_with(
+            json.dumps(
+                {
+                    "section_order": [
+                        "What the targeted follow-up added",
+                        "Why the initial candidates failed",
+                        "Result",
+                    ]
+                }
+            ),
+            calls,
+        ),
+    )
+
+    report = writer.write(run)
+
+    assert report.writer_mode == "model-backed-validated"
+    assert report.model == "test-model"
+    assert report.response.startswith("## What the targeted follow-up added")
+    assert "Fixture Commons Cafe" in report.response
+    assert "source:google-routes:fixture-r2" in report.response
+    validate_writer_report(report, run)
+    assert calls[0]["model"] == "test-model"
+    assert "tools" not in calls[0]
+    planner_payload = json.loads(calls[0]["messages"][1]["content"])
+    assert set(planner_payload["sections"][0]) == {"title", "claim_count"}
+
+
+def test_model_backed_writer_falls_back_when_model_changes_section_set():
+    run = execute_lead(fixture_result_map())
+    writer = ModelBackedEvidenceWriter(
+        model="test-model",
+        vertex_location="global",
+        completion=_completion_with(
+            '{"section_order":["Result","Invented section"]}', []
+        ),
+    )
+
+    report = writer.write(run)
+
+    assert report.writer_mode == "deterministic"
+    assert report.model is None
+    assert report.response.startswith("## Result")

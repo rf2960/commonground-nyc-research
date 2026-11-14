@@ -5,6 +5,7 @@ import app as webapp
 from commonground.research import (
     BriefPreparation,
     DeepResearchService,
+    ModelBackedEvidenceWriter,
     ResearchBrief,
     ResearchIntake,
     ResearchResult,
@@ -42,6 +43,7 @@ def test_app_constructs_side_effect_free_live_research_service():
     assert isinstance(webapp.research_service, DeepResearchService)
     assert webapp.research_service._lead._runner.task_timeout_seconds == 45
     assert webapp.research_service._lead._runner.max_turns == 6
+    assert isinstance(webapp.research_service._writer, ModelBackedEvidenceWriter)
     assert webapp.health()["research_ready"] is True
 
 
@@ -76,6 +78,9 @@ def test_service_returns_writer_output_and_deterministic_full_trace():
         {"name", "args", "result", "agent", "round"}.issubset(call)
         for call in output.tool_calls
     )
+    writer_result = json.loads(output.tool_calls[-1]["result"])
+    assert writer_result["writer_mode"] == "deterministic"
+    assert writer_result["model"] is None
     assert [call["name"] for call in output.tool_calls[1:4]] == [
         "get_transit_matrix",
         "search_cafes_in_areas",

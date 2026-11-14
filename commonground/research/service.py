@@ -140,6 +140,8 @@ def build_research_trace(
             "result": json.dumps(
                 {
                     "recommended_cafe_id": report.recommended_cafe_id,
+                    "writer_mode": report.writer_mode,
+                    "model": report.model,
                     "response": report.response,
                 },
                 ensure_ascii=False,

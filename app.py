@@ -23,6 +23,7 @@ from commonground.research import (
     clarification_message,
     extract_research_intake,
     IntakeExtractionError,
+    ModelBackedEvidenceWriter,
     prepare_research_brief,
     run_cafe_task,
     run_transit_task,
@@ -228,6 +229,10 @@ research_service: DeepResearchService | None = build_research_service(
     cafe=run_cafe_task,
     task_timeout_seconds=RESEARCH_TASK_TIMEOUT_SECONDS,
     max_turns=RESEARCH_MAX_TURNS,
+    writer=ModelBackedEvidenceWriter(
+        model=MODEL,
+        vertex_location=VERTEX_LOCATION,
+    ),
 )
 
 

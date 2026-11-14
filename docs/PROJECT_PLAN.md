@@ -123,8 +123,8 @@ startup cache and one opt-in smoke test remain integration work.
   judge boundary.
 - Capture the three team-owned grading examples and same-model no-tools/no-system
   baselines.
-- Record baseline score, at least two changes with new scores, and gains greater than
-  the margin of error `±1/sqrt(n)`.
+- [x] Record baseline score, at least two changes with new scores, and gains greater
+  than the margin of error `±1/sqrt(n)`.
 
 **Gate:** the documented eval command is reproducible from a clean checkout.
 
@@ -132,8 +132,9 @@ Current progress: the full-pipeline registry and all three owner traces are comp
 A separate 50-case contract corpus scores the actual hard-decision and intake functions
 at 50/50 across five balanced slices. The reference/rubric judge and no-tools capture
 code are implemented and tested. The production model is fixed as
-`vertex_ai/gemini-3.5-flash-lite`; credentialed judge/baseline captures and the final
-hill-climbing table still require an auditable offline credentialed run.
+`vertex_ai/gemini-3.5-flash-lite`; the three live-query no-tools baselines and the
+historical 0/50 → 40/50 → 50/50 hill-climbing report are committed. Credentialed
+rubric-judge captures remain to be completed.
 
 ### Phase 5 — Cloud Run and submission
 

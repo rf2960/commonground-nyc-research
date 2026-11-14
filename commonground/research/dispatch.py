@@ -10,6 +10,7 @@ from .expansion import build_expansion_result, fetch_mta_stations
 from .models import ResearchBrief, ResearchResult, ResearchTask, ResearcherAgent
 from .runner import ResearchContext, ResearchRunner
 from .service import DeepResearchService
+from .writer import EvidenceWriter
 
 
 ResearchAdapter = Callable[
@@ -71,6 +72,7 @@ def build_research_service(
     expansion: ResearchAdapter = run_expansion_task,
     task_timeout_seconds: float = 45.0,
     max_turns: int = 6,
+    writer: EvidenceWriter | None = None,
 ) -> DeepResearchService:
     """Compose role adapters without allowing them to own app globals or constraints."""
 
@@ -84,5 +86,6 @@ def build_research_service(
             dispatcher,
             task_timeout_seconds=task_timeout_seconds,
             max_turns=max_turns,
-        )
+        ),
+        writer=writer,
     )

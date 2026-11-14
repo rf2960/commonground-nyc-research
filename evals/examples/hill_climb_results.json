@@ -1,0 +1,993 @@
+{
+  "schema_version": "hill-climb-report-v1",
+  "captured_at": "2026-11-13T02:37:18.372343+00:00",
+  "corpus": {
+    "cases": 50,
+    "held_out": true,
+    "prompt_reuse_prohibited": true,
+    "margin": 0.1414213562373095,
+    "score_definition": "passed_cases / 50 on the same frozen contract expectations"
+  },
+  "summary": [
+    {
+      "stage": "baseline",
+      "commit": "7b596c78766e59995d6639113c9128c50c09e28e",
+      "change": "Validated evidence contracts only; deterministic feasibility and clarification gates were not implemented yet.",
+      "passed": 0,
+      "cases": 50,
+      "score": 0.0,
+      "gain_from_previous": null,
+      "exceeds_margin": null
+    },
+    {
+      "stage": "change_1",
+      "commit": "2bbad8bd936c7ec7a636146c5ff79a87c48ccf45",
+      "change": "Added deterministic feasibility evaluation for commute, cafe, and missing-evidence outcomes.",
+      "passed": 40,
+      "cases": 50,
+      "score": 0.8,
+      "gain_from_previous": 0.8,
+      "exceeds_margin": true
+    },
+    {
+      "stage": "change_2",
+      "commit": "96989b02bad0e9432b5c9e6aa691be4f9646e687",
+      "change": "Added the deterministic clarification/intake gate for origins, limits, meeting time, and timezone.",
+      "passed": 50,
+      "cases": 50,
+      "score": 1.0,
+      "gain_from_previous": 0.19999999999999996,
+      "exceeds_margin": true
+    }
+  ],
+  "raw_results": [
+    {
+      "stage": "baseline",
+      "commit": "7b596c78766e59995d6639113c9128c50c09e28e",
+      "change": "Validated evidence contracts only; deterministic feasibility and clarification gates were not implemented yet.",
+      "resolved_commit": "7b596c78766e59995d6639113c9128c50c09e28e",
+      "schema_version": "historical-contract-score-v1",
+      "cases": 50,
+      "passed": 0,
+      "score": 0.0,
+      "capabilities": {
+        "deterministic_feasibility": false,
+        "clarification_intake": false
+      },
+      "results": [
+        {
+          "case_id": "contract-feasibility-capability-001",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-002",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-003",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-004",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-005",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-006",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-007",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-008",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-009",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-010",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-011",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-012",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-013",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-014",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-015",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-016",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-017",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-018",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-019",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-020",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-021",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-022",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-023",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-024",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-025",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-026",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-027",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-028",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-029",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-030",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-031",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-032",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-033",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-034",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-035",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-036",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-037",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-038",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-039",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-feasibility-capability-040",
+          "slice": "feasibility_contracts",
+          "passed": false,
+          "detail": "deterministic feasibility capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-001",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-002",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-003",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-004",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-005",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-006",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-007",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-008",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-009",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-010",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        }
+      ]
+    },
+    {
+      "stage": "change_1",
+      "commit": "2bbad8bd936c7ec7a636146c5ff79a87c48ccf45",
+      "change": "Added deterministic feasibility evaluation for commute, cafe, and missing-evidence outcomes.",
+      "resolved_commit": "2bbad8bd936c7ec7a636146c5ff79a87c48ccf45",
+      "schema_version": "historical-contract-score-v1",
+      "cases": 50,
+      "passed": 40,
+      "score": 0.8,
+      "capabilities": {
+        "deterministic_feasibility": true,
+        "clarification_intake": false
+      },
+      "results": [
+        {
+          "case_id": "contract-feasible-001",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-002",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-003",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-004",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-005",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-006",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-007",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-008",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-009",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-010",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-commute-limit-001",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-002",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-003",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-004",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-005",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-006",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-007",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-008",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-009",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-010",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-001",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-002",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-003",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['PRICE_LEVEL_NOT_ALLOWED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-004",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPEN_AT_MEETING_TIME']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-005",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-006",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-007",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['PRICE_LEVEL_NOT_ALLOWED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-008",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPEN_AT_MEETING_TIME']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-009",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-010",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-evidence-missing-001",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-002",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-003",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-004",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-005",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-006",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-007",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-008",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-009",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-010",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-intake-001",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-002",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-003",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-004",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-005",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-006",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-007",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-008",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-009",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        },
+        {
+          "case_id": "contract-intake-010",
+          "slice": "clarification_and_intake",
+          "passed": false,
+          "detail": "deterministic intake capability unavailable"
+        }
+      ]
+    },
+    {
+      "stage": "change_2",
+      "commit": "96989b02bad0e9432b5c9e6aa691be4f9646e687",
+      "change": "Added the deterministic clarification/intake gate for origins, limits, meeting time, and timezone.",
+      "resolved_commit": "96989b02bad0e9432b5c9e6aa691be4f9646e687",
+      "schema_version": "historical-contract-score-v1",
+      "cases": 50,
+      "passed": 50,
+      "score": 1.0,
+      "capabilities": {
+        "deterministic_feasibility": true,
+        "clarification_intake": true
+      },
+      "results": [
+        {
+          "case_id": "contract-feasible-001",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-002",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-003",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-004",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-005",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-006",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-007",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-008",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-009",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-feasible-010",
+          "slice": "feasible_boundaries",
+          "passed": true,
+          "detail": "FEASIBLE"
+        },
+        {
+          "case_id": "contract-commute-limit-001",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-002",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-003",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-004",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-005",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-006",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-007",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-008",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-009",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-commute-limit-010",
+          "slice": "commute_limit_blocker",
+          "passed": true,
+          "detail": "COMMUTE_LIMIT_EXCEEDED:['TRAVELER_LIMIT_EXCEEDED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-001",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-002",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-003",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['PRICE_LEVEL_NOT_ALLOWED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-004",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPEN_AT_MEETING_TIME']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-005",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-006",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-007",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['PRICE_LEVEL_NOT_ALLOWED']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-008",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPEN_AT_MEETING_TIME']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-009",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['CAFE_NOT_OPERATIONAL']"
+        },
+        {
+          "case_id": "contract-cafe-constraint-010",
+          "slice": "cafe_constraint_blocker",
+          "passed": true,
+          "detail": "CAFE_CONSTRAINT_FAILED:['RATING_BELOW_MINIMUM']"
+        },
+        {
+          "case_id": "contract-evidence-missing-001",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-002",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-003",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-004",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-005",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-006",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-007",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-008",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-009",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-evidence-missing-010",
+          "slice": "evidence_insufficient",
+          "passed": true,
+          "detail": "EVIDENCE_INSUFFICIENT:['REQUIRED_EVIDENCE_MISSING']"
+        },
+        {
+          "case_id": "contract-intake-001",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('TRAVELERS_REQUIRED', 'MEETING_TIME_REQUIRED');actual=('TRAVELERS_REQUIRED', 'MEETING_TIME_REQUIRED')"
+        },
+        {
+          "case_id": "contract-intake-002",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('TRAVELERS_REQUIRED', 'MEETING_TIME_REQUIRED');actual=('TRAVELERS_REQUIRED', 'MEETING_TIME_REQUIRED')"
+        },
+        {
+          "case_id": "contract-intake-003",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('ORIGIN_REQUIRED',);actual=('ORIGIN_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-004",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('COMMUTE_LIMIT_REQUIRED',);actual=('COMMUTE_LIMIT_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-005",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('MEETING_TIME_REQUIRED',);actual=('MEETING_TIME_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-006",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('MEETING_TIME_TIMEZONE_REQUIRED',);actual=('MEETING_TIME_TIMEZONE_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-007",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('ORIGIN_REQUIRED',);actual=('ORIGIN_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-008",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('COMMUTE_LIMIT_REQUIRED',);actual=('COMMUTE_LIMIT_REQUIRED',)"
+        },
+        {
+          "case_id": "contract-intake-009",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=('ORIGIN_REQUIRED', 'COMMUTE_LIMIT_REQUIRED', 'MEETING_TIME_REQUIRED');actual=('ORIGIN_REQUIRED', 'COMMUTE_LIMIT_REQUIRED', 'MEETING_TIME_REQUIRED')"
+        },
+        {
+          "case_id": "contract-intake-010",
+          "slice": "clarification_and_intake",
+          "passed": true,
+          "detail": "expected=();actual=()"
+        }
+      ]
+    }
+  ]
+}
