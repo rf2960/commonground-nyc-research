@@ -1,0 +1,166 @@
+{
+  "schema_version": "andrew-routes-smoke-v1",
+  "kind": "routes_smoke",
+  "status": "passed",
+  "captured_at": "2026-11-17T20:22:23.176046Z",
+  "deployment": "https://commonground-nyc-research-1053619589756.us-east1.run.app",
+  "deployed_main_commit": "ff467db59a6358d6418706d5d5a696be12f7e919",
+  "deployed_revision": "commonground-nyc-research-00007-wkg",
+  "live_provider_observation": true,
+  "checks": {
+    "one_matrix_one_destination": true,
+    "provider_source_received": true,
+    "all_pairs_accounted_for": true,
+    "all_facts_cited": true,
+    "arrival_time_preserved": true,
+    "pure_transit_only": true
+  },
+  "scope": {
+    "candidate_ids": [
+      "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+    ],
+    "origin_count": 3,
+    "destination_count": 1,
+    "arrival_time": "2026-12-04T14:00:00-05:00",
+    "include_driving": false
+  },
+  "result": {
+    "status": "complete",
+    "facts": [
+      {
+        "fact_id": "fact:transit:r2:1001",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:alex",
+        "predicate": "route_available",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:1002",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:alex",
+        "predicate": "transit_duration_minutes",
+        "value": 29.9,
+        "unit": "minutes",
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:1003",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:blair",
+        "predicate": "route_available",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:1004",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:blair",
+        "predicate": "transit_duration_minutes",
+        "value": 28.6,
+        "unit": "minutes",
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:1005",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:casey",
+        "predicate": "route_available",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      },
+      {
+        "fact_id": "fact:transit:r2:1006",
+        "candidate_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY",
+        "subject_id": "traveler:casey",
+        "predicate": "transit_duration_minutes",
+        "value": 22,
+        "unit": "minutes",
+        "observed_at": "2026-11-17T20:22:23.176046Z",
+        "valid_for": {
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "destination_kind": "exact_cafe"
+        },
+        "source_ids": [
+          "source:google-routes:05bdec825c53a41d28dc"
+        ],
+        "provisional": false
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "source:google-routes:05bdec825c53a41d28dc",
+        "provider": "google_routes",
+        "title": "Routes API transit matrix",
+        "url": "https://developers.google.com/maps/documentation/routes",
+        "accessed_at": "2026-11-17T20:22:23.176046Z",
+        "request_summary": {
+          "origin_count": 3,
+          "destination_count": 1,
+          "candidate_ids": [
+            "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+          ],
+          "destination_kinds": [
+            "exact_cafe"
+          ],
+          "arrival_time": "2026-12-04T14:00:00-05:00",
+          "provider_arrival_time": "2026-12-04T19:00:00Z",
+          "provider_reported_partial": false,
+          "travel_mode": "TRANSIT",
+          "include_driving": false
+        },
+        "provider_record_ids": [],
+        "attribution": "Google Maps"
+      }
+    ],
+    "missing": [],
+    "candidate_ids_considered": [
+      "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+    ],
+    "summary": "Collected pair-level transit evidence for 3 of 3 requested traveler/destination pairs; 0 explicit gaps."
+  },
+  "capture_boundary": "public Cloud Run /chat exact-cafe follow-up using the production Transit adapter"
+}
