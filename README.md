@@ -159,6 +159,12 @@ and eleven Sources from one bounded request. Its ten meeting-time opening estima
 are provisional; it contains no Routes or production-model claims. This live success
 is separate from the synthetic missing-hours grading example above.
 
+The [final Transit smoke](evals/examples/andrew/live_routes_smoke.json) records a
+real exact-cafe Routes follow-up through the deployed production adapter on November
+17, 2026. It accounts for all three traveler pairs, preserves the requested arrival
+instant, cites the provider source, and confirms pure transit with
+`include_driving=false`; no credential or session identifier is stored.
+
 The [public Cloud Run smoke](evals/examples/ruochen/live_cloud_run_smoke.json) exercises
 the deployed `/chat` boundary rather than a fixture. It returned eleven trace entries
 covering Lead, Transit, Cafe, Expansion, and Writer across rounds 1–2. The response
@@ -258,12 +264,15 @@ Choose **Deep Research** and start a new meetup for each query. The examples use
 December 4, 2026. For later grading, substitute a future Friday at the same
 local time. Transit schedules and available venue evidence may change.
 
-The [public-service captures](evals/examples/live_grader_queries.json) contain
-the actual Writer answers, source IDs and trace. They used the live `/chat`
-endpoint with explicit structured intake to hold the stated constraints fixed.
-The intake fix in this release preserves those same rating and price constraints
-when they are entered as text. Gemini 3.5 Flash-Lite extracts the natural-language
-intake. The cited Writer renders the deterministic evidence and feasibility result.
+The original [public-service captures](evals/examples/live_grader_queries.json)
+used explicit structured intake to hold the stated constraints fixed. The final
+[post-deploy natural-language captures](evals/examples/live_grader_queries_plain_text.json)
+repeat the exact questions against main commit `ff467db` and Cloud Run revision
+`commonground-nyc-research-00007-wkg`. All three preserve rating, moderate price,
+meeting time, and per-traveler limits; exercise Lead, Researchers, follow-up, and
+Writer; and record `writer_mode=model-backed-validated` with cited live sources.
+Gemini 3.5 Flash-Lite extracts the natural-language intake and may reorder immutable,
+already-validated Writer sections.
 
 ### Expand a failed shortlist
 
