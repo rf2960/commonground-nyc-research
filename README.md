@@ -62,6 +62,9 @@ hill-climbing report is complete; credentialed rubric-judge captures remain pend
   with a fresh message list, role-scoped tool allowlist, per-task timeout, and hard turn
   budget. A failed task becomes explicit missing evidence while successful siblings are
   preserved; raw provider exceptions are not copied into traces.
+- Primary data-tool parameter descriptions include concrete JSON/time examples. Transit,
+  Cafe, and MTA adapters each own their normal provider-failure boundary and return
+  redacted structured gaps; the runner remains a final timeout/validation safeguard.
 - `tests/research/test_runner.py` proves actual overlap, deterministic result ordering,
   context isolation, tool-scope enforcement, timeout handling, partial failure, result
   identity validation, and the exact three-role initial fan-out.
