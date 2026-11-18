@@ -7,7 +7,7 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from .expansion import build_expansion_result, fetch_mta_stations
-from .models import ResearchBrief, ResearchResult, ResearchTask, ResearcherAgent
+from .models import MissingEvidence, ResearchBrief, ResearchResult, ResearchTask, ResearcherAgent
 from .runner import ResearchContext, ResearchRunner
 from .service import DeepResearchService
 from .writer import EvidenceWriter
@@ -56,13 +56,42 @@ async def run_expansion_task(
 
     if task.agent != "expansion_researcher":
         raise ValueError("run_expansion_task accepts expansion_researcher tasks only")
-    stations, accessed_at = await asyncio.to_thread(loader)
-    return build_expansion_result(
-        task,
-        brief,
-        stations,
-        accessed_at=accessed_at,
-    )
+    try:
+        stations, accessed_at = await asyncio.to_thread(loader)
+        return build_expansion_result(
+            task,
+            brief,
+            stations,
+            accessed_at=accessed_at,
+        )
+    except Exception:
+        # The MTA tool owns its provider/normalization failure boundary. Never rely
+        # only on the outer runner or expose arbitrary SDK/response details.
+        task_sequence = int(task.task_id.rsplit(":", 1)[1])
+        missing = tuple(
+            MissingEvidence(
+                missing_id=(
+                    f"missing:expansion:r{task.round}:"
+                    f"{task_sequence * 100 + index:03d}"
+                ),
+                candidate_id=candidate_id,
+                field="expansion_candidates",
+                reason_code="PROVIDER_ERROR",
+                detail="The bounded MTA station request failed safely.",
+                retryable=True,
+                next_action="Retry the official MTA station request or report expansion evidence as unknown.",
+            )
+            for index, candidate_id in enumerate(task.candidate_ids, start=1)
+        )
+        return ResearchResult(
+            task_id=task.task_id,
+            agent=task.agent,
+            round=task.round,
+            status="failed",
+            missing=missing,
+            candidate_ids_considered=task.candidate_ids,
+            summary="MTA expansion evidence is unavailable; no station result was claimed.",
+        )
 
 
 def build_research_service(
