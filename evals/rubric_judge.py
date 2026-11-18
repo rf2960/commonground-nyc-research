@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Callable
 
 import litellm
@@ -49,6 +50,42 @@ class RubricJudgeResult(BaseModel):
         return sum(values) / (4 * len(values))
 
 
+def _json_payload(reply: Any) -> Any:
+    """Extract a JSON object from common LiteLLM structured-output shapes."""
+
+    message = reply.choices[0].message
+    parsed = getattr(message, "parsed", None)
+    if isinstance(parsed, BaseModel):
+        return parsed.model_dump(mode="json")
+    if isinstance(parsed, dict):
+        return parsed
+
+    content = message.content
+    if isinstance(content, dict):
+        return content
+    if isinstance(content, list):
+        text_parts = []
+        for part in content:
+            if isinstance(part, str):
+                text_parts.append(part)
+            elif isinstance(part, dict) and isinstance(part.get("text"), str):
+                text_parts.append(part["text"])
+        content = "".join(text_parts)
+    if not isinstance(content, str):
+        raise TypeError("judge content is not text or an object")
+
+    text = content.strip()
+    fenced = re.fullmatch(r"```(?:json)?\s*(\{.*\})\s*```", text, re.DOTALL | re.IGNORECASE)
+    if fenced:
+        text = fenced.group(1)
+    else:
+        start = text.find("{")
+        end = text.rfind("}")
+        if start >= 0 and end > start:
+            text = text[start : end + 1]
+    return json.loads(text)
+
+
 def judge_writer_answer(
     *,
     question: str,
@@ -90,8 +127,7 @@ def judge_writer_answer(
     except Exception as error:
         raise RubricJudgeError("rubric judge model call failed safely") from error
     try:
-        content = reply.choices[0].message.content
-        raw = json.loads(content)
+        raw = _json_payload(reply)
         return RubricJudgeResult.model_validate(raw)
     except (
         AttributeError,
