@@ -7,6 +7,7 @@ RUN uv sync --frozen --no-dev
 
 COPY app.py tools.py index.html ./
 COPY commonground ./commonground
+COPY evals ./evals
 
 ENV PORT=8080
 EXPOSE 8080
