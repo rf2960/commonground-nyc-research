@@ -12,10 +12,12 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 JUDGE_SYSTEM_PROMPT = """You are a strict evaluator, not a research agent.
 Use only the supplied reference, allowed source IDs, and answer. Return one JSON object
-with integer scores from 0 to 4 for: recommendation_correctness,
-calibrated_uncertainty, comparison_usefulness, and citation_support. Also return a
-short rationale and a list of unsupported_claims. Do not reward facts absent from the
-reference. A cited claim is supported only when its source ID is in allowed_source_ids.
+with exactly these top-level keys: `scores`, `rationale`, and `unsupported_claims`.
+`scores` must contain integer values from 0 to 4 for recommendation_correctness,
+calibrated_uncertainty, comparison_usefulness, and citation_support. `rationale` must
+be a short string and `unsupported_claims` must be a JSON list of strings. Do not
+reward facts absent from the reference. A cited claim is supported only when its
+source ID is in allowed_source_ids.
 """
 
 
@@ -128,6 +130,20 @@ def judge_writer_answer(
         raise RubricJudgeError("rubric judge model call failed safely") from error
     try:
         raw = _json_payload(reply)
+        dimensions = (
+            "recommendation_correctness",
+            "calibrated_uncertainty",
+            "comparison_usefulness",
+            "citation_support",
+        )
+        if isinstance(raw, dict) and "scores" not in raw:
+            allowed_flat_keys = {*dimensions, "rationale", "unsupported_claims"}
+            if set(raw).issubset(allowed_flat_keys) and all(key in raw for key in dimensions):
+                raw = {
+                    "scores": {key: raw[key] for key in dimensions},
+                    "rationale": raw.get("rationale"),
+                    "unsupported_claims": raw.get("unsupported_claims", []),
+                }
         return RubricJudgeResult.model_validate(raw)
     except (
         AttributeError,

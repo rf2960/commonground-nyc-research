@@ -123,6 +123,27 @@ def test_rubric_judge_accepts_structured_parsed_payload():
     assert result.normalized_score == 1.0
 
 
+def test_rubric_judge_normalizes_strict_flat_scores():
+    payload = {
+        "recommendation_correctness": 4,
+        "calibrated_uncertainty": 3,
+        "comparison_usefulness": 4,
+        "citation_support": 4,
+        "rationale": "The answer is supported with one uncertainty gap.",
+        "unsupported_claims": [],
+    }
+    result = judge_writer_answer(
+        question="q",
+        answer="a",
+        expected_claims=["claim"],
+        allowed_source_ids=["source:1"],
+        model="test-model",
+        vertex_location="global",
+        completion=lambda **_: _reply(json.dumps(payload)),
+    )
+    assert result.normalized_score == 0.9375
+
+
 def test_baseline_has_question_only_and_records_disabled_conditions():
     observed = {}
 
