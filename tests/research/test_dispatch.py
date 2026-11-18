@@ -88,6 +88,30 @@ def test_expansion_task_loads_snapshot_and_returns_cited_result():
     assert all(fact.source_ids for fact in result.facts)
 
 
+def test_expansion_task_owns_provider_failure_and_redacts_details():
+    task = LeadOrchestrator.build_initial_tasks(brief())[2]
+
+    def failed_loader():
+        raise RuntimeError("fixture-secret-token")
+
+    result = asyncio.run(
+        run_expansion_task(
+            context(),
+            brief(),
+            task,
+            loader=failed_loader,
+        )
+    )
+
+    assert result.status == "failed"
+    assert result.facts == ()
+    assert result.sources == ()
+    assert len(result.missing) == len(task.candidate_ids)
+    assert {gap.reason_code for gap in result.missing} == {"PROVIDER_ERROR"}
+    assert all(gap.retryable for gap in result.missing)
+    assert "fixture-secret-token" not in result.model_dump_json()
+
+
 def test_expansion_task_rejects_another_role():
     task = LeadOrchestrator.build_initial_tasks(brief())[0]
 
