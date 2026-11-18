@@ -74,6 +74,55 @@ def test_rubric_judge_rejects_out_of_range_score():
         )
 
 
+def test_rubric_judge_accepts_fenced_json_from_gemini():
+    payload = {
+        "scores": {
+            "recommendation_correctness": 4,
+            "calibrated_uncertainty": 4,
+            "comparison_usefulness": 3,
+            "citation_support": 4,
+        },
+        "rationale": "Supported and calibrated.",
+        "unsupported_claims": [],
+    }
+    result = judge_writer_answer(
+        question="q",
+        answer="a",
+        expected_claims=["claim"],
+        allowed_source_ids=["source:1"],
+        model="test-model",
+        vertex_location="global",
+        completion=lambda **_: _reply(f"```json\n{json.dumps(payload)}\n```"),
+    )
+    assert result.normalized_score == 0.9375
+
+
+def test_rubric_judge_accepts_structured_parsed_payload():
+    payload = {
+        "scores": {
+            "recommendation_correctness": 4,
+            "calibrated_uncertainty": 4,
+            "comparison_usefulness": 4,
+            "citation_support": 4,
+        },
+        "rationale": "Fully supported.",
+        "unsupported_claims": [],
+    }
+    reply = SimpleNamespace(
+        choices=[SimpleNamespace(message=SimpleNamespace(content=None, parsed=payload))]
+    )
+    result = judge_writer_answer(
+        question="q",
+        answer="a",
+        expected_claims=["claim"],
+        allowed_source_ids=["source:1"],
+        model="test-model",
+        vertex_location="global",
+        completion=lambda **_: reply,
+    )
+    assert result.normalized_score == 1.0
+
+
 def test_baseline_has_question_only_and_records_disabled_conditions():
     observed = {}
 
