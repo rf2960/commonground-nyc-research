@@ -1,0 +1,1669 @@
+{
+  "schema_version": "live-grader-plain-text-v1",
+  "captured_at": "2026-11-17T20:22:23.176046Z",
+  "deployment": {
+    "url": "https://commonground-nyc-research-1053619589756.us-east1.run.app",
+    "main_commit": "ff467db59a6358d6418706d5d5a696be12f7e919",
+    "cloud_run_revision": "commonground-nyc-research-00007-wkg",
+    "traffic_percent": 100,
+    "health": {
+      "status": "ok",
+      "model": "vertex_ai/gemini-3.5-flash-lite",
+      "research_ready": true
+    }
+  },
+  "request_mode": "research with natural-language intake only",
+  "writer": "model-backed evidence-locked Writer",
+  "redactions": [
+    "session_id",
+    "research_id",
+    "task_id",
+    "credentials",
+    "raw provider exceptions"
+  ],
+  "cases": [
+    {
+      "case_id": "expansion",
+      "question": "Alex starts at Columbia University with a 22-minute transit limit, Blair starts in Astoria with a 20-minute transit limit, and Casey starts at Bedford Ave Station with a 24-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a cafe with a minimum rating of 5 stars and a moderate price. Do not relax the 5-star minimum. If the initial areas fail, check whether expanding to more MTA stations can help without relaxing any limit. Explain what the evidence supports.",
+      "constraints_extracted": {
+        "min_rating": 5,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "meeting_time_extracted": "2026-12-04T14:00:00-05:00",
+      "travelers_extracted": [
+        {
+          "traveler_id": "traveler:alex",
+          "input_location": "Columbia University",
+          "max_commute_minutes": 22
+        },
+        {
+          "traveler_id": "traveler:blair",
+          "input_location": "Astoria",
+          "max_commute_minutes": 20
+        },
+        {
+          "traveler_id": "traveler:casey",
+          "input_location": "Bedford Ave Station",
+          "max_commute_minutes": 24
+        }
+      ],
+      "brief_checks": {
+        "min_rating": 5,
+        "price_levels": [
+          2
+        ],
+        "require_open": true,
+        "meeting_time": "2026-12-04T14:00:00-05:00",
+        "max_follow_up_rounds": 1
+      },
+      "follow_up": {
+        "reason_code": "NO_FEASIBLE_INITIAL_CAFE",
+        "selected_ids": [
+          "area:mta:222",
+          "area:mta:276",
+          "area:mta:400"
+        ],
+        "task_agents": [
+          "cafe_researcher",
+          "transit_researcher"
+        ]
+      },
+      "response": "## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 22 minutes, Bedford Ave Station 28.8 > 24 minutes. [facts=fact:transit:r1:1002,fact:transit:r1:1006; sources=source:google-routes:d6bee7cf0ea5187c00bf]\n- Times Square failed at the area-center stage: Columbia University 24.6 > 22 minutes, Astoria 25 > 20 minutes. [facts=fact:transit:r1:1008,fact:transit:r1:1010; sources=source:google-routes:d6bee7cf0ea5187c00bf]\n- Court Square failed at the area-center stage: Columbia University 33.6 > 22 minutes. [facts=fact:transit:r1:1014; sources=source:google-routes:d6bee7cf0ea5187c00bf]\n- Grand Central failed at the area-center stage: Columbia University 28.8 > 22 minutes, Astoria 26.4 > 20 minutes. [facts=fact:transit:r1:1020,fact:transit:r1:1022; sources=source:google-routes:d6bee7cf0ea5187c00bf]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `NO_FEASIBLE_INITIAL_CAFE` and selected `area:mta:222`, `area:mta:276`, `area:mta:400`. Expected information gain: Resolve cafe availability first, then use its exact coordinates to resolve every traveler's hard-limit check. [facts=fact:expansion:r1:012,fact:expansion:r1:008,fact:expansion:r1:004; sources=source:mta-stations:222,source:mta-stations:276,source:mta-stations:400; derived=follow-up:r2:NO_FEASIBLE_INITIAL_CAFE]\n\n## Result\n\n- No supported cafe recommendation is available from this bounded search. This does not prove that no feasible cafe exists elsewhere; inspect the evidence and unknowns below. [facts=fact:cafe:r1:1001,fact:cafe:r1:1002,fact:cafe:r1:1003,fact:cafe:r1:1004,fact:cafe:r2:1001,fact:cafe:r2:1002,fact:cafe:r2:1003; sources=source:google-places:018f45cca5d4b2d96cbd,source:google-places:3175e7e85596c1782ed4,source:google-places:7286a42ca2eea15fa792,source:google-places:9100825973ade5c8abdf,source:google-places:c895a0367ad590bffd2d,source:google-places:e0272f67ed395374ccde,source:google-places:f94d7ed59ee5ba796821; derived=lead-policy:no-supported-recommendation]",
+      "writer": {
+        "writer_mode": "model-backed-validated",
+        "model": "vertex_ai/gemini-3.5-flash-lite",
+        "recommended_cafe_id": null
+      },
+      "sources": [
+        {
+          "source_id": "source:google-routes:d6bee7cf0ea5187c00bf",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-17T20:20:28.729958Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4987899875169425000&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10607788702928714545&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:f94d7ed59ee5ba796821-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10751761562070331572&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.356343Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6685332636351847962&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6308383629148967506&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6327378328618645925&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5141838316191844151&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:018f45cca5d4b2d96cbd-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.349835Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14532487761421792183&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14242507050580791416&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:e0272f67ed395374ccde-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7293291845261434387&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.536211Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13162006981142862678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9821206374366918033&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=1648478077414912470&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4697311001017161172&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:google-places:7286a42ca2eea15fa792-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:28.500712Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:20:31.876033Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:20:31.876033Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:20:31.876033Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13043044536657255361&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8496010030899007103&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=186013379946115004&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3310263706036293836&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7755670115191296836&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16121302317627379010&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=11365672381147064224&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13406585574956944159&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16937215985052675232&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:3175e7e85596c1782ed4-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7801100358965828790&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.403124Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16493469629310098483&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6308383629148967506&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9821206374366918033&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4785431035926753688&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5284911746424304189&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3103733649764656373&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10500149527148169405&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:c895a0367ad590bffd2d-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10414183429451859707&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.477557Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16493469629310098483&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9821206374366918033&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4785431035926753688&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5284911746424304189&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3103733649764656373&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10500149527148169405&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7555282553752086038&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16347163689085033069&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7149938576694852515&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        },
+        {
+          "source_id": "source:google-places:9100825973ade5c8abdf-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15057542983462119361&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:20:32.221725Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "extract_research_intake"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 2,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ],
+      "checks": {
+        "natural_language_intake": true,
+        "meeting_time_preserved": true,
+        "min_rating_preserved": true,
+        "moderate_price_preserved": true,
+        "require_open_preserved": true,
+        "bounded_follow_up": true,
+        "model_backed_writer": true,
+        "expected_model": true,
+        "lead_researcher_writer_trace": true,
+        "sources_present": true
+      },
+      "source_providers": [
+        "google_places",
+        "google_routes",
+        "mta_subway_stations"
+      ]
+    },
+    {
+      "case_id": "exact_route",
+      "question": "Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3. Check each commute to the exact cafe address and report the actual times versus the individual limits.",
+      "constraints_extracted": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "meeting_time_extracted": "2026-12-04T14:00:00-05:00",
+      "travelers_extracted": [
+        {
+          "traveler_id": "traveler:alex",
+          "input_location": "Columbia University",
+          "max_commute_minutes": 35
+        },
+        {
+          "traveler_id": "traveler:blair",
+          "input_location": "Astoria",
+          "max_commute_minutes": 30
+        },
+        {
+          "traveler_id": "traveler:casey",
+          "input_location": "Bedford Ave Station",
+          "max_commute_minutes": 40
+        }
+      ],
+      "brief_checks": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true,
+        "meeting_time": "2026-12-04T14:00:00-05:00",
+        "max_follow_up_rounds": 1
+      },
+      "follow_up": {
+        "reason_code": "EXACT_DESTINATION_REQUIRED",
+        "selected_ids": [
+          "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+        ],
+        "task_agents": [
+          "transit_researcher"
+        ]
+      },
+      "response": "## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 35 minutes. [facts=fact:transit:r1:1002; sources=source:google-routes:db6c58c9dcbcd85daf8d]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1208; sources=source:google-places:7d5112673d635efbc0f8-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1208; sources=source:google-places:7d5112673d635efbc0f8-00; derived=lead-policy:places-before-routes]\n\n## Result\n\n- Recommend Little Collins (`cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r1:1206,fact:cafe:r1:1207,fact:cafe:r1:1208,fact:cafe:r1:1209,fact:cafe:r1:1210,fact:cafe:r1:1211,fact:cafe:r1:1212,fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-places:7d5112673d635efbc0f8-00,source:google-routes:05bdec825c53a41d28dc; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Exact-cafe commute checks all pass: traveler:alex 29.9/35 minutes, traveler:blair 28.6/30 minutes, traveler:casey 22/40 minutes. [facts=fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-routes:05bdec825c53a41d28dc; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r1:1212; sources=source:google-places:7d5112673d635efbc0f8-00]",
+      "writer": {
+        "writer_mode": "model-backed-validated",
+        "model": "vertex_ai/gemini-3.5-flash-lite",
+        "recommended_cafe_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+      },
+      "sources": [
+        {
+          "source_id": "source:google-routes:db6c58c9dcbcd85daf8d",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-17T20:22:20.221288Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4987899875169425000&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10607788702928714545&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:5cff8f1d92613523cd32-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10751761562070331572&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.963978Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6685332636351847962&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6308383629148967506&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6327378328618645925&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5141838316191844151&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:178007fd17bacf30463b-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.959430Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14532487761421792183&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14242507050580791416&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:104bbbb9a7eea1189ade-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7293291845261434387&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:19.966619Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13162006981142862678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9821206374366918033&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=1648478077414912470&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4697311001017161172&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:google-places:7d5112673d635efbc0f8-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:22:20.084746Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:22:22.739442Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:22:22.739442Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:22:22.739442Z"
+        },
+        {
+          "source_id": "source:google-routes:05bdec825c53a41d28dc",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-17T20:22:23.176046Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "extract_research_intake"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 2,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ],
+      "checks": {
+        "natural_language_intake": true,
+        "meeting_time_preserved": true,
+        "min_rating_preserved": true,
+        "moderate_price_preserved": true,
+        "require_open_preserved": true,
+        "bounded_follow_up": true,
+        "model_backed_writer": true,
+        "expected_model": true,
+        "lead_researcher_writer_trace": true,
+        "sources_present": true
+      },
+      "source_providers": [
+        "google_places",
+        "google_routes",
+        "mta_subway_stations"
+      ]
+    },
+    {
+      "case_id": "cafe_hours",
+      "question": "Alex starts at Columbia University with a 35-minute transit limit, Blair starts in Astoria with a 30-minute transit limit, and Casey starts at Bedford Ave Station with a 40-minute transit limit. We meet December 4, 2026 at 2:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3 that is open at the meeting time. What can the available hours evidence establish, and what should we verify with the cafe?",
+      "constraints_extracted": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true
+      },
+      "meeting_time_extracted": "2026-12-04T14:00:00-05:00",
+      "travelers_extracted": [
+        {
+          "traveler_id": "traveler:alex",
+          "input_location": "Columbia University",
+          "max_commute_minutes": 35
+        },
+        {
+          "traveler_id": "traveler:blair",
+          "input_location": "Astoria",
+          "max_commute_minutes": 30
+        },
+        {
+          "traveler_id": "traveler:casey",
+          "input_location": "Bedford Ave Station",
+          "max_commute_minutes": 40
+        }
+      ],
+      "brief_checks": {
+        "min_rating": 4.3,
+        "price_levels": [
+          2
+        ],
+        "require_open": true,
+        "meeting_time": "2026-12-04T14:00:00-05:00",
+        "max_follow_up_rounds": 1
+      },
+      "follow_up": {
+        "reason_code": "EXACT_DESTINATION_REQUIRED",
+        "selected_ids": [
+          "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+        ],
+        "task_agents": [
+          "transit_researcher"
+        ]
+      },
+      "response": "## Why the initial candidates failed\n\n- Queensboro Plaza failed at the area-center stage: Columbia University 35.1 > 35 minutes. [facts=fact:transit:r1:1002; sources=source:google-routes:2da26c3c0c866a3f4492]\n\n## What the targeted follow-up added\n\n- Lead used its single follow-up round for `EXACT_DESTINATION_REQUIRED` and selected `cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`. Expected information gain: Replace area-center estimates with the route evidence required for hard commute-limit decisions. [facts=fact:cafe:r1:1208; sources=source:google-places:2908f337407418a33a77-00; derived=follow-up:r2:EXACT_DESTINATION_REQUIRED]\n- Exact-address Transit was dispatched only after Cafe returned the selected venue coordinates. [facts=fact:cafe:r1:1208; sources=source:google-places:2908f337407418a33a77-00; derived=lead-policy:places-before-routes]\n\n## Result\n\n- Recommend Little Collins (`cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY`): `feasibility-v1` classifies it as FEASIBLE without relaxing commute or cafe constraints. [facts=fact:cafe:r1:1206,fact:cafe:r1:1207,fact:cafe:r1:1208,fact:cafe:r1:1209,fact:cafe:r1:1210,fact:cafe:r1:1211,fact:cafe:r1:1212,fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-places:2908f337407418a33a77-00,source:google-routes:c7e508cdbc598801e4db; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Exact-cafe commute checks all pass: traveler:alex 29.9/35 minutes, traveler:blair 28.6/30 minutes, traveler:casey 22/40 minutes. [facts=fact:transit:r2:1002,fact:transit:r2:1004,fact:transit:r2:1006; sources=source:google-routes:c7e508cdbc598801e4db; derived=feasibility-v1:cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY]\n- Opening status is a future regular-schedule estimate, not a guarantee; venue verification is still prudent. [facts=fact:cafe:r1:1212; sources=source:google-places:2908f337407418a33a77-00]",
+      "writer": {
+        "writer_mode": "model-backed-validated",
+        "model": "vertex_ai/gemini-3.5-flash-lite",
+        "recommended_cafe_id": "cafe:gplaces:ChIJuU3yhK9ZwokRVls7Mp3XqLY"
+      },
+      "sources": [
+        {
+          "source_id": "source:google-routes:2da26c3c0c866a3f4492",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-17T20:21:16.010206Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4987899875169425000&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10607788702928714545&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:c6742890caa1bb75d495-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=10751761562070331572&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.668659Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6685332636351847962&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6308383629148967506&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6327378328618645925&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5141838316191844151&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:6bf6a72c83638d0c1523-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.754098Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8886657909933825870&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=8806577882597492374&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14532487761421792183&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=3617230242333297079&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=15629184118243543713&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=6575364317629920424&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14136190412654465823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=12035350180914259624&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14242507050580791416&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:30a46658372475012c13-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=7293291845261434387&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.883088Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77",
+          "provider": "google_places",
+          "title": "Places nearby cafe search",
+          "url": "https://developers.google.com/maps/documentation/places/web-service/nearby-search",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-00",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13162006981142862678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-01",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9856758285518493814&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-02",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=14967431961644408890&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-03",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13944540969293563625&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-04",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=9821206374366918033&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-05",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=1648478077414912470&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-06",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=13476911633934069542&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-07",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=16046774572723560359&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-08",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=4697311001017161172&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:google-places:2908f337407418a33a77-09",
+          "provider": "google_places",
+          "title": "Google Places cafe record",
+          "url": "https://maps.google.com/?cid=5286334008307676694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+          "accessed_at": "2026-11-17T20:21:15.790947Z"
+        },
+        {
+          "source_id": "source:mta-stations:400",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 59 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:21:17.271091Z"
+        },
+        {
+          "source_id": "source:mta-stations:276",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: 5 Av/53 St",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:21:17.271091Z"
+        },
+        {
+          "source_id": "source:mta-stations:222",
+          "provider": "mta_subway_stations",
+          "title": "MTA Subway Stations record: Roosevelt Island",
+          "url": "https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data",
+          "accessed_at": "2026-11-17T20:21:17.271091Z"
+        },
+        {
+          "source_id": "source:google-routes:c7e508cdbc598801e4db",
+          "provider": "google_routes",
+          "title": "Routes API transit matrix",
+          "url": "https://developers.google.com/maps/documentation/routes",
+          "accessed_at": "2026-11-17T20:21:17.753163Z"
+        }
+      ],
+      "trace": [
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "extract_research_intake"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "resolve_group_locations"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "generate_candidate_areas"
+        },
+        {
+          "agent": "lead",
+          "round": 1,
+          "name": "prepare_research_brief"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 1,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "cafe_researcher",
+          "round": 1,
+          "name": "search_cafes_in_areas"
+        },
+        {
+          "agent": "expansion_researcher",
+          "round": 1,
+          "name": "search_mta_expansion_candidates"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "choose_follow_up"
+        },
+        {
+          "agent": "transit_researcher",
+          "round": 2,
+          "name": "get_transit_matrix"
+        },
+        {
+          "agent": "lead",
+          "round": 2,
+          "name": "evaluate_feasibility"
+        },
+        {
+          "agent": "writer",
+          "round": 2,
+          "name": "write_evidence_report"
+        }
+      ],
+      "checks": {
+        "natural_language_intake": true,
+        "meeting_time_preserved": true,
+        "min_rating_preserved": true,
+        "moderate_price_preserved": true,
+        "require_open_preserved": true,
+        "bounded_follow_up": true,
+        "model_backed_writer": true,
+        "expected_model": true,
+        "lead_researcher_writer_trace": true,
+        "sources_present": true
+      },
+      "source_providers": [
+        "google_places",
+        "google_routes",
+        "mta_subway_stations"
+      ]
+    }
+  ]
+}

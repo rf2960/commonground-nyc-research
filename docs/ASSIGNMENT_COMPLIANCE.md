@@ -44,7 +44,7 @@ or deployment link.
 | --- | --- | --- |
 | Describe project and target user | Complete | Root README research question and workflow |
 | Explain data origin and how it is loaded | MTA and Cafe documented; live Places capture complete | `DATA_SOURCES.md` and `YULIA_ACCEPTANCE.md` record provenance, request bounds and remaining model gates |
-| Three sample queries with expected answers and source | Recorded | README includes three questions, expected results and sources, public-service captures with structured intake, and matching no-tools answers. Repeat the plain-text queries after deploying the intake fix |
+| Three sample queries with expected answers and source | Complete | README includes three questions, expected results and sources, matching no-tools answers, and final post-deploy natural-language captures preserving rating, price, time, and commute limits on revision `00007-wkg` |
 | Same-model answer with no tools and no system prompt | Captured for all three live queries | The captured model is `vertex_ai/gemini-3.5-flash-lite`, used for intake. The final Writer renders the deterministic evidence record. The raw files are linked in the README |
 
 ## Repository and deployment requirements
@@ -66,9 +66,9 @@ or deployment link.
   evidence-only Writer, Cafe/Transit/Expansion adapters, live service injection,
   desktop/mobile UI checks, public Cloud Run release, and a live full-pipeline smoke are
   complete.
-- Three credentialed no-tools answers and the reproducible hill-climbing report are
-  committed. The public plain-text retest and credentialed rubric-judge scores remain
-  pending.
+- Three credentialed no-tools answers, the reproducible hill-climbing report, the
+  post-deploy natural-language retest, and Andrew's live production Routes smoke are
+  committed. Credentialed rubric-judge scores remain pending.
 
 Do not describe the remaining evaluation artifacts as complete until their raw outputs
 and scores are committed. Deployment itself is complete and separately evidenced.
