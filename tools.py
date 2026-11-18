@@ -83,7 +83,11 @@ TOOLS.extend(
                             "type": "array",
                             "minItems": 1,
                             "maxItems": 6,
-                            "description": "One location query per traveler.",
+                            "description": (
+                                "One location query per traveler. Example: "
+                                '[{"traveler_id":"traveler:alex",'
+                                '"query":"Columbia University"}].'
+                            ),
                             "items": {
                                 "type": "object",
                                 "properties": {
@@ -129,7 +133,9 @@ TOOLS.extend(
                             "maxItems": 6,
                             "description": (
                                 "Verified NYC traveler locations returned by the "
-                                "location resolver."
+                                "location resolver. Example: "
+                                '[{"traveler_id":"traveler:alex","lat":40.8075,'
+                                '"lng":-73.9626}].'
                             ),
                             "items": {
                                 "type": "object",
@@ -173,7 +179,11 @@ TOOLS.extend(
                             "type": "array",
                             "minItems": 2,
                             "maxItems": 6,
-                            "description": "Verified traveler coordinates.",
+                            "description": (
+                                "Verified traveler coordinates. Example: "
+                                '[{"traveler_id":"traveler:alex","lat":40.8075,'
+                                '"lng":-73.9626}].'
+                            ),
                             "items": {
                                 "type": "object",
                                 "properties": {
@@ -189,7 +199,9 @@ TOOLS.extend(
                             "minItems": 1,
                             "maxItems": 6,
                             "description": (
-                                "Transit hubs returned by generate_candidate_areas."
+                                "Transit hubs returned by generate_candidate_areas. "
+                                'Example: [{"area":"Union Square","lat":40.7359,'
+                                '"lng":-73.9911}].'
                             ),
                             "items": {
                                 "type": "object",
@@ -292,6 +304,11 @@ TOOLS.extend(
                             "type": "array",
                             "minItems": 1,
                             "maxItems": 4,
+                            "description": (
+                                "Verified candidate centers. Example: "
+                                '[{"area":"Union Square","lat":40.7359,'
+                                '"lng":-73.9911}].'
+                            ),
                             "items": {
                                 "type": "object",
                                 "properties": {
@@ -306,7 +323,8 @@ TOOLS.extend(
                             "type": "string",
                             "description": (
                                 "Requested ISO date and time. Use the same explicit "
-                                "timezone offset supplied to the transit tool."
+                                "timezone offset supplied to the transit tool, for "
+                                "example 2026-12-04T14:00:00-05:00."
                             ),
                         },
                         "min_rating": {
@@ -398,5 +416,5 @@ def run_tool(name: str, args: dict) -> str:
         return TOOL_MAP[name](**args)
     except TypeError as error:
         return json.dumps({"error": f"Bad arguments for {name}: {error}"})
-    except Exception as error:  # Last-resort tool boundary; details remain visible.
-        return json.dumps({"error": f"{name} failed: {type(error).__name__}: {error}"})
+    except Exception as error:  # Last resort only; each provider tool owns its normal failures.
+        return json.dumps({"error": f"{name} failed safely: {type(error).__name__}"})
