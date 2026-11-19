@@ -70,8 +70,9 @@ test('center estimates never appear as exact venue routes', async ({ page }) => 
     return data;
   });
   const evidence = page.getByRole('region', { name: 'Cafe evidence and verification' });
-  await expect(evidence).toContainText('Not yet evaluated');
+  await expect(evidence).toContainText('Not fully evaluated');
   await expect(evidence).toContainText('Exact cafe commute · Columbia University: not verified');
+  await evidence.getByText(/Other cafes found \(1\)/).click();
   await evidence.getByText('Area-center estimates — not exact cafe routes', { exact: true }).click();
   await expect(evidence).toContainText('Columbia University · Union Square: 20 min');
   expect(errors).toEqual([]);

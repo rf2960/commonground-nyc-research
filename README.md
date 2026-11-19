@@ -18,7 +18,8 @@ The complete Project 2 application is now deployed and publicly reachable at
 [commonground-nyc-research-1053619589756.us-east1.run.app](https://commonground-nyc-research-1053619589756.us-east1.run.app).
 The build includes strict contracts, bounded concurrent research, one justified
 follow-up, deterministic blockers, cited writing, MTA expansion, Project 1 intake reuse,
-natural-language clarification, `/chat` trace compatibility, the Project 2 UI, and a
+multi-turn clarification that preserves validated details, an answer-first evidence UI,
+`/chat` trace compatibility, and a
 50-case deterministic contract corpus. The Transit, Cafe, and Expansion adapters are
 composed through the production dispatcher. A public Cloud Run smoke on November 11,
 2026 returned HTTP 200, all five agent instances across rounds 1–2, live Places and

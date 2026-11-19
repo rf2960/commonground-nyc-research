@@ -41,6 +41,7 @@ from .intake import (
     build_research_brief,
     clarification_message,
     find_intake_gaps,
+    merge_research_intakes,
     prepare_research_brief,
 )
 from .intake_extraction import (
@@ -118,6 +119,7 @@ __all__ = [
     "fetch_mta_stations",
     "clarification_message",
     "find_intake_gaps",
+    "merge_research_intakes",
     "extract_research_intake",
     "intake_from_extraction_payload",
     "prepare_research_brief",

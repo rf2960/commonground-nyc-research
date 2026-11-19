@@ -267,5 +267,8 @@ def test_missing_hours_runs_through_actual_lead_feasibility_and_writer(no_live_r
     output = DeepResearchService(ResearchRunner(execute)).run_sync(b)
     assert output.run.feasibility_results[0].status == 'EVIDENCE_INSUFFICIENT'
     assert output.report.recommended_cafe_id is None
-    assert 'open_at_meeting_time' in output.response and 'venue' in output.response
+    assert 'opening hours at the meeting time' in output.response and 'venue' in output.response
+    assert 'open_at_meeting_time' not in "\n".join(
+        claim.text for claim in (*output.report.claims, *output.report.unknowns)
+    )
     assert all('agent' in event and 'round' in event for event in output.tool_calls)

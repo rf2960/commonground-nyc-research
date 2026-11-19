@@ -40,8 +40,8 @@
     "required_response_fragments": [
       "Why the initial candidates failed",
       "What the targeted follow-up added",
-      "FEASIBLE",
-      "future regular-schedule estimate"
+      "strongest supported option",
+      "regular schedule suggests"
     ]
   }
 }

@@ -30,6 +30,17 @@ def test_decision_summary_precedes_results_and_tool_details():
     assert send.index("resultCards(calls)") < send.index("toolLog(calls)")
 
 
+def test_answer_is_rendered_before_evidence_and_trace_are_inserted():
+    start = HTML.index("async function send")
+    end = HTML.index("reset.addEventListener", start)
+    send = HTML[start:end]
+
+    assert send.index("renderAssistant") < send.index("for(const item of [evidence")
+    assert "latestResult=loading" in send
+    assert "state==='NOT_EVALUATED'?otherGrid:grid" in HTML
+    assert "Other cafes found" in HTML
+
+
 def test_research_trace_groups_agent_events_by_round():
     start = HTML.index("function researchTrace")
     end = HTML.index("function safeLink", start)
@@ -41,7 +52,8 @@ def test_research_trace_groups_agent_events_by_round():
     assert "Cafe Researcher" in implementation
     assert "Expansion Researcher" in implementation
     assert "How the answer was researched" in implementation
-    assert "result.selected_ids" in implementation
+    assert "decision-critical evidence gap" in implementation
+    assert "result.selected_ids" not in implementation
 
 
 def test_priority_instruction_is_not_echoed_as_user_authored_text():
@@ -57,8 +69,8 @@ def test_priority_instruction_is_not_echoed_as_user_authored_text():
 def test_mobile_composer_and_explanation_stay_readable():
     assert 'placeholder="Where is everyone coming from?"' in HTML
     assert "input.style.overflowY=input.scrollHeight>limit?'auto':'hidden'" in HTML
-    assert "detail.open=true" in HTML
-    assert "Why this recommendation" in HTML
+    assert "Evidence references" in HTML
+    assert "answer-citations" in HTML
 
 
 def test_readme_separates_future_live_queries_from_fixed_fixture_time():

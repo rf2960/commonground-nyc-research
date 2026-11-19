@@ -37,9 +37,9 @@
       "source:google-routes:andrew-exact"
     ],
     "required_response_fragments": [
-      "COMMUTE_LIMIT_EXCEEDED",
-      "TRAVELER_LIMIT_EXCEEDED",
-      "Exact-address Transit"
+      "can't yet recommend",
+      "exceeds a commute limit",
+      "exact-address trip"
     ],
     "rubric_reference_claims": [
       "All three area-center estimates are within the individual limits, so they do not prove the exact cafe is feasible.",

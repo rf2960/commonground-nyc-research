@@ -63,7 +63,7 @@ def test_incomplete_intake_calls_no_project_one_tool():
     assert outcome.brief is None
     assert outcome.tool_calls == ()
     assert calls == []
-    assert "at least two travelers" in outcome.response
+    assert "who is traveling" in outcome.response
 
 
 def test_unresolved_origin_stops_before_candidate_generation():

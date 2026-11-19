@@ -155,9 +155,101 @@ def clarification_message(intake: ResearchIntake) -> str:
             "The required user inputs are complete. Resolve every origin and generate "
             "the initial candidate areas before dispatching Researchers."
         )
-    return "Before research can start, I still need:\n- " + "\n- ".join(
-        gap.prompt for gap in gaps
+    traveler_labels = {
+        traveler.traveler_id: _traveler_label(traveler.traveler_id, index)
+        for index, traveler in enumerate(intake.travelers)
+    }
+    known = [
+        (
+            f"{traveler_labels[traveler.traveler_id]} from "
+            f"{traveler.input_location}"
+        )
+        for traveler in intake.travelers
+        if traveler.input_location
+    ]
+    requests: list[str] = []
+    for gap in gaps:
+        labels = [traveler_labels[item] for item in gap.traveler_ids]
+        if gap.code == "TRAVELERS_REQUIRED":
+            requests.append(
+                "who is traveling and where each person is starting (names like "
+                "Alex and Blair are helpful, but Traveler 1 and Traveler 2 also work)"
+            )
+        elif gap.code == "ORIGIN_REQUIRED":
+            requests.append("a starting location for " + _natural_join(labels))
+        elif gap.code == "COMMUTE_LIMIT_REQUIRED":
+            requests.append(
+                "the maximum one-way commute for " + _natural_join(labels)
+            )
+        elif gap.code == "MEETING_TIME_REQUIRED":
+            requests.append("the arrival date and time, including the timezone")
+        else:
+            requests.append(
+                "an explicit timezone for the meeting time (for example, Eastern Time)"
+            )
+
+    acknowledgement = (
+        "I have " + _natural_join(known) + ". " if known else ""
     )
+    if len(requests) == 1:
+        return acknowledgement + "One more detail: please provide " + requests[0] + "."
+    return (
+        acknowledgement
+        + "To finish the search, please provide:\n- "
+        + "\n- ".join(requests)
+        + "."
+    )
+
+
+def merge_research_intakes(
+    previous: ResearchIntake | None,
+    current: ResearchIntake,
+) -> ResearchIntake:
+    """Keep validated slots across clarification turns while allowing corrections."""
+
+    if previous is None:
+        return current
+    travelers = {item.traveler_id: item for item in previous.travelers}
+    for item in current.travelers:
+        old = travelers.get(item.traveler_id)
+        if old is None:
+            travelers[item.traveler_id] = item
+            continue
+        travelers[item.traveler_id] = TravelerIntake(
+            traveler_id=item.traveler_id,
+            input_location=item.input_location or old.input_location,
+            max_commute_minutes=(
+                item.max_commute_minutes
+                if item.max_commute_minutes is not None
+                else old.max_commute_minutes
+            ),
+        )
+    return ResearchIntake(
+        question=current.question,
+        meeting_time=current.meeting_time or previous.meeting_time,
+        travelers=tuple(travelers.values()),
+        cafe_constraints=current.cafe_constraints,
+    )
+
+
+def _natural_join(values: Iterable[str]) -> str:
+    items = [item for item in values if item]
+    if not items:
+        return "the group"
+    if len(items) == 1:
+        return items[0]
+    if len(items) == 2:
+        return f"{items[0]} and {items[1]}"
+    return ", ".join(items[:-1]) + f", and {items[-1]}"
+
+
+def _traveler_label(traveler_id: str, index: int) -> str:
+    slug = traveler_id.removeprefix("traveler:")
+    generic = {"traveler", "travelers", "person", "people", "another", "someone"}
+    parts = [part for part in slug.split("-") if part and not part.isdigit()]
+    if not parts or any(part in generic for part in parts):
+        return f"Traveler {index + 1}"
+    return " ".join(part.capitalize() for part in parts)
 
 
 def _slug(value: str) -> str:

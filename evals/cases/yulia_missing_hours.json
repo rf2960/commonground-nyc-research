@@ -39,8 +39,8 @@
       "source:google-routes:yulia-r2"
     ],
     "required_response_fragments": [
-      "EVIDENCE_INSUFFICIENT",
-      "open_at_meeting_time",
+      "can't yet recommend",
+      "opening hours at the meeting time",
       "venue"
     ],
     "rubric_reference_claims": [

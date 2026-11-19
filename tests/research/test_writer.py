@@ -50,10 +50,10 @@ def test_writer_reports_supported_expansion_recommendation_with_inline_ids():
 
     assert report.recommended_cafe_id == "cafe:gplaces:fixture-expansion-cafe"
     assert "Fixture Commons Cafe" in report.response
-    assert "FEASIBLE" in report.response
+    assert "strongest supported option" in report.response
     assert "Union Square failed at the area-center stage" in report.response
     assert "Downtown Brooklyn failed at the area-center stage" in report.response
-    assert "future regular-schedule estimate, not a guarantee" in report.response
+    assert "regular schedule suggests" in report.response
     assert "source:mta-stations:fixture-queensboro-plaza" in report.response
     assert "source:google-places:fixture-r2" in report.response
     assert "source:google-routes:fixture-r2" in report.response
@@ -111,10 +111,23 @@ def test_missing_exact_route_stays_unknown_and_blocks_recommendation():
 
     assert run.feasibility_results[0].status == "EVIDENCE_INSUFFICIENT"
     assert report.recommended_cafe_id is None
-    assert "Do not recommend Fixture Commons Cafe" in report.response
-    assert "EVIDENCE_INSUFFICIENT" in report.response
+    assert "can't yet recommend Fixture Commons Cafe" in report.response
+    assert "required piece of evidence is still missing" in report.response
     assert "missing:transit:r2:001" in report.response
-    assert "No exact-destination route was returned for Bob" in report.response
+    assert "Report Bob's commute as unknown" in report.response
+
+
+def test_writer_uses_human_labels_instead_of_internal_ids_in_claim_text():
+    run = execute_lead(fixture_result_map())
+    report = EvidenceWriter().write(run)
+
+    assert "Columbia University: 30 minutes (limit 35)" in report.response
+    assert "Astoria: 28 minutes (limit 30)" in report.response
+    assert "Lead used its single follow-up" not in report.response
+    claim_text = "\n".join(claim.text for claim in (*report.claims, *report.unknowns))
+    assert "`cafe:gplaces:" not in claim_text
+    assert "traveler:" not in claim_text
+    assert "open_at_meeting_time" not in claim_text
 
 
 def test_writer_validator_rejects_a_reference_not_present_in_lead_evidence():

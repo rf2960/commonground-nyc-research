@@ -65,6 +65,11 @@
       .evidence-card h4 { margin:8px 0; font-size:.95rem; }
       .evidence-card p, .evidence-card li { font-size:.78rem; line-height:1.55; }
       .evidence-card ul { padding-left:18px; }
+      .evidence-secondary { margin-top:12px; }
+      .evidence-secondary > summary { cursor:pointer; font-weight:800; color:#35556a; }
+      .answer-citations { margin-top:12px; font-size:.72rem; color:#657185; }
+      .answer-citations > summary { cursor:pointer; font-weight:800; }
+      .answer-citations li { overflow-wrap:anywhere; }
       .evidence-status { display:inline-block; padding:4px 8px; border-radius:8px; background:#edf1f5; font-size:.7rem; font-weight:800; }
       .evidence-status[data-status="FEASIBLE"] { background:#e1f2ee; color:#176c62; }
       .evidence-status[data-status="EVIDENCE_INSUFFICIENT"] { background:#fff2d7; color:#765512; }
@@ -439,8 +444,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       }
       function renderAssistant(content,text) {
         try {
+          const citations=[];
+          const display=text.replace(/\s+\[((?:facts|sources|missing|derived)=[^\]]+)\]/g,(_match,record)=>{citations.push(record);return ` [Evidence ${citations.length}]`;});
           const fragment=document.createDocumentFragment();
-          blockMarkdown(fragment,marked.lexer(text,{gfm:true}));
+          blockMarkdown(fragment,marked.lexer(display,{gfm:true}));
+          if(citations.length){const details=node('details','answer-citations'),list=node('ol');details.append(node('summary','','Evidence references'));for(const citation of citations)list.append(node('li','',citation));details.append(list);fragment.append(details);}
           content.replaceChildren(fragment);content.className='content markdown';
         } catch {
           content.textContent=text;content.className='content';
@@ -457,7 +465,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         ['Audit opening-hours evidence',`Alex starts at Columbia University with a 35-minute limit, Blair starts in Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with a 40-minute limit. Meet ${exampleDate} at 6:00 PM Eastern Time. Find a moderate-price cafe rated at least 4.3, but recommend it only if the evidence supports that it is expected to be open; otherwise identify the missing hours evidence and next action.`]
       ]){const b=node('button','',label);b.addEventListener('click',()=>{input.value=text;resizeInput();input.focus();});choices.append(b);}el.append(choices);messages.append(el);}
       function toolLog(calls){const group=node('details','tool-list');group.append(node('summary','',`${calls.length} tool call${calls.length===1?'':'s'} · inspect inputs and results`));for(const call of calls){const d=node('details');d.append(node('summary','',call.name||'Tool'),node('h4','','Arguments'),node('pre','',pretty(call.args)),node('h4','','Result'),node('pre','',pretty(call.result)));group.append(d);}return group;}
-      function researchTrace(calls){const records=calls.filter(call=>typeof call.agent==='string'&&Number.isInteger(call.round));if(!records.length)return null;const labels={lead:'Lead',transit_researcher:'Transit Researcher',cafe_researcher:'Cafe Researcher',expansion_researcher:'Expansion Researcher',writer:'Writer'},section=node('section','research-trace');section.append(node('div','decision-kicker','Deep Research evidence path'),node('h3','','How the answer was researched'),node('p','','Round 1 fans out in fresh contexts. Round 2 appears only when Lead records a bounded evidence gap.'));const rounds=[...new Set(records.map(call=>call.round))].sort((a,b)=>a-b);for(const round of rounds){const block=node('div','research-round'),grid=node('div','research-events');block.append(node('h4','',`Round ${round}`));for(const call of records.filter(item=>item.round===round)){const result=parsed(call.result),card=node('article','research-event'),name=String(call.name||'task').replaceAll('_',' ');let detail='Completed with a traceable result.';if(result?.summary)detail=result.summary;else if(result?.reason_code)detail=`${result.reason_code}${Array.isArray(result.selected_ids)?` · ${result.selected_ids.join(', ')}`:''}`;else if(Array.isArray(result)&&result.length)detail=result.map(item=>`${item.cafe_id}: ${item.status}`).join(' · ');else if(result?.recommended_cafe_id)detail=`Recommendation: ${result.recommended_cafe_id}`;else if(result?.question)detail=result.question;card.append(node('span','research-agent',labels[call.agent]||call.agent),node('strong','',name),node('p','',detail));grid.append(card);}block.append(grid);section.append(block);}return section;}
+      function researchTrace(calls){const records=calls.filter(call=>typeof call.agent==='string'&&Number.isInteger(call.round));if(!records.some(call=>call.agent.endsWith('_researcher')||call.agent==='writer'))return null;const labels={lead:'Lead',transit_researcher:'Transit Researcher',cafe_researcher:'Cafe Researcher',expansion_researcher:'Expansion Researcher',writer:'Writer'},section=node('details','research-trace');section.append(node('summary','','How the answer was researched'),node('p','','Round 1 checks transit, cafes, and expansion options in parallel. Round 2 appears only when a specific evidence gap needs one bounded follow-up.'));const rounds=[...new Set(records.map(call=>call.round))].sort((a,b)=>a-b);for(const round of rounds){const block=node('div','research-round'),grid=node('div','research-events');block.append(node('h4','',`Round ${round}`));for(const call of records.filter(item=>item.round===round)){const result=parsed(call.result),card=node('article','research-event'),name=String(call.name||'task').replaceAll('_',' ');let detail='Completed with a traceable result.';if(result?.summary)detail=result.summary;else if(result?.reason_code)detail='Checked one decision-critical evidence gap.';else if(Array.isArray(result)&&result.length)detail=`Evaluated ${result.length} cafe option${result.length===1?'':'s'} against the stated constraints.`;else if(result?.recommended_cafe_id)detail='Prepared the evidence-backed recommendation.';else if(result?.question)detail='Prepared the research request.';card.append(node('span','research-agent',labels[call.agent]||call.agent),node('strong','',name),node('p','',detail));grid.append(card);}block.append(grid);section.append(block);}return section;}
       function researchEvidence(calls){
         const facts=[],gaps=[],sources=new Map(),statuses=new Map();let brief=null;
         for(const call of calls){
@@ -474,7 +482,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         if(!cafeIds.length&&!areaGaps.length&&!facts.some(item=>item.predicate==='cafe_search_results'))return null;
         const section=node('section','research-evidence');section.setAttribute('aria-label','Cafe evidence and verification');
         section.append(node('div','decision-kicker','Evidence review'),node('h3','','Cafes and evidence'),node('p','','Compare what is known, what is estimated, and what still needs verification.'));
-        const grid=node('div','evidence-grid'),labels={FEASIBLE:'Meets checked constraints',EVIDENCE_INSUFFICIENT:'Evidence insufficient',COMMUTE_LIMIT_EXCEEDED:'Commute limit exceeded',CAFE_CONSTRAINT_FAILED:'Cafe constraint failed',NOT_EVALUATED:'Not yet evaluated'};
+        const grid=node('div','evidence-grid'),otherGrid=node('div','evidence-grid'),labels={FEASIBLE:'Meets checked constraints',EVIDENCE_INSUFFICIENT:'Evidence insufficient',COMMUTE_LIMIT_EXCEEDED:'Commute limit exceeded',CAFE_CONSTRAINT_FAILED:'Cafe constraint failed',NOT_EVALUATED:'Not fully evaluated'};
         const sameTime=value=>!brief?.meeting_time||Date.parse(value)===Date.parse(brief.meeting_time);
         const areaName=id=>brief?.initial_candidates?.find(item=>item.candidate_id===id)?.name||facts.find(item=>item.candidate_id===id&&item.predicate==='station_name')?.value||'Additional search area';
         function current(records){
@@ -515,11 +523,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
           const provenance=node('details');provenance.append(node('summary','','Evidence and sources'));
           for(const record of records){const line=node('div','evidence-source');line.append(node('span','',`${record.predicate} · ${record.fact_id} · Round ${record.round}`));for(const sourceId of record.source_ids||[]){const source=sources.get(sourceId),href=source?safeLink(source.url):null;if(href){const link=node('a','evidence-source',`${source.title||source.provider} · ${sourceId}`);link.href=href;link.target='_blank';link.rel='noopener noreferrer';line.append(link);}else line.append(node('span','evidence-source',`Source unavailable: ${sourceId}`));}provenance.append(line);}
           for(const gap of ownGaps)provenance.append(node('p','evidence-source',`${gap.missing_id} · ${gap.field}: ${gap.detail} Next action: ${gap.next_action}`));
-          card.append(provenance);grid.append(card);
+          card.append(provenance);(state==='NOT_EVALUATED'?otherGrid:grid).append(card);
         }
         for(const gap of areaGaps){const card=node('article','evidence-card');card.append(node('h4','','Area search evidence missing'),node('p','evidence-gap',`${gap.candidate_id} · Round ${gap.round}: ${gap.detail} Next action: ${gap.next_action} [${gap.missing_id}]`));grid.append(card);}
         if(!cafeIds.length&&!areaGaps.length)section.append(node('p','','No cafes returned by this bounded search. This does not establish that no feasible cafe exists elsewhere.'));
-        section.append(grid);return section;
+        section.append(grid);if(otherGrid.children.length){const other=node('details','evidence-secondary');other.append(node('summary','',`Other cafes found (${otherGrid.children.length}) — open for preliminary evidence`),otherGrid);section.append(other);}return section;
       }
       function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'?u.href:null;}catch{return null;}}
       function finite(value){return typeof value==='number'&&Number.isFinite(value);}
@@ -577,10 +585,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         const timers=[setTimeout(()=>{content.textContent='Working on your request · the reply may include travel and cafe comparisons.';},5000),setTimeout(()=>{content.textContent='Still waiting for the reply · some searches take longer. You can keep reading above.';},18000)];
         return ()=>{timers.forEach(clearTimeout);content.removeAttribute('role');};
       }
-      function fullResponse(el){
-        const detail=node('details','response-details');detail.open=true;detail.append(node('summary','','Why this recommendation · explanation and caveats'));
-        el.before(detail);detail.append(el);return detail;
-      }
       let latestResult=null;
       newReply.addEventListener('click',()=>{if(latestResult)scrollToResult(latestResult);});
       async function send(){
@@ -599,13 +603,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
           sessionId=data.session_id;comparePending=false;
           const follow=messages.scrollHeight-messages.scrollTop-messages.clientHeight<100;
           stopLoading();loading.classList.remove('loading');
-          const calls=Array.isArray(data.tool_calls)?data.tool_calls:[], research=researchTrace(calls), evidence=researchEvidence(calls), summary=decisionSummary(calls), cards=resultCards(calls);
-          if(research)messages.insertBefore(research,loading);if(evidence)messages.insertBefore(evidence,loading);if(summary)messages.insertBefore(summary,loading);if(cards)messages.insertBefore(cards,loading);
           renderAssistant(loading.querySelector('.content'),data.response);
-          const failed=/^(Model call failed:|Sorry, I hit my tool-call limit)/.test(data.response.trim());
-          const explanation=(research||evidence||summary||cards)&&!failed?fullResponse(loading):loading;
-          if(calls.length)messages.insertBefore(toolLog(calls),explanation.nextSibling);
-          latestResult=evidence||research||summary||cards||explanation;
+          const calls=Array.isArray(data.tool_calls)?data.tool_calls:[], research=researchTrace(calls), evidence=researchEvidence(calls), summary=decisionSummary(calls), cards=resultCards(calls);
+          let anchor=loading;for(const item of [evidence,summary,cards,research]){if(item){anchor.after(item);anchor=item;}}
+          if(calls.length){const tools=toolLog(calls);anchor.after(tools);anchor=tools;}
+          latestResult=loading;
           if(follow)scrollToResult(latestResult);else newReply.hidden=false;
         }catch(error){
           stopLoading();loading.classList.remove('loading');loading.querySelector('.content').textContent=error.message||'Unable to connect. Please try again.';
