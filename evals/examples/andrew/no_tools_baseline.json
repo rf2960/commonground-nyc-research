@@ -2,7 +2,7 @@
   "schema_version": "baseline-capture-v1",
   "case_id": "andrew-exact-cafe-limit-001",
   "owner": "andrew",
-  "status": "pending",
+  "status": "superseded",
   "model": null,
   "captured_at": null,
   "conditions": {
@@ -11,5 +11,6 @@
     "input": "question_only"
   },
   "output": null,
-  "reason": "The production model is fixed as vertex_ai/gemini-3.5-flash-lite, but no authenticated no-tools/no-system capture has been performed."
+  "superseded_by": "evals/examples/exact_route_baseline.json",
+  "reason": "This synthetic owner-fixture placeholder is not a submission baseline. The final live exact-route query has an authenticated same-model question-only capture with no tools and no system prompt."
 }

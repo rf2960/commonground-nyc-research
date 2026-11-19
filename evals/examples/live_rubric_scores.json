@@ -1,0 +1,60 @@
+{
+  "schema_version": "live-rubric-capture-v1",
+  "status": "passed",
+  "captured_at": "2026-11-18T17:41:52.205232+00:00",
+  "model": "vertex_ai/gemini-3.5-flash-lite",
+  "judge_model": "vertex_ai/gemini-3.5-flash-lite",
+  "vertex_location": "global",
+  "source_capture": "evals/examples/live_grader_queries_plain_text.json",
+  "reference_claims": "evals/live_rubric_capture.py#REFERENCE_CLAIMS",
+  "execution": {
+    "commit": "ea26b4dcfdded570954512601bcbc6057aadc3e2",
+    "cloud_run_revision": "commonground-nyc-research-00012-4j2",
+    "cloud_run_job": "commonground-rubric-capture",
+    "cloud_run_execution": "commonground-rubric-capture-bzglp",
+    "status": "succeeded",
+    "task_count": 1,
+    "failed_tasks": 0,
+    "exit_code": 0
+  },
+  "results": [
+    {
+      "case_id": "expansion",
+      "scores": {
+        "recommendation_correctness": 4,
+        "calibrated_uncertainty": 4,
+        "comparison_usefulness": 4,
+        "citation_support": 4
+      },
+      "rationale": "The answer correctly follows all constraints, explains why initial areas failed, provides the targeted MTA station expansion follow-up, and correctly concludes with no supported recommendation without claiming none exists elsewhere.",
+      "unsupported_claims": [],
+      "normalized_score": 1.0
+    },
+    {
+      "case_id": "exact_route",
+      "scores": {
+        "recommendation_correctness": 4,
+        "calibrated_uncertainty": 4,
+        "comparison_usefulness": 4,
+        "citation_support": 4
+      },
+      "rationale": "The answer correctly recommends Little Collins, reports the exact commute times against the individual limits as requested, properly cites the allowed sources, and qualifies the opening status as an estimate.",
+      "unsupported_claims": [],
+      "normalized_score": 1.0
+    },
+    {
+      "case_id": "cafe_hours",
+      "scores": {
+        "recommendation_correctness": 4,
+        "calibrated_uncertainty": 4,
+        "comparison_usefulness": 4,
+        "citation_support": 4
+      },
+      "rationale": "The answer accurately addresses all parts of the user prompt by recommending Little Collins, detailing the specific transit times for Alex, Blair, and Casey, and properly noting that the future regular-schedule opening status should be verified directly with the venue.",
+      "unsupported_claims": [],
+      "normalized_score": 1.0
+    }
+  ],
+  "mean_normalized_score": 1.0,
+  "provenance_note": "Cloud Run stdout contained the exact questions, reference claims, and allowed source IDs. Those repeated inputs remain versioned in the linked source capture and runner. No credential is stored in this record."
+}

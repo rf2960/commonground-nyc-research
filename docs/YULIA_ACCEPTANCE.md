@@ -110,15 +110,11 @@ and exact scope are retained in [the QA record](qa/yulia_browser_checks.json), w
 scrolled into view and checked against the composer boundary, not just searched in
 hidden DOM text.
 
-## Remaining model configuration barrier
+## Final model-evaluation status
 
-The live Places capture is complete using the existing key in Cloud Shell. Its
-credential is not included in the imported JSON or committed files. The assistant
-local runtime still has no GCP application-default credential. The deployed model is
-fixed as `vertex_ai/gemini-3.5-flash-lite`, but a model-backed Writer capture and local
-manifest-backed baseline/judge run have not been recorded.
-The repository's Actions secret list was empty at the configuration check, and the
-connected collaborator has write access but no repository-admin access. Actual
-model-backed grading output, same-model baseline and rubric scores remain pending
-those shared model inputs. No new project, billing account, credential or permission
-grant was created.
+The live Places capture is complete and contains no credential. The final three
+grader-facing queries were captured from the deployed model-backed Writer, and their
+same-model question-only baselines are committed separately from this older synthetic
+owner fixture. A credentialed Cloud Run rubric job scored all three final queries at
+1.0 normalized score; see `evals/examples/live_rubric_scores.json`. No API key,
+service-account JSON, OAuth token, or model credential is stored in the repository.

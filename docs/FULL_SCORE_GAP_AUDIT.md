@@ -7,28 +7,28 @@ from evidence still needed for submission.
 
 ## Current rubric position
 
-**Evidence-backed self-score: 22–23.5 / 25.** The production Writer is now explicitly
+**Evidence-backed self-score: 24–25 / 25.** The production Writer is explicitly
 model-backed while the deterministic layer retains exclusive authority over facts,
 citations, hard constraints, and unknowns. Lead and the three Researchers remain
 bounded role-specific execution shapes around real tools rather than free-form model
 loops. The assignment does not explicitly require every shape to invoke an LLM, but
-this remaining interpretation risk is still disclosed rather than represented as
-guaranteed full credit.
+that interpretation risk and ordinary grader judgment mean this is not a guarantee of
+full credit.
 
 | Graded area | Working estimate | Current evidence | Full-score risk | Next proof |
 | --- | ---: | --- | --- | --- |
 | Basics (1) | 1.0 | Root `README.md`, `submission.json`, `app.py`, `pyproject.toml`, and `uv.lock`; valid `path=research` and all three UNIs | Low | Keep the deploy URL current after the final release |
-| Functionality (9) | 8.0–8.5 | Public Cloud Run app, healthy `/health`, real two-round `/chat` smoke, and three final natural-language queries with preserved constraints | Low–medium | Retain the final deployment and query captures through submission |
-| Data (4) | 3.5–4.0 | MTA Stations, Google Places, and Google Routes adapters; normalized sources, facts, and gaps; live Places plus a bounded pure-transit Routes smoke | Low | Preserve the committed live captures and provider boundaries |
-| Deep Research path (7) | 6.5–7.0 | Lead, three parallel fresh-context Researchers, one evidence-driven follow-up, model-backed evidence-locked Writer, clarification, citation validation, and three production traces with `writer_mode=model-backed-validated` | Low | Complete the credentialed rubric-judge records |
+| Functionality (9) | 8.5–9.0 | Public Cloud Run app, healthy `/health`, real two-round `/chat` smoke, and three final natural-language queries with preserved constraints | Low | Retain the final deployment and query captures through submission |
+| Data (4) | 3.75–4.0 | MTA Stations, Google Places, and Google Routes adapters; normalized sources, facts, and gaps; live Places plus a bounded pure-transit Routes smoke | Low | Preserve the committed live captures and provider boundaries |
+| Deep Research path (7) | 6.75–7.0 | Lead, three parallel fresh-context Researchers, one evidence-driven follow-up, model-backed evidence-locked Writer, clarification, citation validation, three production traces, and completed credentialed judge evidence | Low | Preserve the final trace and scorer records through submission |
 | Creativity (4) | 3.5–4.0 | Expansion after shortlist failure, blocker diagnosis, exact-address correction, evidence UI, and explicit unknowns | Low–medium | Make initial → follow-up → final information gain visually immediate in every result |
 
-The public application is functional and demonstrates the core idea. The largest
-remaining score risk is incomplete evaluation evidence required verbatim by the
-assignment. Adding more providers or an unbounded third research round would not
-address that risk.
+The public application is functional and demonstrates the core idea. All explicit
+evaluation requirements now have inspectable evidence. Remaining risks are grader
+interpretation, live-provider drift, and final external submission steps; adding more
+providers or an unbounded third research round would not improve rubric coverage.
 
-## Mandatory gaps before submission
+## Completed mandatory evidence
 
 ### Same-model comparisons for all three sample queries
 
@@ -42,16 +42,18 @@ baseline records preserve the question-only, no-tools, no-system-prompt boundary
 
 The architecture mismatch is resolved in code: production uses the frozen model to
 plan the ordering of immutable, already-cited Writer sections, validates the complete
-report again, and falls back safely. The remaining proof is a post-deploy production
-capture whose Writer trace says `writer_mode=model-backed-validated`; a fixture run or
-fallback report must not be mislabeled as that capture.
+report again, and falls back safely. The post-deploy production records contain
+`writer_mode=model-backed-validated`; fixture or fallback reports remain separately
+labeled.
 
-### P0 — actual second-scorer captures
+### Completed — actual second-scorer captures
 
-`evals/rubric_judge.py` implements a strict 0–4 rubric judge, but implementation tests
-are not the assignment's requested evaluation result. Commit the credentialed judge
-output for the agent and baseline for all three owner examples, including model ID,
-timestamp, reference claims, allowed source IDs, and unsupported claims.
+The credentialed Cloud Run job `commonground-rubric-capture-bzglp` ran
+`evals/rubric_judge.py` against the three final live-query records using
+`vertex_ai/gemini-3.5-flash-lite`. Every case scored 4/4 for recommendation correctness,
+calibrated uncertainty, comparison usefulness, and citation support, with no unsupported
+claims. The normalized record, model, timestamp, commit, revision, and execution ID are
+committed in `evals/examples/live_rubric_scores.json`.
 
 ### Completed — 50-case hill-climbing log
 
@@ -70,7 +72,7 @@ limits. The traces cover Lead, Researchers, one bounded follow-up, and a
 
 ### P0 — final submission action
 
-After the evidence above and final Cloud Build pass:
+After the final evidence CI and continuous-deployment pass:
 
 - verify the public URL in a signed-out context;
 - verify `submission.json` from `main`;
@@ -109,6 +111,7 @@ the repository is ready.
 ## Honest readiness assessment
 
 The core product, Deep Research mechanics, deployment, deterministic evaluation,
-two-change hill-climbing log, post-deploy natural-language queries, and bounded live
-Routes smoke are complete. Credentialed rubric-judge results remain the principal
-unfinished evaluation evidence and should take priority over additional product work.
+two-change hill-climbing log, post-deploy natural-language queries, bounded live Routes
+smoke, and credentialed rubric-judge results are complete. No known assignment evidence
+blocker remains. The remaining steps are sign-up-sheet confirmation, the final healthy
+Cloud Run revision, CourseWorks submission, and keeping the service online.

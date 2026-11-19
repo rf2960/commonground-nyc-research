@@ -24,7 +24,16 @@ composed through the production dispatcher. A public Cloud Run smoke on November
 2026 returned HTTP 200, all five agent instances across rounds 1–2, live Places and
 Routes evidence, and exact-cafe commute values versus each person's limit. The three
 live grader queries now have captured no-tools baselines. The reproducible 50-case
-hill-climbing report is complete; credentialed rubric-judge captures remain pending.
+hill-climbing report is complete. A credentialed Cloud Run evaluation job scored all
+three live queries at `1.0`, with every rubric dimension at `4/4` and no unsupported
+claims; the raw normalized record is committed in
+[`evals/examples/live_rubric_scores.json`](evals/examples/live_rubric_scores.json).
+
+| Final evaluation evidence | Result |
+| --- | ---: |
+| Deterministic 50-case contract corpus | 50/50 |
+| Hill-climbing history on the same 50 expectations | 0/50 → 40/50 → 50/50 |
+| Credentialed reference/rubric judge | 3/3 cases; mean normalized score 1.0 |
 
 | Document | Purpose |
 | --- | --- |
@@ -40,6 +49,7 @@ hill-climbing report is complete; credentialed rubric-judge captures remain pend
 | [Assignment compliance](docs/ASSIGNMENT_COMPLIANCE.md) | Requirement-by-requirement status and final evidence checklist |
 | [Deployment runbook](docs/DEPLOYMENT.md) | Cloud Run configuration, release verification, and operations checklist |
 | [Full-score gap audit](docs/FULL_SCORE_GAP_AUDIT.md) | Rubric-aligned evidence, remaining risks, and prioritized submission work |
+| [Final submission checklist](docs/FINAL_SUBMISSION_CHECKLIST.md) | Grader-facing proof map and the few remaining external actions |
 
 ### Implemented in the current checkpoint
 
@@ -119,7 +129,8 @@ hill-climbing report is complete; credentialed rubric-judge captures remain pend
   cafe, missing-evidence, and clarification slices. The current result is 50/50.
 - `evals/rubric_judge.py` supplies the second scoring method with a strict 0–4 reference
   rubric, while `evals/baseline.py` enforces the same-model question-only comparison
-  with no tools and no system prompt. Credentialed judge scores remain pending.
+  with no tools and no system prompt. The credentialed judge capture ran through Cloud
+  Run on commit `ea26b4d` and passed all three final live-query records.
 - `commonground/research/dispatch.py` is the single production composition boundary:
   it routes each task to exactly one owner adapter, provides the real bounded MTA task,
   and constructs the service while preserving runner timeout/turn limits.
@@ -140,9 +151,10 @@ missing-hours record plus the successful exact-route evidence. See the
 [actual program output and trace](evals/examples/yulia/actual_agent.json).
 The deterministic result is 8/8 checks. This is simulated provider evidence, not a
 live Google request or model run. The
-[same-model baseline](evals/examples/yulia/no_tools_baseline.json) remains explicitly
-pending for that synthetic fixture. The three live grader queries have separate recorded
-no-tools answers.
+[same-model baseline](evals/examples/yulia/no_tools_baseline.json) is an archived
+fixture-specific placeholder and is superseded for submission by the authenticated
+live `cafe_hours` baseline. The three final grader queries each have a recorded
+same-model, question-only answer with no tools and no system prompt.
 
 The research evidence UI now presents each cafe's status, known attributes, provisional
 opening estimate or explicit gap, and per-person exact-cafe commute versus limit.

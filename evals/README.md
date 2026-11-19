@@ -67,17 +67,18 @@ raw output, and the two disabled conditions in
 `evals/baseline.py` enforces exactly one user message, no tools, and no system prompt,
 and records model, timestamp, conditions, question, and raw output. The three final
 live grader questions have authenticated captures in `evals/examples/`. The older
-fixture-specific owner placeholder remains labeled `pending` and is not presented as a
-live capture. The production model selection is frozen in `evals/model_manifest.json`;
-only the question—not the evidence bundle—is allowed in a baseline call.
+fixture-specific owner placeholders are labeled `superseded` and point to those live
+captures. The production model selection is frozen in `evals/model_manifest.json`; only
+the question—not the evidence bundle—is allowed in a baseline call.
 
 ## Second scorer
 
 `evals/rubric_judge.py` independently scores recommendation correctness, calibrated
 uncertainty, comparison usefulness, and citation support on a strict 0–4 scale against
 expected claims and an allowed source-ID set. Its schema rejects missing or out-of-range
-scores. Tests use an injected completion; actual judge scores remain pending until the
-production judge model and credentials are frozen.
+scores. The credentialed Cloud Run execution `commonground-rubric-capture-bzglp` scored
+all three final live queries at 1.0 normalized score, with every dimension at 4/4 and
+no unsupported claims. See `evals/examples/live_rubric_scores.json`.
 
 ## Team handoff
 

@@ -33,7 +33,7 @@ or deployment link.
 | --- | --- | --- |
 | At least 50 gold/silver samples with provenance | Complete for contract corpus | `evals.contract_corpus` runs 50 provenance-recorded synthetic gold boundary cases across five slices; provider/full-pipeline cases continue to grow |
 | Eval cases not reused as few-shot prompt examples | Enforced in corpus metadata | Every case records `prompt_reuse_prohibited=true`; no eval case is embedded in an agent prompt |
-| At least two scorer types | Implemented; credentialed judge capture pending | Deterministic checks plus strict reference/rubric judge in `evals/rubric_judge.py` |
+| At least two scorer types | Complete | Deterministic checks score the 50-case corpus 50/50; the strict reference/rubric judge scored all three final live queries at 1.0 in `evals/examples/live_rubric_scores.json` |
 | Documented command to run evals | Complete | `uv run python -m evals.runner` and `uv run python -m evals.contract_corpus` |
 | README hill-climbing log with baseline and 2+ changes | Complete | `evals.hill_climb` replays the same 50 held-out expectations against preserved commits `7b596c7`, `2bbad8b`, and `96989b0`; raw results and the README table are committed |
 | Identify gains larger than `±1/sqrt(n)` | Complete | Gains of `+0.80` and `+0.20` both exceed `1/sqrt(50) = 0.1414`; the final score is 50/50 |
@@ -60,7 +60,7 @@ or deployment link.
 | Request may take up to 5 minutes; cap max turns | Complete | Cloud Run timeout is 300 seconds; Researcher tasks default to 45 seconds and six turns, clamped to 1–120 seconds and 1–12 turns |
 | Keep service live until grades released | Operational commitment recorded | `docs/DEPLOYMENT.md` records the public service, continuous deployment, bounds, health checks, and keep-live requirement |
 
-## Final pre-submission blockers
+## Final readiness
 
 - Shared contracts, fixed evidence, the concurrent isolated runner, bounded Lead,
   evidence-only Writer, Cafe/Transit/Expansion adapters, live service injection,
@@ -68,7 +68,10 @@ or deployment link.
   complete.
 - Three credentialed no-tools answers, the reproducible hill-climbing report, the
   post-deploy natural-language retest, and Andrew's live production Routes smoke are
-  committed. Credentialed rubric-judge scores remain pending.
+  committed. The credentialed rubric-judge run also passed all three queries with every
+  dimension at 4/4 and no unsupported claims.
 
-Do not describe the remaining evaluation artifacts as complete until their raw outputs
-and scores are committed. Deployment itself is complete and separately evidenced.
+There is no known repository or evaluation evidence blocker. Remaining actions are
+external/operational: confirm the sign-up-sheet row, record the final healthy revision,
+submit the repository URL once in CourseWorks, and keep the service live through grade
+release. See `docs/FINAL_SUBMISSION_CHECKLIST.md`.
