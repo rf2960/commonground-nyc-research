@@ -4,6 +4,10 @@ CommonGround NYC Research is the Project 2 Deep Research continuation of
 [CommonGround NYC](https://github.com/rf2960/commonground-nyc). It investigates a
 specific failure mode from Project 1:
 
+**Target users:** Groups of 2–6 people in the NYC metro area who want an
+evidence-supported meeting cafe without requiring any traveler to exceed their
+individual commute limit.
+
 > When the initial meeting areas contain no cafe that is within every traveler's
 > commute limit and expected to be open at the meeting time, can a targeted expansion
 > find a feasible option? If it cannot, is the blocker commute time, cafe constraints,
