@@ -25,6 +25,26 @@ from .models import (
 )
 
 
+_COMMUTE_LIMIT_TERM = (
+    r"(?:(?:maximum|max)\s+)?"
+    r"(?:one[\s\u2010-\u2015-]*way\s+)?"
+    r"commute(?:\s+limit)?"
+)
+_INTAKE_HELP_PATTERNS = tuple(
+    re.compile(pattern, re.IGNORECASE)
+    for pattern in (
+        rf"\bwhat\s+does\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\s+mean\b",
+        rf"\bwhat\s+is\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\b",
+        rf"\bwhat['’]s\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\b",
+        rf"\bwhat\s+do\s+you\s+mean\s+by\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\b",
+        rf"\b(?:meaning|definition)\s+of\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\b",
+        rf"^\s*(?:can|could|would)\s+you\s+explain\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\b",
+        rf"^\s*(?:please\s+)?explain\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\s*[?.!]*\s*$",
+        rf"\bhow\s+does\s+(?:(?:a|the)\s+)?{_COMMUTE_LIMIT_TERM}\s+work\b",
+    )
+)
+
+
 class TravelerIntake(ContractModel):
     traveler_id: TravelerId
     input_location: str | None = None
@@ -205,15 +225,7 @@ def intake_help_message(message: str) -> str | None:
     """Answer common intake vocabulary questions instead of repeating a form prompt."""
 
     normalized = " ".join(message.casefold().split())
-    asks_for_meaning = any(
-        phrase in normalized
-        for phrase in ("what does", "what is", "what's", "meaning", "mean", "explain")
-    )
-    mentions_commute_limit = (
-        "commute" in normalized
-        and any(term in normalized for term in ("maximum", "max", "limit", "one-way"))
-    )
-    if not (asks_for_meaning and mentions_commute_limit):
+    if not any(pattern.search(normalized) for pattern in _INTAKE_HELP_PATTERNS):
         return None
     return (
         "Maximum one-way commute means the most time each person is willing to "

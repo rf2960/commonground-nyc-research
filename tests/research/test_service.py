@@ -323,6 +323,32 @@ def test_research_mode_answers_intake_vocabulary_without_model_call(monkeypatch)
     assert response.tool_calls == []
 
 
+def test_complete_sample_request_reaches_intake_extraction(monkeypatch):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+    webapp.research_intakes.clear()
+    observed = []
+    sample = (
+        "Alex starts at Columbia University with a 35-minute limit, Blair starts in "
+        "Astoria with a 30-minute limit, and Casey starts at Bedford Ave Station with "
+        "a 40-minute limit. Meet November 25, 2026 at 2:00 PM Eastern Time. Find a "
+        "moderate-price cafe rated at least 4.3 that is expected to be open. Do not "
+        "relax any limit; if no option is supported, explain whether commute, cafe "
+        "conditions, or missing evidence is the blocker."
+    )
+
+    def extract(messages, **_kwargs):
+        observed.append(list(messages))
+        return ResearchIntake()
+
+    monkeypatch.setattr(webapp, "extract_research_intake", extract)
+
+    response = webapp.chat(webapp.ChatRequest(message=sample, mode="research"))
+
+    assert observed == [[sample]]
+    assert response.tool_calls[0]["name"] == "extract_research_intake"
+
+
 def test_unconfigured_live_research_never_claims_fixture_or_provider_results(monkeypatch):
     webapp.sessions.clear()
     webapp.session_last_seen.clear()
