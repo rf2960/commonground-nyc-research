@@ -374,7 +374,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     </script>
     <script>
       const messages=document.getElementById('messages'), input=document.getElementById('user-input'), button=document.getElementById('send-btn'), reset=document.getElementById('reset-btn');
-      let sessionId=null, busy=false, selectedPriority=null, comparePending=false;
+      let sessionId=null, conversationHistory=[], busy=false, selectedPriority=null, comparePending=false;
       const modeButtons=[...document.querySelectorAll('[data-priority]')], compareButton=document.getElementById('compare-btn');
       const priorityLabel=document.getElementById('priority-label'), composePriority=document.getElementById('compose-priority'), composeError=document.getElementById('compose-error'), newReply=document.getElementById('new-reply');
       const priorityNames={fairest:'Fairest',fastest:'Fastest',best_cafe:'Best cafe'};
@@ -596,11 +596,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         addMessage('you',text);const loading=addMessage('CommonGround','',true);const stopLoading=startLoading(loading);
         messages.scrollTop=messages.scrollHeight;
         try{
-          const response=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,session_id:sessionId,mode:'research'})});
+          const conversation_history=[...conversationHistory,message];
+          const response=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,session_id:sessionId,conversation_history,mode:'research'})});
           if(!response.ok)throw new Error(`Chat request failed (${response.status}). Please try again.`);
           const data=await response.json();
           if(typeof data.response!=='string'||typeof data.session_id!=='string')throw new Error('Unexpected chat response. Please try again.');
-          sessionId=data.session_id;comparePending=false;
+          sessionId=data.session_id;conversationHistory=conversation_history;comparePending=false;
           const follow=messages.scrollHeight-messages.scrollTop-messages.clientHeight<100;
           stopLoading();loading.classList.remove('loading');
           renderAssistant(loading.querySelector('.content'),data.response);
@@ -619,7 +620,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         }
       }
       reset.addEventListener('click',async()=>{
-        if(busy)return;const old=sessionId;sessionId=null;latestResult=null;newReply.hidden=true;choosePriority(null,false);messages.replaceChildren();intro();input.value='';resizeInput();composeError.hidden=true;
+        if(busy)return;const old=sessionId;sessionId=null;conversationHistory=[];latestResult=null;newReply.hidden=true;choosePriority(null,false);messages.replaceChildren();intro();input.value='';resizeInput();composeError.hidden=true;
         if(!matchMedia('(max-width:760px)').matches)input.focus();
         if(old){try{await fetch(`/clear?session_id=${encodeURIComponent(old)}`,{method:'POST'});}catch{/* A fresh session still prevents reuse of old conversation state. */}}
       });

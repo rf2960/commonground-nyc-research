@@ -3,7 +3,7 @@ import os
 import time
 import uuid
 from pathlib import Path
-from typing import Literal
+from typing import Annotated, Literal
 
 import litellm
 import uvicorn
@@ -21,6 +21,7 @@ from commonground.research import (
     ResearchBrief,
     ResearchIntake,
     clarification_message,
+    intake_help_message,
     extract_research_intake,
     merge_research_intakes,
     IntakeExtractionError,
@@ -215,6 +216,10 @@ def make_session_room() -> None:
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     session_id: str | None = Field(default=None, max_length=128)
+    conversation_history: Annotated[
+        list[Annotated[str, Field(min_length=1, max_length=4000)]],
+        Field(max_length=40),
+    ] = Field(default_factory=list)
     mode: Literal["chat", "research"] = "chat"
     research_brief: ResearchBrief | None = None
     research_intake: ResearchIntake | None = None
@@ -277,11 +282,23 @@ def chat(request: ChatRequest):
         preparation_calls: list[dict] = []
         intake = request.research_intake
         if brief is None and intake is None:
-            user_messages = [
+            help_response = intake_help_message(request.message)
+            if help_response is not None:
+                sessions[session_id].append(
+                    {"role": "assistant", "content": help_response}
+                )
+                return ChatResponse(
+                    response=help_response,
+                    session_id=session_id,
+                    tool_calls=[],
+                )
+            user_messages = list(request.conversation_history) or [
                 item["content"]
                 for item in sessions[session_id]
                 if item.get("role") == "user" and isinstance(item.get("content"), str)
             ]
+            if not user_messages or user_messages[-1] != request.message:
+                user_messages.append(request.message)
             try:
                 intake = extract_research_intake(
                     user_messages,

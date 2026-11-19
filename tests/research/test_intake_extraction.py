@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from types import SimpleNamespace
 
 import pytest
@@ -145,6 +146,23 @@ def test_payload_rejects_naive_normalized_time_even_with_a_real_quote():
 
     with pytest.raises(IntakeExtractionError, match="explicit UTC offset"):
         intake_from_extraction_payload(payload, MESSAGES)
+
+
+def test_yearless_date_is_normalized_to_its_next_future_occurrence():
+    message = "arrival time: Nov 20th, 12pm est"
+    payload = {
+        "meeting_time": "2023-11-20T12:00:00-05:00",
+        "meeting_time_quote": "Nov 20th, 12pm est",
+        "travelers": [],
+    }
+
+    intake = intake_from_extraction_payload(
+        payload,
+        [message],
+        reference_time=datetime.fromisoformat("2026-11-18T15:00:00-05:00"),
+    )
+
+    assert intake.meeting_time.isoformat() == "2026-11-20T12:00:00-05:00"
 
 
 def test_model_boundary_uses_no_tools_and_parses_json():

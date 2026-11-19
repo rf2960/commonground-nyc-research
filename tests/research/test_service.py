@@ -272,6 +272,57 @@ def test_research_mode_preserves_validated_slots_across_short_follow_up_turns(mo
     assert second.response.startswith("The required user inputs are complete")
 
 
+def test_research_mode_uses_client_history_after_process_memory_loss(monkeypatch):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+    webapp.research_intakes.clear()
+    observed = []
+
+    def extract(messages, **_kwargs):
+        observed.append(list(messages))
+        return ResearchIntake()
+
+    monkeypatch.setattr(webapp, "extract_research_intake", extract)
+    history = [
+        "traveler 1: soho traveler 2: jersey city",
+        "arrival time: Nov 20th, 12pm est",
+        "max for traveler 1 is 20min, for 2 is 30min",
+    ]
+
+    response = webapp.chat(
+        webapp.ChatRequest(
+            message=history[-1],
+            session_id="survives-another-instance",
+            conversation_history=history,
+            mode="research",
+        )
+    )
+
+    assert observed == [history]
+    assert response.tool_calls[0]["args"] == {"message_count": 3}
+
+
+def test_research_mode_answers_intake_vocabulary_without_model_call(monkeypatch):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+    webapp.research_intakes.clear()
+
+    def unexpected(*_args, **_kwargs):
+        raise AssertionError("the extractor should not be called for a help question")
+
+    monkeypatch.setattr(webapp, "extract_research_intake", unexpected)
+    response = webapp.chat(
+        webapp.ChatRequest(
+            message="what does maximum one-way commute mean",
+            session_id="help-question",
+            mode="research",
+        )
+    )
+
+    assert "one direction, not round trip" in response.response
+    assert response.tool_calls == []
+
+
 def test_unconfigured_live_research_never_claims_fixture_or_provider_results(monkeypatch):
     webapp.sessions.clear()
     webapp.session_last_seen.clear()
