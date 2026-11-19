@@ -22,6 +22,7 @@ from commonground.research import (
     ResearchIntake,
     clarification_message,
     extract_research_intake,
+    merge_research_intakes,
     IntakeExtractionError,
     ModelBackedEvidenceWriter,
     prepare_research_brief,
@@ -175,6 +176,7 @@ def run_agent(messages: list[dict]) -> tuple[str, list[dict]]:
 
 sessions: dict[str, list[dict]] = {}
 session_last_seen: dict[str, float] = {}
+research_intakes: dict[str, ResearchIntake] = {}
 app = FastAPI(title="CommonGround NYC")
 
 
@@ -189,6 +191,7 @@ def prune_sessions(now: float | None = None) -> None:
     for session_id in expired:
         sessions.pop(session_id, None)
         session_last_seen.pop(session_id, None)
+        research_intakes.pop(session_id, None)
 
     overflow = len(sessions) - MAX_SESSIONS
     if overflow > 0:
@@ -196,6 +199,7 @@ def prune_sessions(now: float | None = None) -> None:
         for session_id in oldest[:overflow]:
             sessions.pop(session_id, None)
             session_last_seen.pop(session_id, None)
+            research_intakes.pop(session_id, None)
 
 
 def make_session_room() -> None:
@@ -205,6 +209,7 @@ def make_session_room() -> None:
     oldest = min(sessions, key=lambda key: session_last_seen.get(key, 0))
     sessions.pop(oldest, None)
     session_last_seen.pop(oldest, None)
+    research_intakes.pop(oldest, None)
 
 
 class ChatRequest(BaseModel):
@@ -283,8 +288,15 @@ def chat(request: ChatRequest):
                     model=MODEL,
                     vertex_location=VERTEX_LOCATION,
                 )
+                intake = merge_research_intakes(
+                    research_intakes.get(session_id),
+                    intake,
+                )
+                research_intakes[session_id] = intake
             except IntakeExtractionError:
-                response = clarification_message(ResearchIntake())
+                response = clarification_message(
+                    research_intakes.get(session_id, ResearchIntake())
+                )
                 tool_calls = []
                 sessions[session_id].append({"role": "assistant", "content": response})
                 return ChatResponse(
@@ -302,6 +314,7 @@ def chat(request: ChatRequest):
                 }
             )
         if brief is None and intake is not None:
+            research_intakes[session_id] = intake
             preparation = prepare_research_brief(
                 intake,
                 session_id=session_id,
@@ -366,6 +379,7 @@ def clear(session_id: str | None = None):
     if session_id:
         sessions.pop(session_id, None)
         session_last_seen.pop(session_id, None)
+        research_intakes.pop(session_id, None)
     return {"status": "ok"}
 
 

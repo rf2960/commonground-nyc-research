@@ -68,7 +68,7 @@ def test_center_estimates_cannot_be_displayed_as_verified_cafe_commutes():
         if event['name'] == 'evaluate_feasibility':
             event['result'] = '[]'
     text = render(events)['text']
-    assert 'Not yet evaluated' in text
+    assert 'Not fully evaluated' in text
     assert 'Exact cafe commute · Columbia University: not verified' in text
     assert 'Area-center estimates — not exact cafe routes' in text
 

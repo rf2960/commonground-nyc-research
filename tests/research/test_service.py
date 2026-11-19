@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 import app as webapp
@@ -10,6 +11,7 @@ from commonground.research import (
     ResearchIntake,
     ResearchResult,
     ResearchRunner,
+    TravelerIntake,
 )
 
 
@@ -181,8 +183,8 @@ def test_research_mode_clarifies_natural_language_before_provider_calls(monkeypa
     assert [call["name"] for call in response.tool_calls] == [
         "extract_research_intake"
     ]
-    assert "at least two travelers" in response.response
-    assert "meeting arrival date and time" in response.response
+    assert "who is traveling" in response.response
+    assert "arrival date and time" in response.response
 
 
 def test_research_mode_model_failure_degrades_to_deterministic_clarification(
@@ -201,8 +203,73 @@ def test_research_mode_model_failure_degrades_to_deterministic_clarification(
     )
 
     assert response.tool_calls == []
-    assert "at least two travelers" in response.response
+    assert "who is traveling" in response.response
     assert "credential" not in response.response
+
+
+def test_research_mode_preserves_validated_slots_across_short_follow_up_turns(monkeypatch):
+    webapp.sessions.clear()
+    webapp.session_last_seen.clear()
+    webapp.research_intakes.clear()
+    extracted = [
+        ResearchIntake(
+            travelers=(
+                TravelerIntake(
+                    traveler_id="traveler:alex",
+                    input_location="SoHo",
+                ),
+                TravelerIntake(
+                    traveler_id="traveler:blair",
+                    input_location="Jersey City",
+                ),
+            )
+        ),
+        ResearchIntake(
+            meeting_time=datetime.fromisoformat("2026-11-25T14:00:00-05:00"),
+            travelers=(
+                TravelerIntake(
+                    traveler_id="traveler:alex",
+                    max_commute_minutes=30,
+                ),
+                TravelerIntake(
+                    traveler_id="traveler:blair",
+                    max_commute_minutes=40,
+                ),
+            ),
+        ),
+    ]
+    monkeypatch.setattr(
+        webapp,
+        "extract_research_intake",
+        lambda *_args, **_kwargs: extracted.pop(0),
+    )
+    captured = []
+
+    def prepare(intake, *, session_id):
+        captured.append(intake)
+        return BriefPreparation(brief=None, response=webapp.clarification_message(intake), tool_calls=())
+
+    monkeypatch.setattr(webapp, "prepare_research_brief", prepare)
+
+    first = webapp.chat(
+        webapp.ChatRequest(
+            message="Alex is in SoHo and Blair is in Jersey City.",
+            session_id="conversation-memory",
+            mode="research",
+        )
+    )
+    second = webapp.chat(
+        webapp.ChatRequest(
+            message="Thirty minutes for Alex, forty for Blair, tomorrow at 2 PM Eastern.",
+            session_id="conversation-memory",
+            mode="research",
+        )
+    )
+
+    assert "I have Alex from SoHo and Blair from Jersey City" in first.response
+    assert [item.input_location for item in captured[-1].travelers] == ["SoHo", "Jersey City"]
+    assert [item.max_commute_minutes for item in captured[-1].travelers] == [30, 40]
+    assert second.response.startswith("The required user inputs are complete")
 
 
 def test_unconfigured_live_research_never_claims_fixture_or_provider_results(monkeypatch):

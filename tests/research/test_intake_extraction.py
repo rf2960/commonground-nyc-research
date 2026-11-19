@@ -62,6 +62,55 @@ def test_payload_rejects_a_quote_not_present_in_user_text():
         intake_from_extraction_payload(payload, MESSAGES)
 
 
+def test_explicit_anonymous_count_becomes_stable_ordered_travelers():
+    message = "two travelers from SoHo and another from Jersey City"
+    payload = {
+        "meeting_time": None,
+        "meeting_time_quote": None,
+        "travelers": [
+            {
+                "identity_quote": "two travelers",
+                "origin_quote": "SoHo",
+                "max_commute_minutes": None,
+                "limit_quote": None,
+            },
+            {
+                "identity_quote": "two travelers",
+                "origin_quote": "SoHo",
+                "max_commute_minutes": None,
+                "limit_quote": None,
+            },
+            {
+                "identity_quote": "another",
+                "origin_quote": "Jersey City",
+                "max_commute_minutes": None,
+                "limit_quote": None,
+            },
+        ],
+    }
+
+    intake = intake_from_extraction_payload(payload, [message])
+
+    assert [item.traveler_id for item in intake.travelers] == [
+        "traveler:two-travelers-1",
+        "traveler:two-travelers-2",
+        "traveler:another",
+    ]
+    assert [item.input_location for item in intake.travelers] == [
+        "SoHo",
+        "SoHo",
+        "Jersey City",
+    ]
+
+
+def test_repeated_named_identity_is_still_rejected():
+    payload = complete_payload()
+    payload["travelers"][1]["identity_quote"] = "Alex"
+
+    with pytest.raises(IntakeExtractionError, match="named traveler identities"):
+        intake_from_extraction_payload(payload, MESSAGES)
+
+
 @pytest.mark.parametrize(
     ("cafe_request", "rating", "price"),
     [

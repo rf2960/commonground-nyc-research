@@ -11,6 +11,7 @@ from commonground.research import (
     build_research_brief,
     clarification_message,
     find_intake_gaps,
+    merge_research_intakes,
 )
 
 
@@ -46,8 +47,8 @@ def test_empty_intake_requires_people_and_meeting_time_without_calling_tools():
         "MEETING_TIME_REQUIRED",
     ]
     message = clarification_message(ResearchIntake())
-    assert "at least two travelers" in message
-    assert "meeting arrival date and time" in message
+    assert "who is traveling" in message
+    assert "arrival date and time" in message
 
 
 def test_clarification_names_only_the_travelers_with_missing_fields():
@@ -74,6 +75,67 @@ def test_clarification_names_only_the_travelers_with_missing_fields():
     assert gaps[1].traveler_ids == ("traveler:bob",)
     assert "traveler:alice" not in clarification_message(intake)
     assert "explicit timezone" in clarification_message(intake)
+
+
+def test_clarification_acknowledges_known_origins_and_uses_plain_labels():
+    intake = ResearchIntake(
+        travelers=(
+            TravelerIntake(
+                traveler_id="traveler:two-travelers-1",
+                input_location="SoHo",
+            ),
+            TravelerIntake(
+                traveler_id="traveler:two-travelers-2",
+                input_location="SoHo",
+            ),
+            TravelerIntake(
+                traveler_id="traveler:another",
+                input_location="Jersey City",
+            ),
+        )
+    )
+
+    message = clarification_message(intake)
+
+    assert "I have Traveler 1 from SoHo, Traveler 2 from SoHo" in message
+    assert "Traveler 3 from Jersey City" in message
+    assert "traveler:two-travelers" not in message
+    assert "maximum one-way commute" in message
+    assert "arrival date and time" in message
+
+
+def test_merge_intakes_keeps_earlier_slots_and_accepts_later_details():
+    previous = ResearchIntake(
+        travelers=(
+            TravelerIntake(
+                traveler_id="traveler:alex",
+                input_location="SoHo",
+            ),
+            TravelerIntake(
+                traveler_id="traveler:blair",
+                input_location="Jersey City",
+            ),
+        )
+    )
+    current = ResearchIntake(
+        meeting_time=datetime.fromisoformat("2026-11-25T14:00:00-05:00"),
+        travelers=(
+            TravelerIntake(
+                traveler_id="traveler:alex",
+                max_commute_minutes=30,
+            ),
+            TravelerIntake(
+                traveler_id="traveler:blair",
+                max_commute_minutes=40,
+            ),
+        ),
+    )
+
+    merged = merge_research_intakes(previous, current)
+
+    assert [item.input_location for item in merged.travelers] == ["SoHo", "Jersey City"]
+    assert [item.max_commute_minutes for item in merged.travelers] == [30, 40]
+    assert find_intake_gaps(merged) == ()
 
 
 def test_complete_intake_builds_immutable_brief_from_project_one_outputs():
@@ -187,7 +249,8 @@ def test_chat_uses_partial_intake_for_specific_clarification():
     )
 
     assert response.tool_calls == []
-    assert "traveler:bob" in response.response
+    assert "maximum one-way commute for Bob" in response.response
+    assert "traveler:bob" not in response.response
     assert "maximum one-way commute" in response.response
-    assert "meeting arrival date and time" in response.response
+    assert "arrival date and time" in response.response
     assert "traveler:alice" not in response.response

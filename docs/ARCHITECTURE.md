@@ -66,6 +66,12 @@ generation when any origin remains unresolved.
 one no-tool structured extraction call over user messages, then independently rejects
 any field whose verbatim evidence quote is absent. Meeting times are admitted only with
 an explicit UTC offset; failures degrade to the deterministic empty-intake prompt.
+Validated partial intake is retained with the bounded chat session, so a short follow-up
+can fill missing limits or time without erasing earlier people and origins. Anonymous
+explicit counts such as "two travelers from SoHo" receive stable ordered traveler IDs;
+the user-facing clarification acknowledges known origins and uses plain labels rather
+than exposing those internal IDs. Session expiry, eviction, reset, and `/clear` remove
+the partial intake together with the message history.
 
 ## Researcher responsibilities
 
@@ -146,6 +152,10 @@ again after reordering, and any failed/invalid model call keeps the deterministi
 report. Every referenced ID must exist, every claim's sources must match its cited
 facts, and every citation must appear in the user-visible response. Future
 regular-hours evidence is explicitly labeled as an estimate rather than a guarantee.
+The visible prose uses venue and origin labels rather than provider IDs or internal
+reason codes. The UI places that answer first, collapses raw citation references and
+the research trace, and keeps cafes without exact-route evaluation in a secondary
+expandable list; the underlying `/chat` evidence and citation contract is unchanged.
 
 ## Project 1 reuse map
 

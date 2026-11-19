@@ -56,10 +56,7 @@ class EvidenceWriter:
         result_claims, recommended = self._result_claims(run, facts, sources)
         unknown_claims = tuple(
             self._claim(
-                (
-                    f"Unknown `{gap.field}` for `{gap.candidate_id}`: {gap.detail} "
-                    f"Next action: {gap.next_action}"
-                ),
+                _unknown_text(gap, facts),
                 facts=facts,
                 sources=sources,
                 missing_ids=(gap.missing_id,),
@@ -143,10 +140,19 @@ class EvidenceWriter:
             and fact.value is False
         )
         for fact in closed:
+            name = next(
+                (
+                    item.value
+                    for item in round_one_facts
+                    if item.candidate_id == fact.candidate_id
+                    and item.predicate == "name"
+                ),
+                "One initial cafe",
+            )
             claims.append(
                 self._claim(
                     (
-                        f"Initial cafe `{fact.candidate_id}` was expected to be closed "
+                        f"{name} was expected to be closed "
                         "at the requested meeting time."
                     ),
                     facts=facts,
@@ -167,14 +173,27 @@ class EvidenceWriter:
             return claims
 
         decision = run.follow_up_decision
+        selected = ", ".join(
+            _entity_label(item, facts) for item in decision.selected_ids
+        )
+        if decision.reason_code == "EXACT_DESTINATION_REQUIRED":
+            explanation = (
+                f"The first pass only estimated travel to the surrounding area, so I "
+                f"checked the exact address for {selected} before deciding."
+            )
+        elif decision.reason_code == "NO_FEASIBLE_INITIAL_CAFE":
+            explanation = (
+                f"The first search did not support a cafe, so I expanded the bounded "
+                f"search to {selected} without relaxing the group's limits."
+            )
+        else:
+            explanation = (
+                f"The first pass left a decision-critical gap, so I checked {selected} "
+                "once more before deciding."
+            )
         claims.append(
             self._claim(
-                (
-                    f"Lead used its single follow-up round for "
-                    f"`{decision.reason_code}` and selected "
-                    f"{', '.join(f'`{item}`' for item in decision.selected_ids)}. "
-                    f"Expected information gain: {decision.expected_information_gain}"
-                ),
+                explanation,
                 facts=facts,
                 sources=sources,
                 fact_ids=decision.dependencies,
@@ -193,8 +212,8 @@ class EvidenceWriter:
             claims.append(
                 self._claim(
                     (
-                        "Exact-address Transit was dispatched only after Cafe returned "
-                        "the selected venue coordinates."
+                        "I calculated the exact-address trip only after the cafe search "
+                        "returned the venue's coordinates."
                     ),
                     facts=facts,
                     sources=sources,
@@ -258,9 +277,9 @@ class EvidenceWriter:
                 claims.append(
                     self._claim(
                         (
-                            f"Recommend {label} (`{feasibility.cafe_id}`): "
-                            "`feasibility-v1` classifies it as FEASIBLE without "
-                            "relaxing commute or cafe constraints."
+                            f"{label} is the strongest supported option. It meets the "
+                            "checked commute and cafe constraints without relaxing any "
+                            "of the group's limits."
                         ),
                         facts=facts,
                         sources=sources,
@@ -281,14 +300,15 @@ class EvidenceWriter:
                     }
                     route_text = ", ".join(
                         (
-                            f"{fact.subject_id} {float(fact.value):g}/"
-                            f"{limits[fact.subject_id]:g} minutes"
+                            f"{next(traveler.input_location for traveler in run.brief.travelers if traveler.traveler_id == fact.subject_id)}: "
+                            f"{float(fact.value):g} minutes (limit "
+                            f"{limits[fact.subject_id]:g})"
                         )
                         for fact in route_facts
                     )
                     claims.append(
                         self._claim(
-                            f"Exact-cafe commute checks all pass: {route_text}.",
+                            f"Travel times to the cafe itself are {route_text}; all are within the stated limits.",
                             facts=facts,
                             sources=sources,
                             fact_ids=tuple(fact.fact_id for fact in route_facts),
@@ -300,8 +320,9 @@ class EvidenceWriter:
                     claims.append(
                         self._claim(
                             (
-                                "Opening status is a future regular-schedule estimate, "
-                                "not a guarantee; venue verification is still prudent."
+                                "Google Places' regular schedule suggests the cafe should "
+                                "be open, but future or holiday hours can change; confirm "
+                                "with the venue before going."
                             ),
                             facts=facts,
                             sources=sources,
@@ -322,9 +343,6 @@ class EvidenceWriter:
                 for reason in feasibility.reasons
                 for missing_id in reason.input_missing_ids
             )
-            reason_codes = ", ".join(
-                sorted({reason.code for reason in feasibility.reasons})
-            )
             traveler_labels = {
                 traveler.traveler_id: traveler.input_location
                 for traveler in run.brief.travelers
@@ -332,7 +350,7 @@ class EvidenceWriter:
             commute_details = ", ".join(
                 (
                     f"{traveler_labels.get(reason.traveler_id, reason.traveler_id)} "
-                    f"(`{reason.traveler_id}`) {reason.actual_minutes:g} minutes "
+                    f"{reason.actual_minutes:g} minutes "
                     f"vs {reason.limit_minutes:g}-minute limit"
                 )
                 for reason in feasibility.reasons
@@ -341,15 +359,16 @@ class EvidenceWriter:
                 and reason.actual_minutes is not None
                 and reason.limit_minutes is not None
             )
-            detail_suffix = (
-                f" Commute evidence: {commute_details}." if commute_details else ""
-            )
+            if feasibility.status == "COMMUTE_LIMIT_EXCEEDED":
+                blocker = f"the exact trip exceeds a commute limit: {commute_details}"
+            elif feasibility.status == "CAFE_CONSTRAINT_FAILED":
+                blocker = "it does not meet one or more of the requested cafe conditions"
+            else:
+                blocker = "a required piece of evidence is still missing"
             claims.append(
                 self._claim(
                     (
-                        f"Do not recommend {label} (`{feasibility.cafe_id}`): status "
-                        f"is {feasibility.status}; supported blocker(s): {reason_codes}."
-                        f"{detail_suffix}"
+                        f"I can't yet recommend {label} because {blocker}."
                     ),
                     facts=facts,
                     sources=sources,
@@ -497,6 +516,34 @@ def _evidence_indexes(
                 )
             missing[gap.missing_id] = gap
     return facts, sources, missing
+
+
+def _entity_label(entity_id: str, facts: Mapping[str, Fact]) -> str:
+    for predicate in ("name", "station_name"):
+        match = next(
+            (
+                fact
+                for fact in facts.values()
+                if fact.candidate_id == entity_id and fact.predicate == predicate
+            ),
+            None,
+        )
+        if match is not None and isinstance(match.value, str):
+            return match.value
+    return "the selected option"
+
+
+def _unknown_text(gap: MissingEvidence, facts: Mapping[str, Fact]) -> str:
+    label = _entity_label(gap.candidate_id, facts)
+    fields = {
+        "open_at_meeting_time": "opening hours at the meeting time",
+        "price_level": "price level",
+        "rating": "rating",
+        "transit_duration_minutes": "an exact transit time",
+        "cafe_search_results": "cafe search results",
+    }
+    field = fields.get(gap.field, gap.field.replace("_", " "))
+    return f"I still can't confirm {field} for {label}. {gap.next_action}"
 
 
 def _citation(claim: CitedClaim) -> str:

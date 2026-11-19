@@ -470,7 +470,8 @@ def test_callable_composes_with_unified_research_service(monkeypatch):
 
     assert output.run.feasibility_results[0].status == "COMMUTE_LIMIT_EXCEEDED"
     assert output.report.recommended_cafe_id is None
-    assert "Astoria (`traveler:bob`) 34 minutes vs 30-minute limit" in output.response
+    assert "Astoria 34 minutes vs 30-minute limit" in output.response
+    assert "traveler:bob" not in "\n".join(claim.text for claim in output.report.claims)
     transit_events = [
         event
         for event in output.tool_calls

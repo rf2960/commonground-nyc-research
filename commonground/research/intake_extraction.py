@@ -35,6 +35,13 @@ offset only when the user explicitly supplied a date, clock time, and timezone; 
 return null. Preserve an origin as the exact quoted text. A commute limit may be returned
 only when the quote explicitly connects that person to a one-way minute limit.
 
+Combine details across the entire conversation. A later short reply usually fills a
+missing slot; it does not erase people, origins, limits, or time supplied earlier. If the
+user explicitly gives an anonymous count, such as "two travelers from SoHo", create one
+traveler item per stated person. Reuse that exact group phrase as identity_quote for each
+anonymous person; repeated identity quotes are allowed and are disambiguated by order.
+Do not expand an unspecified plural into a guessed count.
+
 Shape:
 {
   "meeting_time": "RFC3339 with offset or null",
@@ -88,6 +95,13 @@ def _traveler_id(identity_quote: str) -> str:
     return f"traveler:{slug}"
 
 
+def _anonymous_group(identity_quote: str) -> bool:
+    words = set(re.findall(r"[a-z0-9]+", identity_quote.casefold()))
+    group_words = {"traveler", "travelers", "person", "people", "friends"}
+    counts = {"two", "three", "four", "five", "six", "2", "3", "4", "5", "6"}
+    return bool(words & group_words and words & counts)
+
+
 def _cafe_constraints(corpus: str) -> CafeConstraints:
     """Read explicit rating and price phrases even when the extractor omits them."""
     ratings = [float(match[1]) for match in _MIN_RATING.finditer(corpus)]
@@ -129,14 +143,25 @@ def intake_from_extraction_payload(
     elif raw.meeting_time_quote is not None:
         raise IntakeExtractionError("meeting_time_quote must be null when time is null")
 
+    identities = [
+        _has_quote(corpus, item.identity_quote, "traveler identity")
+        for item in raw.travelers
+    ]
+    base_ids = [_traveler_id(identity) for identity in identities]
+    totals = {base: base_ids.count(base) for base in set(base_ids)}
+    for identity, base_id in zip(identities, base_ids):
+        if totals[base_id] > 1 and not _anonymous_group(identity):
+            raise IntakeExtractionError("extracted named traveler identities are not unique")
+
     travelers = []
-    seen: set[str] = set()
-    for item in raw.travelers:
-        identity = _has_quote(corpus, item.identity_quote, "traveler identity")
-        traveler_id = _traveler_id(identity)
-        if traveler_id in seen:
-            raise IntakeExtractionError("extracted traveler identities are not unique")
-        seen.add(traveler_id)
+    occurrences: dict[str, int] = {}
+    for item, identity, base_id in zip(raw.travelers, identities, base_ids):
+        occurrences[base_id] = occurrences.get(base_id, 0) + 1
+        traveler_id = (
+            f"{base_id}-{occurrences[base_id]}"
+            if totals[base_id] > 1
+            else base_id
+        )
 
         origin = None
         if item.origin_quote is not None:
