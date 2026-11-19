@@ -165,11 +165,47 @@ def test_merge_intakes_keeps_generic_traveler_ids_stable_across_aliases():
     assert [item.max_commute_minutes for item in merged.travelers] == [20, 30]
 
 
-def test_intake_help_explains_commute_limit_instead_of_repeating_prompt():
-    response = intake_help_message("what does maximum one-way commute mean")
+@pytest.mark.parametrize(
+    "message",
+    [
+        "what does maximum one-way commute mean",
+        "What is a commute limit?",
+        "What's max commute?",
+        "What do you mean by one-way commute?",
+        "Could you explain the maximum commute limit?",
+        "Please explain commute limit.",
+        "What is the meaning of maximum one-way commute?",
+        "How does max commute work?",
+    ],
+)
+def test_intake_help_explains_explicit_commute_limit_questions(message):
+    response = intake_help_message(message)
 
     assert "one direction, not round trip" in response
     assert "Traveler 1: 20 minutes" in response
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        (
+            "Alex starts at Columbia University with a 35-minute limit, Blair starts "
+            "in Astoria with a 30-minute limit, and Casey starts at Bedford Ave "
+            "Station with a 40-minute limit. Meet November 25, 2026 at 2:00 PM "
+            "Eastern Time. Find a moderate-price cafe rated at least 4.3 that is "
+            "expected to be open. Do not relax any limit; if no option is supported, "
+            "explain whether commute, cafe conditions, or missing evidence is the blocker."
+        ),
+        "Meet tomorrow at noon; my maximum commute limit is 30 minutes.",
+        "I mean my max commute is 30 minutes.",
+        "This would be a meaningful commute limit for the group.",
+        "Set the maximum commute limit to 30 minutes.",
+        "What cafe is best if my commute limit is 30 minutes?",
+        "Explain whether the commute limit is met by the recommended cafe.",
+    ],
+)
+def test_intake_help_does_not_intercept_research_requests_or_statements(message):
+    assert intake_help_message(message) is None
 
 
 def test_complete_intake_builds_immutable_brief_from_project_one_outputs():
