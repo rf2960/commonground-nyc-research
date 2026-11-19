@@ -121,7 +121,7 @@ startup cache and one opt-in smoke test remain integration work.
   prompts or few-shot examples. Continue adding owner-specific full-pipeline cases.
 - [x] Add deterministic contract/constraint checks plus a strict reference/rubric
   judge boundary.
-- Capture the three team-owned grading examples and same-model no-tools/no-system
+- [x] Capture the three team-owned grading examples and same-model no-tools/no-system
   baselines.
 - [x] Record baseline score, at least two changes with new scores, and gains greater
   than the margin of error `±1/sqrt(n)`.
@@ -133,8 +133,8 @@ A separate 50-case contract corpus scores the actual hard-decision and intake fu
 at 50/50 across five balanced slices. The reference/rubric judge and no-tools capture
 code are implemented and tested. The production model is fixed as
 `vertex_ai/gemini-3.5-flash-lite`; the three live-query no-tools baselines and the
-historical 0/50 → 40/50 → 50/50 hill-climbing report are committed. Credentialed
-rubric-judge captures remain to be completed.
+historical 0/50 → 40/50 → 50/50 hill-climbing report are committed. The credentialed
+rubric judge passed all three final live queries at 1.0 normalized score.
 
 ### Phase 5 — Cloud Run and submission
 
@@ -144,7 +144,7 @@ rubric-judge captures remain to be completed.
   Cloud Run URL.
 - [x] Make the service publicly callable without grader authentication.
 - Keep the service live through grade release and submit the repository URL in
-  CourseWorks after the remaining eval evidence is committed.
+  CourseWorks after the final deployment check.
 
 **Gate:** public URL works without grader setup and all repository submission fields are
 current.

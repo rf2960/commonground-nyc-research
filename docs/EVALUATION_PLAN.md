@@ -49,7 +49,9 @@ revisions. The contract-only baseline (`7b596c7`) scores 0/50; deterministic fea
 The two gains, +0.80 and +0.20, both exceed `1/sqrt(50) = 0.1414`. Full case-level
 results, resolved commit hashes, and capability flags are committed in
 `evals/examples/hill_climb_results.json`. The strict rubric/reference judge remains the
-second scorer; credentialed judge scores must not be replaced by hand-authored numbers.
+second scorer. Its credentialed Cloud Run capture is committed in
+`evals/examples/live_rubric_scores.json`; scores must never be replaced by hand-authored
+numbers.
 
 ## Three owner-specific grading examples
 
@@ -75,12 +77,12 @@ Google Routes exact-destination request, and deterministic rule/version record.
 **Owner deliverables.** Golden structured bundle, actual Writer response and trace,
 no-tools/no-system baseline, deterministic score, rubric score, and a short comparison.
 
-**Current capture status.** Golden bundle, actual response/trace, and deterministic
-score are committed under `evals/`; the score is `1.0` (8/8 checks). The production
-production model is now fixed as `vertex_ai/gemini-3.5-flash-lite`, but an authenticated
-model-backed agent capture and no-tools baseline have not been recorded. The rubric/
-reference-judge score therefore remains explicitly pending rather than hand-authored.
-The non-secret frozen configuration is committed as `evals/model_manifest.json`.
+**Current capture status.** The synthetic owner fixture retains its golden bundle,
+response/trace, and deterministic 8/8 score. Submission evidence uses the final live
+`expansion` query instead: its model-backed response/trace, authenticated question-only
+baseline, and credentialed reference-judge score are committed under `evals/examples/`.
+The judge scored all four dimensions at 4/4. The non-secret frozen configuration is
+committed as `evals/model_manifest.json`.
 
 ### Example 2 — Andrew: exact cafe invalidates center estimate
 

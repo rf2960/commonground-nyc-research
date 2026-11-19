@@ -2,7 +2,7 @@
   "schema_version": "baseline-capture-v1",
   "case_id": "ruochen-expansion-success-001",
   "owner": "ruochen",
-  "status": "pending",
+  "status": "superseded",
   "model": null,
   "captured_at": null,
   "conditions": {
@@ -11,5 +11,6 @@
     "input": "question_only"
   },
   "output": null,
-  "reason": "The production model is fixed as vertex_ai/gemini-3.5-flash-lite, but an authenticated no-tools/no-system capture has not been executed. This placeholder prevents a hand-authored answer from being mistaken for the required raw baseline capture."
+  "superseded_by": "evals/examples/expansion_baseline.json",
+  "reason": "This synthetic owner-fixture placeholder is not a submission baseline. The final live expansion query has an authenticated same-model question-only capture with no tools and no system prompt."
 }

@@ -46,15 +46,15 @@ The singular parent Fact keeps a deterministic primary parent for existing consu
 
 | Requirement | Current evidence | Remaining work / owner |
 | --- | --- | --- |
-| Real provider data | Live Places capture passed: ten cafes, 81 cited facts, eleven sources from one Union Square request; MTA loader exists | Routes live proof and injection of both adapters remain team integration work |
-| Usable deployed application | Project 2 `/chat` boundary and research timeline exist | Production service injection and a new live Cloud Run URL / Ruochen |
-| Complete readable evidence UI | Venue cards, badges, citations, gaps, provisional hours and exact/center distinctions; six renderer cases plus four real desktop/mobile Chromium checks pass | CI run `42765954735` also proves a mobile user can scroll to the missing-evidence notice above the composer; live deployed-service QA remains a team integration step |
-| Three grading examples | Ruochen and Yulia synthetic cases now run | Andrew example and live/model captures / each owner |
-| 50+ evals | 50 synthetic contract cases pass | Provider and full-pipeline coverage; synthetic contract count alone is not evidence of 50 real research successes / team |
-| Two scoring approaches | Deterministic scores executed; rubric judge code exists | Run credentialed rubric scores after freezing the model / Ruochen |
-| Same-model no-tools/no-system comparison | Capture helpers and explicit pending files exist | Freeze production Writer model/architecture, then capture actual model outputs / team |
-| Hill climbing and uncertainty | No fabricated score improvements | Run baseline and at least two changes on a fixed held-out set; report ±1/sqrt(n) / Ruochen |
-| Agent execution semantics | Lead/Writer are currently deterministic orchestration/rendering, with a model-executor injection boundary | Verify this runtime against the course's agent-role requirement before claiming the live Deep Research path complete / team |
+| Real provider data | Complete: live Places, live pure-transit Routes, and deployed MTA/Places/Routes traces | Preserve captures and credentials boundary |
+| Usable deployed application | Complete: public Project 2 Cloud Run service, `/chat`, `/health`, and research timeline | Keep online through grade release |
+| Complete readable evidence UI | Complete: venue cards, citations, gaps, exact/center distinctions, and desktop/mobile Chromium checks | Preserve final browser CI evidence |
+| Three grading examples | Complete: three final live queries with expected, actual, sources, trace, and baselines | Preserve the linked capture files |
+| 50+ evals | Complete: 50 provenance-recorded gold contract cases plus full-pipeline cases | Do not represent synthetic cases as live requests |
+| Two scoring approaches | Complete: deterministic 50/50 plus credentialed rubric judge 3/3 at 1.0 | `evals/examples/live_rubric_scores.json` |
+| Same-model no-tools/no-system comparison | Complete for all three final live queries | Fixture-specific placeholders are archived as superseded |
+| Hill climbing and uncertainty | Complete: 0/50 → 40/50 → 50/50; both gains exceed 0.1414 | `evals/examples/hill_climb_results.json` |
+| Agent execution semantics | Complete: bounded Lead/Researchers/Writer path with a model-backed, evidence-locked Writer | Ordinary grader interpretation risk remains disclosed |
 
 This review is not a guarantee of full marks or an exhaustive security audit. Synthetic
 fixtures never become live API/model observations merely because they pass a test.
