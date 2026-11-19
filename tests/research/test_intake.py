@@ -11,6 +11,7 @@ from commonground.research import (
     build_research_brief,
     clarification_message,
     find_intake_gaps,
+    intake_help_message,
     merge_research_intakes,
 )
 
@@ -136,6 +137,39 @@ def test_merge_intakes_keeps_earlier_slots_and_accepts_later_details():
     assert [item.input_location for item in merged.travelers] == ["SoHo", "Jersey City"]
     assert [item.max_commute_minutes for item in merged.travelers] == [30, 40]
     assert find_intake_gaps(merged) == ()
+
+
+def test_merge_intakes_keeps_generic_traveler_ids_stable_across_aliases():
+    previous = ResearchIntake(
+        travelers=(
+            TravelerIntake(traveler_id="traveler:traveler-1", input_location="SoHo"),
+            TravelerIntake(
+                traveler_id="traveler:traveler-2", input_location="Jersey City"
+            ),
+        )
+    )
+    current = ResearchIntake(
+        travelers=(
+            TravelerIntake(traveler_id="traveler:1", max_commute_minutes=20),
+            TravelerIntake(traveler_id="traveler:2", max_commute_minutes=30),
+        )
+    )
+
+    merged = merge_research_intakes(previous, current)
+
+    assert [item.traveler_id for item in merged.travelers] == [
+        "traveler:traveler-1",
+        "traveler:traveler-2",
+    ]
+    assert [item.input_location for item in merged.travelers] == ["SoHo", "Jersey City"]
+    assert [item.max_commute_minutes for item in merged.travelers] == [20, 30]
+
+
+def test_intake_help_explains_commute_limit_instead_of_repeating_prompt():
+    response = intake_help_message("what does maximum one-way commute mean")
+
+    assert "one direction, not round trip" in response
+    assert "Traveler 1: 20 minutes" in response
 
 
 def test_complete_intake_builds_immutable_brief_from_project_one_outputs():

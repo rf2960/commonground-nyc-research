@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Callable
 
 import litellm
@@ -42,6 +42,10 @@ traveler item per stated person. Reuse that exact group phrase as identity_quote
 anonymous person; repeated identity quotes are allowed and are disambiguated by order.
 Do not expand an unspecified plural into a guessed count.
 
+The application will provide the current timestamp. When the user gives a month and
+day without a year, interpret it as the next occurrence of that date relative to the
+current timestamp. Never choose an already-past year for a yearless date.
+
 Shape:
 {
   "meeting_time": "RFC3339 with offset or null",
@@ -56,6 +60,8 @@ Shape:
   ]
 }
 """
+
+_EXPLICIT_YEAR = re.compile(r"\b(?:19|20)\d{2}\b")
 
 
 class IntakeExtractionError(ValueError):
@@ -120,6 +126,8 @@ def _cafe_constraints(corpus: str) -> CafeConstraints:
 def intake_from_extraction_payload(
     payload: dict[str, Any],
     user_messages: list[str] | tuple[str, ...],
+    *,
+    reference_time: datetime | None = None,
 ) -> ResearchIntake:
     """Validate model JSON against verbatim evidence before creating an intake."""
 
@@ -133,13 +141,33 @@ def intake_from_extraction_payload(
 
     meeting_time = None
     if raw.meeting_time is not None:
-        _has_quote(corpus, raw.meeting_time_quote, "meeting_time")
+        meeting_time_quote = _has_quote(
+            corpus, raw.meeting_time_quote, "meeting_time"
+        )
         try:
             meeting_time = datetime.fromisoformat(raw.meeting_time)
         except ValueError as error:
             raise IntakeExtractionError("meeting_time is not valid RFC 3339") from error
         if meeting_time.tzinfo is None or meeting_time.utcoffset() is None:
             raise IntakeExtractionError("meeting_time lacks an explicit UTC offset")
+        if not _EXPLICIT_YEAR.search(meeting_time_quote):
+            current = reference_time or datetime.now(timezone.utc)
+            if current.tzinfo is None or current.utcoffset() is None:
+                current = current.replace(tzinfo=timezone.utc)
+            local_current = current.astimezone(meeting_time.tzinfo)
+            try:
+                meeting_time = meeting_time.replace(year=local_current.year)
+            except ValueError as error:
+                raise IntakeExtractionError(
+                    "yearless meeting date is not valid in the current year"
+                ) from error
+            if meeting_time <= current:
+                try:
+                    meeting_time = meeting_time.replace(year=local_current.year + 1)
+                except ValueError as error:
+                    raise IntakeExtractionError(
+                        "yearless meeting date is not valid in the next year"
+                    ) from error
     elif raw.meeting_time_quote is not None:
         raise IntakeExtractionError("meeting_time_quote must be null when time is null")
 
@@ -200,12 +228,18 @@ def extract_research_intake(
 
     if not user_messages:
         raise IntakeExtractionError("at least one user message is required")
+    reference_time = datetime.now(timezone.utc)
+    extraction_prompt = (
+        EXTRACTION_SYSTEM_PROMPT
+        + "\nCurrent timestamp for resolving yearless dates: "
+        + reference_time.isoformat()
+    )
     try:
         reply = completion(
             model=model,
             vertex_location=vertex_location,
             messages=[
-                {"role": "system", "content": EXTRACTION_SYSTEM_PROMPT},
+                {"role": "system", "content": extraction_prompt},
                 {
                     "role": "user",
                     "content": json.dumps(
@@ -225,4 +259,8 @@ def extract_research_intake(
         raise IntakeExtractionError("model returned invalid intake JSON") from error
     if not isinstance(payload, dict):
         raise IntakeExtractionError("model returned a non-object intake payload")
-    return intake_from_extraction_payload(payload, user_messages)
+    return intake_from_extraction_payload(
+        payload,
+        user_messages,
+        reference_time=reference_time,
+    )

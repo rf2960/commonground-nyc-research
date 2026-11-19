@@ -201,6 +201,28 @@ def clarification_message(intake: ResearchIntake) -> str:
     )
 
 
+def intake_help_message(message: str) -> str | None:
+    """Answer common intake vocabulary questions instead of repeating a form prompt."""
+
+    normalized = " ".join(message.casefold().split())
+    asks_for_meaning = any(
+        phrase in normalized
+        for phrase in ("what does", "what is", "what's", "meaning", "mean", "explain")
+    )
+    mentions_commute_limit = (
+        "commute" in normalized
+        and any(term in normalized for term in ("maximum", "max", "limit", "one-way"))
+    )
+    if not (asks_for_meaning and mentions_commute_limit):
+        return None
+    return (
+        "Maximum one-way commute means the most time each person is willing to "
+        "spend traveling from their starting location to the meeting place in one "
+        "direction, not round trip. For example, you can reply: ‘Traveler 1: 20 "
+        "minutes; Traveler 2: 30 minutes.’"
+    )
+
+
 def merge_research_intakes(
     previous: ResearchIntake | None,
     current: ResearchIntake,
@@ -210,13 +232,23 @@ def merge_research_intakes(
     if previous is None:
         return current
     travelers = {item.traveler_id: item for item in previous.travelers}
+    previous_by_ordinal = {
+        ordinal: item.traveler_id
+        for item in previous.travelers
+        if (ordinal := _traveler_ordinal(item.traveler_id)) is not None
+    }
     for item in current.travelers:
-        old = travelers.get(item.traveler_id)
+        stable_id = item.traveler_id
+        if stable_id not in travelers:
+            ordinal = _traveler_ordinal(stable_id)
+            if ordinal is not None:
+                stable_id = previous_by_ordinal.get(ordinal, stable_id)
+        old = travelers.get(stable_id)
         if old is None:
-            travelers[item.traveler_id] = item
+            travelers[stable_id] = item
             continue
-        travelers[item.traveler_id] = TravelerIntake(
-            traveler_id=item.traveler_id,
+        travelers[stable_id] = TravelerIntake(
+            traveler_id=stable_id,
             input_location=item.input_location or old.input_location,
             max_commute_minutes=(
                 item.max_commute_minutes
@@ -230,6 +262,12 @@ def merge_research_intakes(
         travelers=tuple(travelers.values()),
         cafe_constraints=current.cafe_constraints,
     )
+
+
+def _traveler_ordinal(traveler_id: str) -> int | None:
+    slug = traveler_id.removeprefix("traveler:")
+    match = re.fullmatch(r"(?:traveler-)?([1-6])", slug)
+    return int(match.group(1)) if match else None
 
 
 def _natural_join(values: Iterable[str]) -> str:
