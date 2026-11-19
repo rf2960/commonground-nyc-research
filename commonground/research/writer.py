@@ -241,9 +241,29 @@ class EvidenceWriter:
                 derived_ref='lead-policy:no-supported-recommendation',
             ))
 
+        primary_feasible_id = next(
+            (
+                item.cafe_id
+                for item in run.feasibility_results
+                if item.status == "FEASIBLE"
+            ),
+            None,
+        )
+        traveler_labels = {
+            traveler.traveler_id: _traveler_label(
+                traveler.traveler_id,
+                traveler.input_location,
+                index,
+            )
+            for index, traveler in enumerate(run.brief.travelers)
+        }
         for feasibility in sorted(
             run.feasibility_results,
-            key=lambda item: (item.status != "FEASIBLE", item.cafe_id),
+            key=lambda item: (
+                item.status != "FEASIBLE",
+                item.cafe_id != primary_feasible_id,
+                item.cafe_id,
+            ),
         ):
             cafe_facts = tuple(
                 fact for fact in facts.values() if fact.candidate_id == feasibility.cafe_id
@@ -259,6 +279,7 @@ class EvidenceWriter:
             derived_ref = f"{feasibility.rule_version}:{feasibility.cafe_id}"
 
             if feasibility.status == "FEASIBLE":
+                is_primary = feasibility.cafe_id == primary_feasible_id
                 supporting = tuple(
                     fact.fact_id
                     for fact in cafe_facts
@@ -277,9 +298,13 @@ class EvidenceWriter:
                 claims.append(
                     self._claim(
                         (
-                            f"{label} is the strongest supported option. It meets the "
-                            "checked commute and cafe constraints without relaxing any "
-                            "of the group's limits."
+                            (
+                                f"{label} is the strongest supported option. "
+                                if is_primary
+                                else f"{label} is another supported option. "
+                            )
+                            + "It meets the checked commute and cafe constraints without "
+                            "relaxing any of the group's limits."
                         ),
                         facts=facts,
                         sources=sources,
@@ -300,7 +325,7 @@ class EvidenceWriter:
                     }
                     route_text = ", ".join(
                         (
-                            f"{next(traveler.input_location for traveler in run.brief.travelers if traveler.traveler_id == fact.subject_id)}: "
+                            f"{traveler_labels.get(fact.subject_id, 'Traveler')}: "
                             f"{float(fact.value):g} minutes (limit "
                             f"{limits[fact.subject_id]:g})"
                         )
@@ -329,7 +354,7 @@ class EvidenceWriter:
                             fact_ids=(opening.fact_id,),
                         )
                     )
-                if recommended is None:
+                if is_primary:
                     recommended = feasibility.cafe_id
                 continue
 
@@ -343,10 +368,6 @@ class EvidenceWriter:
                 for reason in feasibility.reasons
                 for missing_id in reason.input_missing_ids
             )
-            traveler_labels = {
-                traveler.traveler_id: traveler.input_location
-                for traveler in run.brief.travelers
-            }
             commute_details = ", ".join(
                 (
                     f"{traveler_labels.get(reason.traveler_id, reason.traveler_id)} "
@@ -531,6 +552,28 @@ def _entity_label(entity_id: str, facts: Mapping[str, Fact]) -> str:
         if match is not None and isinstance(match.value, str):
             return match.value
     return "the selected option"
+
+
+def _traveler_label(traveler_id: str, origin: str, index: int) -> str:
+    """Render a natural, unique label without exposing the internal traveler ID."""
+
+    slug = traveler_id.removeprefix("traveler:")
+    parts = [part for part in slug.split("-") if part and not part.isdigit()]
+    generic = {
+        "traveler",
+        "travelers",
+        "person",
+        "people",
+        "friend",
+        "friends",
+        "another",
+        "someone",
+    }
+    if not parts or any(part in generic for part in parts):
+        label = f"Traveler {index + 1}"
+    else:
+        label = " ".join(part.capitalize() for part in parts)
+    return f"{label} from {origin}"
 
 
 def _unknown_text(gap: MissingEvidence, facts: Mapping[str, Fact]) -> str:

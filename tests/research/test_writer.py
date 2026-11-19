@@ -1,4 +1,5 @@
 import asyncio
+from dataclasses import replace
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -121,13 +122,29 @@ def test_writer_uses_human_labels_instead_of_internal_ids_in_claim_text():
     run = execute_lead(fixture_result_map())
     report = EvidenceWriter().write(run)
 
-    assert "Columbia University: 30 minutes (limit 35)" in report.response
-    assert "Astoria: 28 minutes (limit 30)" in report.response
+    assert "Alice from Columbia University: 30 minutes (limit 35)" in report.response
+    assert "Bob from Astoria: 28 minutes (limit 30)" in report.response
     assert "Lead used its single follow-up" not in report.response
     claim_text = "\n".join(claim.text for claim in (*report.claims, *report.unknowns))
     assert "`cafe:gplaces:" not in claim_text
     assert "traveler:" not in claim_text
     assert "open_at_meeting_time" not in claim_text
+
+
+def test_writer_names_only_one_feasible_cafe_as_the_strongest_option():
+    run = execute_lead(fixture_result_map())
+    primary = run.feasibility_results[0]
+    alternative = primary.model_copy(
+        update={"cafe_id": "cafe:gplaces:another-supported-cafe"}
+    )
+
+    report = EvidenceWriter().write(
+        replace(run, feasibility_results=(primary, alternative))
+    )
+
+    assert report.recommended_cafe_id == primary.cafe_id
+    assert report.response.count("strongest supported option") == 1
+    assert report.response.count("another supported option") == 1
 
 
 def test_writer_validator_rejects_a_reference_not_present_in_lead_evidence():
